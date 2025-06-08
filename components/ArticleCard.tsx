@@ -18,10 +18,10 @@ const ArticleCard: FC<TArticle> = () => {
       <Card>
         <CardHeader>
           <Image
-            src={"https://picsum.photos/300/300"}
+            src={"https://picsum.photos/250/300"}
             width={360}
             height={240}
-            className="object-cover  w-96 max-h-60 h-60   rounded-sm"
+            className="object-cover  w-full max-h-60 h-60   rounded-sm"
             alt="article 1 "
           />
         </CardHeader>

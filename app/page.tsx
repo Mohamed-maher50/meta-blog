@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className=" font-[family-name:var(--font-work-sans)]">
+    <main className=" font-[family-name:var(--font-work-sans)]">
       <Container>
         <div className="flex flex-col gap-y-8">
-          <div className="grid gap-5 grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
             <ArticleCard />
             <ArticleCard />
             <ArticleCard />
@@ -26,6 +26,6 @@ export default function Home() {
           </Button>
         </div>
       </Container>
-    </div>
+    </main>
   );
 }
