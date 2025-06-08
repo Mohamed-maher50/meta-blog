@@ -60,12 +60,12 @@
   --primary: #4B6BFB;
   --primary-foreground: #ffffff;
   --secondary: #E8E8EA;
+  --secondary-foreground: #696A75;
   --secondary-100: #F4F4F5;
   --secondary-foreground-400: #97989F;
   --secondary-foreground-600: #3B3C4A;
   --secondary-foreground-800: #181A2A;
   --secondary-foreground-900: #141624;
-  --secondary-foreground: oklch(0.205 0 0);
 
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
