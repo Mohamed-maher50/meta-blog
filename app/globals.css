@@ -32,8 +32,12 @@
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
+  --color-secondary-50: var(--secondary-50);
   --color-secondary-100: var(--secondary-100);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-foreground-300: var(--secondary-foreground-300);
   --color-secondary-foreground-400: var(--secondary-foreground-400);
+  --color-secondary-foreground-500: var(--secondary-foreground-500);
   --color-secondary-foreground-600: var(--secondary-foreground-600);
   --color-secondary-foreground-800: var(--secondary-foreground-800);
   --color-secondary-foreground-900: var(--secondary-foreground-900);
@@ -61,8 +65,12 @@
   --primary-foreground: #ffffff;
   --secondary: #E8E8EA;
   --secondary-foreground: #696A75;
+  --secondary-50: #F6F6F7;
   --secondary-100: #F4F4F5;
+  --secondary-700: #242535;
+  --secondary-foreground-300: #BABABF;
   --secondary-foreground-400: #97989F;
+  --secondary-foreground-500: #696A75;
   --secondary-foreground-600: #3B3C4A;
   --secondary-foreground-800: #181A2A;
   --secondary-foreground-900: #141624;
