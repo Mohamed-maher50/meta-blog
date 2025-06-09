@@ -1,8 +1,10 @@
 import ArticleCard from "@/components/ArticleCard";
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
+// import { auth } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  // const session = await auth();
   return (
     <main className=" font-[family-name:var(--font-work-sans)]">
       <Container>

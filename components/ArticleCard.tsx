@@ -21,14 +21,14 @@ const ArticleCard: FC<TArticle> = () => {
             src={"https://picsum.photos/250/300"}
             width={360}
             height={240}
-            className="object-cover  w-full max-h-60 h-60   rounded-sm"
+            className="object-cover w-full   sm:w-96 max-h-60 h-60   rounded-sm"
             alt="article 1 "
           />
         </CardHeader>
 
         <CardContent>
           <Badge className="bg-primary/5 text-primary">Technology</Badge>
-          <CardTitle className="text-secondary-foreground-800">
+          <CardTitle className="text-secondary-foreground-800 dark:text-white">
             The Impact of Technology on the Workplace: How Technology is
             Changing
           </CardTitle>
