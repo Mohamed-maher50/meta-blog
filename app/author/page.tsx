@@ -1,10 +1,13 @@
 import ArticleCard from "@/components/ArticleCard";
 import SocialButton from "@/components/SocialButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { auth } from "@/lib/auth";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import React from "react";
 
-const AuthorPage = () => {
+const AuthorPage = async () => {
+  const user = await auth();
+  console.log(user);
   return (
     <div className="flex py-6 flex-col gap-28">
       <div className=" w-full font-work-sans bg-secondary-50 dark:bg-secondary-700 rounded-md flex justify-center items-center p-12">
@@ -16,7 +19,7 @@ const AuthorPage = () => {
             </Avatar>
             <div>
               <h3 className="font-medium text-xl dark:text-white text-secondary-foreground-800">
-                Jonathan Doe
+                {/* {user.name} */}
               </h3>
               <p className=" dark:text-secondary-foreground-300 text-secondary-foreground-500">
                 Collaborator & Editor

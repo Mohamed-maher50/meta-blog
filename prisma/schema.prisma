@@ -14,7 +14,6 @@ datasource db {
  
 generator client {
   provider = "prisma-client-js"
-  
 
 }
  
@@ -25,11 +24,19 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
- 
+  bio           String?
+  jobTitle           String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  SocialMedia SocialMedia[]
 }
- 
+model  SocialMedia{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  site String
+  url   String
+  userId String @db.ObjectId
+  user  User @relation(fields: [userId],references: [id])
+}
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId

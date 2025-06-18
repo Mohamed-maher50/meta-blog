@@ -48,15 +48,9 @@ export const { auth, handlers, signIn } = NextAuth({
   },
   callbacks: {
     // async signIn(props) {
-    //   console.log(props);
-    //   return false;
-    // },
-    // async jwt({ token, user }) {
-    //   console.log(user);
-    //   token.picture = user.image;
-    //   token.email = user.email;
-    //   token.name = user.name;
-    //   return token;
+    //   // console.log(props);
+    //   // console.log(props.user.);
+    //   return true;
     // },
   },
   secret: process.env.AUTH_SECRET,
