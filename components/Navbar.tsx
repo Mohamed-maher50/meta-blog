@@ -45,9 +45,14 @@ const Navbar = () => {
           <NavigationMenu className="max-md:hidden">
             <NavigationMenuList className="gap-4">
               <NavigationMenuItem>Home</NavigationMenuItem>
-              <NavigationMenuItem>Blog</NavigationMenuItem>
+              <NavigationMenuItem asChild>
+                <Link href={"/settings"}>Settings</Link>
+              </NavigationMenuItem>
               <NavigationMenuItem>Pages</NavigationMenuItem>
-              <NavigationMenuItem>Contact</NavigationMenuItem>
+
+              <NavigationMenuItem asChild>
+                <Link href={"/writeBlog"}>Write Blog</Link>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
           <div className="flex pe-2 justify-center items-center gap-5">
@@ -76,7 +81,7 @@ const Navbar = () => {
                 <DropdownMenuTrigger className="cursor-pointer">
                   <Avatar>
                     <AvatarImage
-                      src={data.user.image || ""}
+                      src={data.user.image?.url || ""}
                       width={20}
                       height={20}
                       className="w-10 h-10 rounded-full"
@@ -90,9 +95,11 @@ const Navbar = () => {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href={"/author"}>Profile</Link>
+                    <Link href={`/author/${data.user.userId}`}>Profile</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={"/settings"}>Settings</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Team</DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>

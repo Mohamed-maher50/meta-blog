@@ -1,3 +1,5 @@
+import { User } from "@prisma/client";
+
 export type TArticle = {
   thumbnail: string;
   title: string;
@@ -8,3 +10,11 @@ export type TArticle = {
   publishedAt: string;
   category: string;
 };
+
+export interface IUserWithImage extends User {
+  image: {
+    url: string;
+    width: number;
+    height: number;
+  };
+}

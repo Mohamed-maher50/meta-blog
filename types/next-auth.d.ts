@@ -6,21 +6,34 @@ declare module "next-auth" {
     user: {
       name?: string | null;
       email?: string | null;
-      image?: string | null;
+      image?: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      userId: string;
     };
   }
 
   interface User {
     id: string;
-
     email: string;
     bio?: string;
     description?: string;
     jopTitle?: string;
-    image: string;
+    image: {
+      url: string;
+      width: number;
+      height: number;
+    };
   }
   interface JWT {
     id: string;
-    role?: string;
+    userId: string;
+    image?: {
+      url: string;
+      width: number;
+      height: number;
+    };
   }
 }

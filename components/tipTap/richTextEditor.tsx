@@ -45,6 +45,8 @@ const CustomCodeBlock = Code.extend({
   },
 });
 const Tiptap = () => {
+  console.log("rendr ");
+
   const editor = useEditor({
     extensions: [
       StarterKit,

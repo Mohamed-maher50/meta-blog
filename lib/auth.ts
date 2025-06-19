@@ -47,11 +47,27 @@ export const { auth, handlers, signIn } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    // async signIn(props) {
-    //   // console.log(props);
-    //   // console.log(props.user.);
-    //   return true;
-    // },
+    async jwt({ token, user }) {
+      if (user)
+        return {
+          ...token,
+          userId: user.id,
+          image: user.image,
+        };
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.userId = token.userId as string;
+        session.user.image = token.image as {
+          url: string;
+          width: number;
+          height: number;
+        };
+        return session;
+      }
+      return session;
+    },
   },
   secret: process.env.AUTH_SECRET,
 });

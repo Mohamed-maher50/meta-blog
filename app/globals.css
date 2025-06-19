@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+/* @plugin "@tailwindcss/line-clamp" */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
