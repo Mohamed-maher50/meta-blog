@@ -7,6 +7,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerDescription,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { IUserWithImage } from "@/types";
@@ -22,11 +23,12 @@ const AuthorProfilePage = async ({
 
   const res = await fetch(`http://localhost:3000/api/profile/${userId}`, {
     method: "GET",
+    cache: "force-cache",
   });
-  const DbUser: { user: IUserWithImage } = await res.json();
+  const DbUser: IUserWithImage = await res.json();
   //   console.log(DbUser);
 
-  if (DbUser.user.bio) {
+  if (DbUser.bio) {
     // DbUser.user.bio = DbUser.user.bio.slice(0, 399);
   }
   return (
@@ -35,26 +37,26 @@ const AuthorProfilePage = async ({
         <div className="flex w-full   justify-center flex-col items-center gap-6 ">
           <div className=" flex  gap-2">
             <Avatar className="w-16 h-16">
-              <AvatarImage src={DbUser.user.image.url} />
+              <AvatarImage src={DbUser.image.url} />
               <AvatarFallback>MM</AvatarFallback>
             </Avatar>
             <div>
               <h3 className="font-medium text-xl dark:text-white text-secondary-foreground-800">
-                {DbUser.user.name || "Jonathan Doe"}
+                {DbUser.name || "Jonathan Doe"}
               </h3>
               <p className=" capitalize dark:text-secondary-foreground-300 text-secondary-foreground-500">
-                {DbUser.user.jobTitle || "Software Engineer"}
+                {DbUser.jobTitle || "Software Engineer"}
               </p>
             </div>
           </div>
           <p className=" text-justify max-md:text-center max-md:text-sm  max-md:line-clamp-6  line-clamp-4  text-secondary-foreground-600 dark:text-secondary-foreground-300 text-lg font-normal">
-            {DbUser.user.bio}
+            {DbUser.bio}
           </p>
 
           <Drawer>
             <DrawerTrigger asChild>
               <Button
-                hidden={DbUser.user && (DbUser.user.bio?.length ?? 0) < 300}
+                hidden={(DbUser.bio?.length ?? 0) < 300}
                 variant={"outline"}
                 className=""
               >
@@ -63,8 +65,9 @@ const AuthorProfilePage = async ({
             </DrawerTrigger>
             <DrawerContent className="">
               <Container>
+                <DrawerTitle>Bio</DrawerTitle>
                 <DrawerDescription className="text-lg py-6">
-                  {DbUser.user.bio}
+                  {DbUser.bio}
                 </DrawerDescription>
               </Container>
             </DrawerContent>

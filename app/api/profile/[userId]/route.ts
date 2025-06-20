@@ -15,7 +15,7 @@ export const GET = async (
     if (user) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...userWithoutPassword } = user;
-      return Response.json({ user: userWithoutPassword }, { status: 200 });
+      return Response.json(userWithoutPassword, { status: 200 });
     }
 
     return Response.json(user, { status: 200 });

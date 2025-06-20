@@ -6,7 +6,18 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "next-themes";
 import { Sidebar, SidebarProvider } from "@/components/ui/sidebar";
 import { SessionProvider } from "next-auth/react";
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
+import {
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 const Wark_sans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin"],
@@ -47,22 +58,12 @@ export default async function RootLayout({
               {children}
             </ThemeProvider>
           </SidebarProvider>
+          <Toaster richColors />
         </body>
       </html>
     </SessionProvider>
   );
 }
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
-import {
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
 
 // Menu items.
 const items = [

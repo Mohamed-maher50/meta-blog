@@ -5,8 +5,8 @@ import { Input } from "./ui/input";
 interface UploadAvatarInputProps
   extends Omit<ComponentProps<"input">, "onChange" | "value"> {
   avatarPlaceholder: string;
-  onChange?: (file: FileList | null) => void;
-  url: string;
+  onChange?: (file: File) => void;
+  url: string | undefined;
 }
 const UploadAvatarInput = ({
   onChange,
@@ -16,7 +16,7 @@ const UploadAvatarInput = ({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // If the input is canceled  and a file is already set, do nothing
     if (props.url && !e.target.files?.length) return;
-    if (onChange && e.target?.files) onChange(e.target.files);
+    if (onChange && e.target?.files) onChange(e.target.files[0]);
     return null;
   };
 

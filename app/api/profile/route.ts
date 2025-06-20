@@ -1,56 +1,52 @@
-import cloudinary from "@/lib/cloudinary";
+import { AVATAR_IMAGE_TRANSFORMATION } from "@/constants/cloudinary/AvatarImageUpload";
+import { UploadFile } from "@/lib/cloudinary/uploadFile";
 import { prisma } from "@/prisma";
-import { UploadApiResponse } from "cloudinary";
-
+import { updateSettingsValuesSchema } from "@/schema/UpdateSettingsSchema";
+type availableUpdateFields = {
+  image: {
+    width: number;
+    height: number;
+    url: string;
+  };
+  bio: string;
+  name: string;
+  jobTitle: string;
+};
 export const POST = async (req: Request) => {
+  const updatedValues: Record<string, FormDataEntryValue> = {};
   const data = await req.formData();
 
-  const image = data.get("image") as File | null;
-  const name = data.get("name") as string;
-  const bio = data.get("bio") as string;
-  const jobTitle = data.get("jobTitle") as string;
+  let image: File | null = null;
+  data.forEach((value, key) => {
+    if (typeof value == "string") updatedValues[key] = value;
+    else if (value instanceof File) image = value;
+  });
+  const validationResult = updateSettingsValuesSchema.safeParse(updatedValues);
+  if (!validationResult.success) {
+    return Response.json(validationResult.error.format(), { status: 400 });
+  }
   try {
-    let result: UploadApiResponse | undefined = undefined;
+    let updateUserValues: Partial<availableUpdateFields> = {};
     if (image) {
-      result = await new Promise(async (resolve, reject) => {
-        const buffer = Buffer.from(await image.arrayBuffer());
-        cloudinary.uploader
-          .upload_stream(
-            {
-              folder: "profiles",
-              public_id: name || undefined,
-              overwrite: true,
-              format: "webp",
-              transformation: {
-                width: 96,
-                height: 96,
-                crop: "fill",
-                quality: "auto",
-                gravity: "face",
-              },
-            },
-            (error, result) => {
-              if (error) return reject(error);
-              return resolve(result);
-            }
-          )
-          .end(buffer);
-      });
+      AVATAR_IMAGE_TRANSFORMATION.public_id = `user_picture_${updatedValues.userId}`;
+      const uploadImageResult = await UploadFile(
+        image,
+        AVATAR_IMAGE_TRANSFORMATION
+      );
+      updateUserValues.image = {
+        height: 96,
+        width: 96,
+        url: uploadImageResult.secure_url,
+      };
     }
+    delete updatedValues.userId;
+    updateUserValues = { ...updateUserValues, ...updatedValues };
+
     const updatedUser = await prisma.user.update({
       where: {
         id: data.get("userId") as string,
       },
-      data: {
-        name: name || undefined,
-        bio: bio || undefined,
-        image: {
-          width: 96,
-          height: 96,
-          url: result?.secure_url || undefined,
-        },
-        jobTitle: jobTitle || undefined,
-      },
+      data: updateUserValues,
       select: {
         id: true,
         name: true,
