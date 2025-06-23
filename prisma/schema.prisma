@@ -22,13 +22,19 @@ model User {
   name          String
   email         String         @unique
   emailVerified DateTime?
-  image         Json?
+  image         UserImage?
   password      String?
   bio           String?
   jobTitle           String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   SocialMedia SocialMedia[]
+  Blog Blog[]
+}
+type UserImage {
+  width Int
+  height Int
+  url   String
 }
 model  SocialMedia{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -54,4 +60,42 @@ model Account {
 }
  
 
+
+model Blog {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content   Json
+  categoryId  String @db.ObjectId
+  title   String
+  cover Cover
+  images EagerImage[]
+  authorId String  @db.ObjectId
+  author User @relation(fields: [authorId],references: [id])
+  createdAt DateTime @default(now())
+  category Categories @relation(fields: [categoryId],references: [id])
+}
+model Categories {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  createdAt DateTime @default(now()) 
+  Blog Blog[]
+}
+type Cover {
+  public_id String
+  width  Int
+  format Format
+  height Int
+  created_at String
+}
+type EagerImage {
+  status String
+  batch_id String
+  url String
+  secure_url String
+  type String
+}
+enum Format {
+  jpg
+  png
+  webp
+}
 
