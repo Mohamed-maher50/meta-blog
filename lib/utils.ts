@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
+import { UploadApiResponse } from "cloudinary";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -44,4 +45,25 @@ export async function hashPassword(password: string) {
 export async function verifyHashed(password: string, hashed: string) {
   const verificationStatus = await bcrypt.compare(password, hashed);
   return verificationStatus;
+}
+/**
+ * Converts an UploadApiResponse object to a standardized cover format object.
+ *
+ * @param uploadCoverResult - The response object from the upload API containing cover image details.
+ * @returns An object containing the public ID, width, height, format (as "jpg", "png", or "webp"), and the current creation timestamp in ISO format.
+ */
+export const convertToCoverFormat = (uploadCoverResult: UploadApiResponse) => ({
+  public_id: uploadCoverResult.public_id,
+  width: uploadCoverResult.width,
+  height: uploadCoverResult.height,
+  format: uploadCoverResult.format.toLowerCase() as "jpg" | "png" | "webp",
+  created_at: new Date().toISOString(),
+});
+
+export class ExtendingError extends Error {
+  constructor(message: string, public name = "Internal Server Error") {
+    super(message);
+    this.message = message;
+    this.name = status;
+  }
 }
