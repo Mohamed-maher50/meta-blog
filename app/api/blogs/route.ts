@@ -44,13 +44,22 @@ export const POST = async (req: Request) => {
         };
       }
     );
+    const category = await prisma.categories.upsert({
+      where: {
+        name: rowData.category,
+      },
+      create: {
+        name: rowData.category,
+      },
+      update: {},
+    });
 
     const cover = convertToCoverFormat.call(null, uploadCoverResult);
     const blog = await prisma.blog.create({
       data: {
         content: rowData.content as InputJsonObject,
         authorId: rowData.userId,
-        category: rowData.category,
+        categoryId: category.id,
         title: rowData.title,
         images: responsiveImage,
         cover,
@@ -67,17 +76,24 @@ export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
   const extractedFields = extractFields(searchParams);
   const paginationResult = pagination(searchParams);
-  const blogs = await prisma.blog.findMany({
-    include: {
-      author: {
-        omit: {
-          bio: true,
-          password: true,
+  try {
+    const blogs = await prisma.blog.findMany({
+      include: {
+        category: true,
+        author: {
+          omit: {
+            bio: true,
+            password: true,
+            createdAt: true,
+          },
         },
       },
-    },
-    omit: extractedFields,
-    ...paginationResult,
-  });
-  return Response.json(blogs);
+      omit: extractedFields,
+      ...paginationResult,
+    });
+    return Response.json(blogs);
+  } catch (error) {
+    console.log(error);
+    return Response.json(error);
+  }
 };
