@@ -1,16 +1,23 @@
-import { User } from "@prisma/client";
+import { Blog, Format, User } from "@prisma/client";
 
 export type TArticle = {
-  thumbnail: string;
-  title: string;
-  author: {
-    picture: string;
-    name: string;
+  cover: {
+    public_id: string;
+    width: number;
+    format: Format;
+    height: number;
+    created_at: string;
   };
-  publishedAt: string;
-  category: string;
-};
+  title: string;
+  content: JSONContent;
 
+  category: Category;
+  author?: User;
+};
+export interface AuthorBlog extends Blog {
+  author: User;
+  category: Category;
+}
 export interface IUserWithImage extends User {
   image: {
     url: string;
