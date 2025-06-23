@@ -20,7 +20,7 @@ import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image } from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -30,11 +30,52 @@ import BulletList from "@tiptap/extension-bullet-list";
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/Combobox";
+import debounce from "debounce";
+import { Categories } from "@prisma/client";
+
 const WriteBlog = () => {
   const form = useForm<createBlogSchemaTypes>({
     resolver: zodResolver(createBlogSchema),
   });
   const session = useSession();
+  const [categories, setCategories] = useState<Categories[]>([]);
+
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const comboboxCategories = useMemo(() => {
+    return categories.map((c) => {
+      return {
+        label: c.name,
+        value: c.id,
+      };
+    });
+  }, [categories]);
+
+  useEffect(() => {
+    setCategoriesLoading(true);
+    (async () => {
+      const res = await fetch(`http://localhost:3000/api/categories`);
+      if (!res.ok) return;
+      const categories: Categories[] = await res.json();
+      setCategories(categories);
+    })();
+    setCategoriesLoading(false);
+  }, []);
+  const getCategories = async (v: string) => {
+    setCategoriesLoading(true);
+    const res = await fetch(`http://localhost:3000/api/categories?q=${v}`);
+    if (!res.ok) return;
+    const categories: Categories[] = await res.json();
+    // const filteredCategories = categories.filter(
+    //   (c) => !categoriesSet.has(c.id)
+    // );
+    console.log(categories);
+
+    setCategories(categories);
+    setCategoriesLoading(false);
+  };
+
+  const debounceGetCategories = debounce(getCategories, 500);
 
   const editor = useEditor({
     extensions: [
@@ -181,9 +222,10 @@ const WriteBlog = () => {
         userId: session.data?.user.userId,
       })
     );
-    const { data } = await axios.post("/api/blogs", formData);
-    console.log(data);
+    console.log(form.getValues("category"));
+    // const { data } = await axios.post("/api/blogs", formData);
   };
+  console.log(comboboxCategories);
   return (
     <div className="overflow-hidden">
       <Form {...form}>
@@ -198,10 +240,28 @@ const WriteBlog = () => {
               name="category"
               render={({ field }) => {
                 return (
-                  <FormItem className="grow">
+                  <FormItem className="">
                     <FormLabel>category</FormLabel>
                     <FormControl>
-                      <Input className="" placeholder="category" {...field} />
+                      <Combobox
+                        options={comboboxCategories}
+                        onChange={(op) => {
+                          field.onChange(op.value);
+                          form.setValue("category", op.value, {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          });
+
+                          // if user select that is mean he find category
+                          // stop search Category
+                          debounceGetCategories.clear();
+                          if (categoriesLoading) setCategoriesLoading(false);
+                        }}
+                        isLoading={categoriesLoading}
+                        onValueChange={debounceGetCategories}
+                      />
+
+                      {/* <Input className="" placeholder="category" {...field} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
