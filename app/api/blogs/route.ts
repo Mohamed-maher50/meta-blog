@@ -1,6 +1,7 @@
 import { imageTypesOrder } from "@/constants/api/imageTypesOrder";
 import { UPLOAD_COVER_IMAGE } from "@/constants/cloudinary/UploadCoverImage";
 import { extractFields } from "@/lib/api/extractFields";
+import filtrationQuery from "@/lib/api/Filtration";
 import pagination from "@/lib/api/pagination";
 import { UploadFile } from "@/lib/cloudinary/uploadFile";
 import { convertToCoverFormat } from "@/lib/utils";
@@ -51,7 +52,11 @@ export const POST = async (req: Request) => {
       create: {
         name: rowData.category,
       },
-      update: {},
+      update: {
+        topPosition: {
+          increment: 1,
+        },
+      },
     });
 
     const cover = convertToCoverFormat.call(null, uploadCoverResult);
@@ -72,12 +77,30 @@ export const POST = async (req: Request) => {
   }
 };
 
+const availableFields = ["authorId", "categoryId"];
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
   const extractedFields = extractFields(searchParams);
   const paginationResult = pagination(searchParams);
+
+  const filtration = filtrationQuery<typeof availableFields>(
+    searchParams,
+    availableFields
+  );
+  const customFiltration = { ...filtration, title: {} };
+  if (searchParams.get("q")) {
+    customFiltration["title"] = {
+      title: {
+        contains: searchParams.get("q"),
+        mode: "insensitive",
+      },
+    };
+  }
   try {
     const blogs = await prisma.blog.findMany({
+      where: {
+        ...filtration,
+      },
       include: {
         category: true,
         author: {
