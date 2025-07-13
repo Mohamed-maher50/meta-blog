@@ -1,5 +1,5 @@
 "use client";
-import React, { memo } from "react";
+import React, { memo, useRef } from "react";
 import Container from "./Container";
 import Logo from "./Logo";
 import {
@@ -24,6 +24,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
+import debounce from "debounce";
 const Switch = dynamic(() => import("./ui/switch").then((mod) => mod.Switch), {
   ssr: false,
   loading: () => null,
@@ -31,10 +33,24 @@ const Switch = dynamic(() => import("./ui/switch").then((mod) => mod.Switch), {
 
 const Navbar = () => {
   const { data, status } = useSession();
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { setTheme, theme } = useTheme();
   const { toggleSidebar } = useSidebar();
+  const searchInput = useRef<HTMLInputElement | null>(null);
   const isDark = theme === "dark";
+  const handleSearchInput = () => {
+    if (!searchInput.current) return;
+    const url = new URLSearchParams(searchParams);
+    if (url.get("q")) url.set("q", searchInput.current.value);
+    else url.append("q", searchInput.current.value);
+    if (!searchInput.current?.value) url.delete("q");
+    debounceRoute(`/blogs/search?${url.toString()}`);
+  };
+  const debounceRoute = debounce((url: string) => {
+    router.push(url);
+  }, 300);
+
   return (
     <nav className="py-8 overflow-hidden">
       <Container>
@@ -63,7 +79,11 @@ const Navbar = () => {
             )}
 
             <div className="max-md:hidden">
-              <SearchInput />
+              <SearchInput
+                ref={searchInput}
+                defaultValue={searchParams.get("q") as string}
+                onChange={handleSearchInput}
+              />
             </div>
             <Switch
               checked={isDark}
