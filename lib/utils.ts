@@ -64,6 +64,6 @@ export class ExtendingError extends Error {
   constructor(message: string, public name = "Internal Server Error") {
     super(message);
     this.message = message;
-    this.name = status;
+    this.name = name;
   }
 }
