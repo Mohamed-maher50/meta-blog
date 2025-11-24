@@ -14,6 +14,7 @@ import NoComments from "@/components/comments/NoComments";
 import CommentCard from "./CommentCard";
 import { GetComments } from "@/lib/api/comments";
 import { formatCompactNumber } from "@/lib/utils";
+
 interface BlogCommentsProps {
   blogId: string;
   blog: Blog;

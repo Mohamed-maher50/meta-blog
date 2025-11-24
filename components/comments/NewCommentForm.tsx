@@ -22,6 +22,7 @@ import {
 } from "@/schema/Comments";
 import { CommentWithAuthor } from "@/types";
 import { Blog, NotificationType } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 interface NewCommentFormProps {
   blogId: string;
@@ -35,6 +36,8 @@ export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
       content: "",
     },
   });
+  const { status } = useSession();
+
   const queryClient = useQueryClient();
   const onSubmit = async (values: createCommentsSchemaTypes) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -89,7 +92,9 @@ export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
             <Button
               type="submit"
               size="sm"
-              disabled={form.formState.isSubmitting}
+              disabled={
+                form.formState.isSubmitting || status !== "authenticated"
+              }
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <Send className="h-4 w-4 mr-1" />

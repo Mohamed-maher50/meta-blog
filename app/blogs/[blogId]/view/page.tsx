@@ -4,7 +4,6 @@ import Container from "@/components/utils/Container";
 import { Badge } from "@/components/ui/badge";
 import UpdateBlogView from "@/components/utils/UpdateBlogView";
 import UserBlogNav from "@/components/UserBlogNav";
-import { ExtendingError } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { Join } from "@/types";
 import { Blog, User } from "@prisma/client";

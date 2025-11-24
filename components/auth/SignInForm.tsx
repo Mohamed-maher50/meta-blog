@@ -39,40 +39,39 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
     toast.promise(
       signIn("credentials", {
         ...values,
-        redirect: false,
       }),
       {
         loading: "please wait...",
-        success: (res) => {
-          if (res.error == "verificationError") {
-            // toast.warning(
-            //   <div>
-            //     Verification required.{" "}
-            //     <Button
-            //       variant="link"
-            //       className="p-0 h-auto text-primary  align-baseline"
-            //       onClick={async () => {
-            //         toast.promise(resend.emails.send({
-            //           from:"maher",
-            //           to:values.email,
-            //           subject:"verification link",
-            //           html:`<a href="${}"></a>`
-            //         }), {
-            //           loading: "verification message creating...",
-            //           success: "sended successful",
-            //           error: "something wrong",
-            //         });
-            //       }}
-            //     >
-            //       Send Verification link
-            //     </Button>
-            //   </div>
-            // );
-            return null;
-          }
-          if (res.error) throw new Error(res.error);
-          return "Successfully submitted";
-        },
+        // success: (res) => {
+        //   if (res.error == "verificationError") {
+        //     // toast.warning(
+        //     //   <div>
+        //     //     Verification required.{" "}
+        //     //     <Button
+        //     //       variant="link"
+        //     //       className="p-0 h-auto text-primary  align-baseline"
+        //     //       onClick={async () => {
+        //     //         toast.promise(resend.emails.send({
+        //     //           from:"maher",
+        //     //           to:values.email,
+        //     //           subject:"verification link",
+        //     //           html:`<a href="${}"></a>`
+        //     //         }), {
+        //     //           loading: "verification message creating...",
+        //     //           success: "sended successful",
+        //     //           error: "something wrong",
+        //     //         });
+        //     //       }}
+        //     //     >
+        //     //       Send Verification link
+        //     //     </Button>
+        //     //   </div>
+        //     // );
+        //     return null;
+        //   }
+        //   if (res.error) throw new Error(res.error);
+        //   return "Successfully submitted";
+        // },
         error: (result) => {
           const message = authErrorMessages(result.message);
           return message;
