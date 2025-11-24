@@ -1,103 +1,136 @@
-import ArticleCard from "@/components/ArticleCard";
-import Container from "@/components/Container";
-import SocialButton from "@/components/SocialButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Suspense } from "react";
+import { ProfileHeader } from "@/components/users/profile-header";
+import { BlogCardProps, UserInfo } from "@/types";
+import TopicsFetcher from "@/app/topics/TopicsFetcher";
+import { notFound } from "next/navigation";
+import DisplayChunk from "@/components/utils/DisplayChunk";
+import { GetBlogs } from "@/lib/blogs";
+import { FileText, Tags } from "lucide-react";
+import { GetUserById } from "@/lib/Users";
+import { auth } from "@/lib/auth";
+import ProfileInfinityBlogsSection from "@/components/Hocs/ProfileInfinityBlogsSection";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { IUserWithImage } from "@/types";
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-import React from "react";
+import Link from "next/link";
+import WithInfinityTopics from "@/components/Hocs/withInfinityTopics";
+import { GridTopicSkeleton } from "@/components/topics/GridTopicSkeleton";
+import { GridBlogSkeletons } from "@/components/blogs/GridBlogsSkeletons";
+import { RiBookShelfLine } from "@remixicon/react";
+import RichBlogCard from "@/components/blogs/RichBlogCard";
+import { headers } from "next/headers";
 
-const AuthorProfilePage = async ({
+export default async function ProfilePage({
   params,
 }: {
-  params: Promise<{ userId: string }>;
-}) => {
+  params: Promise<{ userId?: string }>;
+}) {
   const { userId } = await params;
+  const session = await auth();
+  if (!userId) notFound();
+  const user = await GetUserById<UserInfo & { isFollowing: boolean }>(
+    userId,
+    ``,
+    { cache: "no-store" }
+  );
+  if (!user) notFound();
 
-  const res = await fetch(`http://localhost:3000/api/profile/${userId}`, {
-    method: "GET",
-    cache: "force-cache",
-  });
-  const DbUser: IUserWithImage = await res.json();
-  //   console.log(DbUser);
-
-  if (DbUser.bio) {
-    // DbUser.user.bio = DbUser.user.bio.slice(0, 399);
-  }
+  const isOwnProfile = session?.user.userId === user.id;
   return (
-    <div className="flex py-6 flex-col gap-28">
-      <div className=" w-full font-work-sans bg-secondary-50 dark:bg-secondary-700 rounded-md flex justify-center items-center p-12">
-        <div className="flex w-full   justify-center flex-col items-center gap-6 ">
-          <div className=" flex  gap-2">
-            <Avatar className="w-16 h-16">
-              <AvatarImage src={DbUser.image.url} />
-              <AvatarFallback>MM</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="font-medium text-xl dark:text-white text-secondary-foreground-800">
-                {DbUser.name || "Jonathan Doe"}
-              </h3>
-              <p className=" capitalize dark:text-secondary-foreground-300 text-secondary-foreground-500">
-                {DbUser.jobTitle || "Software Engineer"}
-              </p>
-            </div>
-          </div>
-          <p className=" text-justify max-md:text-center max-md:text-sm  max-md:line-clamp-6  line-clamp-4  text-secondary-foreground-600 dark:text-secondary-foreground-300 text-lg font-normal">
-            {DbUser.bio}
-          </p>
+    <div className="max-w-5xl  mx-auto space-y-12">
+      <ProfileHeader user={user} isOwnProfile={isOwnProfile} />
 
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button
-                hidden={(DbUser.bio?.length ?? 0) < 300}
-                variant={"outline"}
-                className=""
-              >
-                see more
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className="">
-              <Container>
-                <DrawerTitle>Bio</DrawerTitle>
-                <DrawerDescription className="text-lg py-6">
-                  {DbUser.bio}
-                </DrawerDescription>
-              </Container>
-            </DrawerContent>
-          </Drawer>
-          <div className="flex gap-2">
-            <SocialButton link="" Icon={<Facebook />} />
-            <SocialButton link="" Icon={<Instagram />} />
-            <SocialButton link="" Icon={<Twitter />} />
-            <SocialButton link="" Icon={<Youtube />} />
+      {/* Blog Posts Section */}
+      <section className="space-y-6">
+        <div className="flex justify-between">
+          <div>
+            <h2 className="text-3xl flex gap-2 items-center font-bold mb-2">
+              <RiBookShelfLine className="fill-primary" />
+              Blogs
+            </h2>
+            <p className="text-muted-foreground">
+              Articles and thoughts on web development
+            </p>
           </div>
+          {isOwnProfile && (
+            <Button
+              className="self-end "
+              aria-label="Start your next masterpiece"
+            >
+              <Link href={`/blogs/new`} className="capitalize">
+                ✨<span className="max-sm:hidden">Write a</span> new story
+              </Link>
+            </Button>
+          )}
         </div>
-      </div>
-      <div className="grid grid-cols-3 gap-5">
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-      </div>
+        <div className="space-y-4">
+          <Suspense fallback={<GridBlogSkeletons />}>
+            <DisplayChunk
+              fetcher={async () => {
+                const { data } = await GetBlogs<BlogCardProps>(
+                  `authorId=${userId}`,
+                  {
+                    headers: await headers(),
+                  }
+                );
+                return data;
+              }}
+              errorMessage={() => {
+                return (
+                  <div className="flex  flex-col  items-center justify-center py-12 px-6 text-center">
+                    <div className="mb-4  rounded-sm bg-secondary p-4">
+                      <FileText className="h-8 w-8 " />
+                    </div>
+
+                    <p className="text-secondary-foreground-500 max-w-md">
+                      No articles have been published by this user yet. Once
+                      they start sharing their insights, tutorials, or stories,
+                      you’ll find them listed here. Check back soon to discover
+                      new posts, or explore other authors and topics in the
+                      meantime!
+                    </p>
+                  </div>
+                );
+              }}
+              render={(d) => {
+                return (
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {d.map((e) => {
+                      return (
+                        <RichBlogCard {...e} key={e.id} Editable Deletable />
+                      );
+                    })}
+                    <ProfileInfinityBlogsSection
+                      query={`userId=${user.id}`}
+                      withHeader={true}
+                    />
+                  </div>
+                );
+              }}
+            />
+          </Suspense>
+        </div>
+      </section>
+
+      {/* Topics Section */}
+      <section className="space-y-6">
+        <div>
+          <h2 className="text-3xl flex gap-2 items-center font-bold mb-2">
+            <Tags className="fill-primary" />
+            Topics
+          </h2>
+          <p className="text-muted-foreground">
+            Areas of interest and expertise
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Suspense fallback={<GridTopicSkeleton />}>
+            <TopicsFetcher
+              userId={userId}
+              query={"omit[]=userId&omit[]=user&omit[]=topicId&page=1&limit=10"}
+            />
+          </Suspense>
+          <WithInfinityTopics query={`userId=${userId}`} userId={userId} />
+        </div>
+      </section>
     </div>
   );
-};
-
-export default AuthorProfilePage;
+}

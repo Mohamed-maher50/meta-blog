@@ -1,122 +1,142 @@
-import { imageTypesOrder } from "@/constants/api/imageTypesOrder";
-import { UPLOAD_COVER_IMAGE } from "@/constants/cloudinary/UploadCoverImage";
-import { extractFields } from "@/lib/api/extractFields";
-import filtrationQuery from "@/lib/api/Filtration";
-import pagination from "@/lib/api/pagination";
-import { UploadFile } from "@/lib/cloudinary/uploadFile";
-import { convertToCoverFormat } from "@/lib/utils";
+import { ApiFutures, requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
-import { blogPostSchemaApi } from "@/schema/blogPostSchemaApi";
-import { EagerImage } from "@prisma/client";
-import { InputJsonObject } from "@prisma/client/runtime/library";
-import { UploadApiResponse } from "cloudinary";
+import { createBlogSchema } from "@/schema/createBlogSchema";
+
+import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
-type rowDataType = {
-  content: { type: string; content: unknown[] };
-  title: string;
-  category: string;
-  userId: string;
-  cover: File;
-};
+import {
+  BLOGS_FILTRATION_FIELDS,
+  BLOGS_SORT_FIELDS,
+  PRISMA_USER_INFO_FIELDS_SELECT,
+} from "../constants";
+import { Format } from "@prisma/client";
+import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 
 export const POST = async (req: Request) => {
   try {
-    const formData = await req.formData();
-    const content = formData.get("body");
+    const body = await req.json();
 
-    const rowData: rowDataType = {
-      cover: formData.get("cover") as File,
-      ...(typeof content === "string" && JSON.parse(content)),
+    const result = createBlogSchema.parse(body);
+    const token = await requireAuth(req);
+
+    const { cover, topics, ...blogValues } = result;
+    const formattedCover = {
+      format: Format.webp,
+      width: 800,
+      height: 450,
+      public_id: cover?.public_id ?? "",
+      created_at: new Date().toString(),
+      src: cover?.src ?? "",
     };
-
-    const result = await blogPostSchemaApi.safeParseAsync(rowData);
-    if (!result.success) Response.json(result.error.format(), { status: 400 });
-
-    const uploadCoverResult: UploadApiResponse = await UploadFile(
-      rowData.cover,
-      UPLOAD_COVER_IMAGE
-    );
-
-    const responsiveImage = uploadCoverResult.eager.map(
-      (img: EagerImage, idx: number) => {
-        return {
-          ...img,
-          type: imageTypesOrder[idx],
-        };
-      }
-    );
-    const category = await prisma.categories.upsert({
-      where: {
-        name: rowData.category,
-      },
-      create: {
-        name: rowData.category,
-      },
-      update: {
-        topPosition: {
-          increment: 1,
+    const UserBlog = await prisma.$transaction(async (tx) => {
+      const createBlog = await tx.blog.create({
+        data: {
+          cover: formattedCover,
+          authorId: token.userId,
+          content: result.content,
+          ...blogValues,
         },
-      },
+      });
+      await tx.blogTopics.createMany({
+        data: topics.map((t) => ({
+          blogId: createBlog.id,
+          topicId: t.value,
+        })),
+      });
+      const topicsIds = topics.map((t) => t.value);
+      await tx.topics.updateMany({
+        where: {
+          id: {
+            in: topicsIds,
+          },
+        },
+        data: {
+          numberOfFollowers: {
+            increment: 1,
+          },
+        },
+      });
+      return createBlog;
     });
-
-    const cover = convertToCoverFormat.call(null, uploadCoverResult);
-    const blog = await prisma.blog.create({
-      data: {
-        content: rowData.content as InputJsonObject,
-        authorId: rowData.userId,
-        categoryId: category.id,
-        title: rowData.title,
-        images: responsiveImage,
-        cover,
-      },
-    });
-    console.log(blog);
-    return Response.json(uploadCoverResult);
+    return Response.json(UserBlog, { status: 201 });
   } catch (error) {
-    return Response.json(error);
+    return Response.json(...ErrorHandler(error, false));
   }
 };
 
-const availableFields = ["authorId", "categoryId"];
 export const GET = async (req: NextRequest) => {
-  const searchParams = req.nextUrl.searchParams;
-  const extractedFields = extractFields(searchParams);
-  const paginationResult = pagination(searchParams);
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  const filtration = filtrationQuery<typeof availableFields>(
-    searchParams,
-    availableFields
-  );
-  const customFiltration = { ...filtration, title: {} };
-  if (searchParams.get("q")) {
-    customFiltration["title"] = {
-      title: {
-        contains: searchParams.get("q"),
-        mode: "insensitive",
-      },
-    };
-  }
-  try {
-    const blogs = await prisma.blog.findMany({
-      where: {
-        ...filtration,
-      },
-      include: {
-        category: true,
-        author: {
-          omit: {
-            bio: true,
-            password: true,
-            createdAt: true,
+  const ApiFuture = new ApiFutures(req)
+    .search()
+    .filter(BLOGS_FILTRATION_FIELDS, ({ searchParams }) => {
+      if (!searchParams.get("topicId")) return null;
+      return {
+        BlogTopics: {
+          some: {
+            topicId: searchParams.get("topicId") || null,
           },
         },
+      };
+    })
+    .extractFields([])
+    .sortBy(BLOGS_SORT_FIELDS)
+    .paginateQuery();
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { omit, include, take, skip, ...CountQuery } = ApiFuture.Query;
+    const numberOfDocuments = await prisma.blog.count(CountQuery);
+    const pagination = ApiFuture.paginate(numberOfDocuments);
+
+    ApiFuture.Query.include = {
+      favorites: {
+        where: {
+          userId: token?.userId,
+        },
+        select: {
+          userId: true,
+        },
       },
-      omit: extractedFields,
-      ...paginationResult,
+      BlogLike: {
+        where: {
+          userId: token?.userId,
+        },
+        select: {
+          userId: true,
+        },
+      },
+      _count: {
+        select: {
+          BlogLike: true,
+          Comment: true,
+        },
+      },
+      BlogTopics: {
+        include: {
+          topic: true,
+        },
+        omit: {
+          blogId: true,
+          topicId: true,
+        },
+      },
+
+      author: {
+        select: PRISMA_USER_INFO_FIELDS_SELECT,
+      },
+    };
+
+    const blogs = await prisma.blog.findMany(ApiFuture.Query);
+    return Response.json({
+      success: true,
+      data: blogs,
+      pagination,
+      timestamp: new Date().toISOString(),
     });
-    return Response.json(blogs);
   } catch (error) {
-    console.log(error);
-    return Response.json(error);
+    return Response.json(...ErrorHandler(error, false));
   }
 };

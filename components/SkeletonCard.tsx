@@ -4,9 +4,9 @@ import { Skeleton } from "./ui/skeleton";
 
 const SkeletonCard = () => {
   return (
-    <Card className="h-full ">
+    <Card className="">
       <CardHeader className="p-4">
-        <Skeleton className="w-full  mx-auto  sm:w-96 max-h-60 h-64   rounded-sm" />
+        <Skeleton className="w-full   overflow-hidden mx-auto    h-64   rounded-sm" />
       </CardHeader>
 
       <CardContent>

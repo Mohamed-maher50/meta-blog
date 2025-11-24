@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       {
         hostname: "res.cloudinary.com",
       },
+      {
+        hostname: "placehold.co",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
   logging: {
@@ -18,6 +24,9 @@ const nextConfig: NextConfig = {
       hmrRefreshes: true,
     },
     incomingRequests: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

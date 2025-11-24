@@ -25,9 +25,9 @@ const UploadAvatarInput = ({
       <label
         htmlFor="avatarInputFile"
         role="button"
-        className="flex cursor-pointer  gap-2"
+        className="flex cursor-pointer "
       >
-        <Avatar className="size-24 ">
+        <Avatar className="size-24 w-20 h-20 hover:ring-2 ring-primary border-2 border-secondary-900 duration-300 ">
           <AvatarImage width={96} height={96} src={props.url} />
           <AvatarFallback>{avatarPlaceholder.toUpperCase()}</AvatarFallback>
         </Avatar>
