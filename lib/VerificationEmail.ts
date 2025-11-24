@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { resend } from "./SendEmail";
 import { prisma } from "@/prisma";
+import { baseUrl } from "./baseUrl";
 const findTokenByEmail = async (email: string) => {
   return await prisma.verificationTokens.findUnique({
     where: {
@@ -30,7 +31,7 @@ export const sendVerificationEmail = async ({
   email: string;
   token: string;
 }) => {
-  const confirmLink = `http://localhost:3000/auth/new-verification?token=${token}`;
+  const confirmLink = `${baseUrl}/auth/new-verification?token=${token}`;
   return resend.emails.send({
     from: "onboarding@resend.dev",
     to: "mohamedmaher.mm330@gmail.com",

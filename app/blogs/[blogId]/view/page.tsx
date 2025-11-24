@@ -12,12 +12,13 @@ import { prisma } from "@/prisma";
 import { JSONContent } from "novel";
 import React from "react";
 import { AppError } from "@/lib/GlobalErrorHandler";
+import { baseUrl } from "@/lib/baseUrl";
 type IAuthorBlog = Join<Blog, User, "author">;
 type UserWithBlogs = Join<Blog, string[], "BlogLike">;
 type BlogPageResponse = IAuthorBlog & UserWithBlogs;
 const page = async ({ params }: { params: Promise<{ blogId: string }> }) => {
   const { blogId } = await params;
-  const res = await fetch(`http://localhost:3000/api/blogs/${blogId}`, {
+  const res = await fetch(`${baseUrl}/api/blogs/${blogId}`, {
     headers: await headers(),
   });
 

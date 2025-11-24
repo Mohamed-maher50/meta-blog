@@ -5,12 +5,13 @@ import { Topics } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 import InfinityTopicsSection from "./InfinityTopicsSection";
+import { baseUrl } from "@/lib/baseUrl";
 
 const getTopics = async (
   query: string,
   init?: RequestInit
 ): Promise<ResponseSuccess<Topics[]>> => {
-  const res = await fetch(`http://localhost:3000/api/topics?${query}`, init);
+  const res = await fetch(`${baseUrl}/api/topics?${query}`, init);
   if (!res.ok) throw new Error(`can't fetch topics`);
   return await res.json();
 };

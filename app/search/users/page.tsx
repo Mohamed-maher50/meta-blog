@@ -4,13 +4,14 @@ import { ResponseSuccess, UserInfo } from "@/types";
 import { headers } from "next/headers";
 import React from "react";
 import WithUsers from "./WithUsers";
+import { baseUrl } from "@/lib/baseUrl";
 
 const LIMIT_ITEMS = 10;
 const getUsers = async (
   query: string,
   init?: RequestInit
 ): Promise<ResponseSuccess<(UserInfo & { isFollowing: boolean })[]>> => {
-  const res = await fetch(`http://localhost:3000/api/users?${query}`, {
+  const res = await fetch(`${baseUrl}/api/users?${query}`, {
     ...init,
   });
   if (!res.ok) throw new Error(`can't fetch users`);

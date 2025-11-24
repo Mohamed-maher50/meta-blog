@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { useSession } from "next-auth/react";
+import { baseUrl } from "@/lib/baseUrl";
 const UpdateBlogView = ({ blogId }: { blogId: string }) => {
   const { data } = useSession();
   useEffect(() => {
@@ -18,7 +19,7 @@ const UpdateBlogView = ({ blogId }: { blogId: string }) => {
         "visitor_ids",
         JSON.stringify(arrayOfLocalStorageIds)
       );
-      await fetch(`http://localhost:3000/api/blogs/${blogId}/views`, {
+      await fetch(`${baseUrl}/api/blogs/${blogId}/views`, {
         method: "PATCH",
         body: JSON.stringify({
           blogId,
