@@ -5,7 +5,7 @@ import { streamText } from "ai";
 import { match } from "ts-pattern";
 
 // IMPORTANT! Set the runtime to edge: https://vercel.com/docs/functions/edge-functions/edge-runtime
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
   // Check if the OPENAI_API_KEY is set, if not return 400

@@ -1,7 +1,6 @@
 import { ApiFutures, requireAuth } from "@/lib/utils";
-import { prisma } from "@/prisma";
 import { createBlogSchema } from "@/schema/createBlogSchema";
-
+import { prisma } from "@/prisma";
 import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 import {
@@ -33,7 +32,6 @@ export const POST = async (req: Request) => {
         data: {
           cover: formattedCover,
           authorId: token.userId,
-          content: result.content,
           ...blogValues,
         },
       });

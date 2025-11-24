@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma";
 import { v4 as uuidv4 } from "uuid";
 import { resend } from "./SendEmail";
+import { prisma } from "@/prisma";
 const findTokenByEmail = async (email: string) => {
   return await prisma.verificationTokens.findUnique({
     where: {
@@ -25,7 +25,6 @@ export const generateToken = async (email: string) => {
   });
 };
 export const sendVerificationEmail = async ({
-  email,
   token,
 }: {
   email: string;

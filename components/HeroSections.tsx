@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { BLOGS_SECTIONS } from "@/app/page";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 export const HeroSectionSkeleton = () => {
   return (
     <section className="bg-gradient-to-br py-4 from-primary/5 to-primary/10 border-b border-border">

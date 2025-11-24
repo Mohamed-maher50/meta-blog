@@ -61,8 +61,8 @@ export function ErrorHandler(
     ] as const;
   if (error instanceof ZodError) {
     const details = error.issues.map((err) => ({
-      field: `${err.path[0].toString()} ${
-        (err.path[1] || err.path[1] == 0) && `index: ${err.path[1]}`
+      field: `${String(err.path[0])} ${
+        (err.path[1] || err.path[1] == 0) && `index: ${String(err.path[1])}`
       } `,
       issue: err.message,
     }));
@@ -123,7 +123,7 @@ export function ClientErrorHandler(
   if (error instanceof ZodError) {
     const details = error.issues.map((err) => ({
       field: `${err.path[0].toString()} ${
-        (err.path[1] || err.path[1] == 0) && `index: ${err.path[1]}`
+        (err.path[1] || err.path[1] == 0) && `index: ${String(err.path[1])}`
       } `,
       issue: err.message,
     }));

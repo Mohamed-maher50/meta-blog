@@ -1,7 +1,5 @@
 import TopicFollowButton from "@/components/topics/TopicFollowButton";
-import { auth } from "@/lib/auth";
 import { getTopicById } from "@/lib/Topics";
-import { prisma } from "@/prisma";
 import React, { Suspense } from "react";
 
 import { FileText } from "lucide-react";
@@ -12,6 +10,8 @@ import { GridBlogSkeletons } from "@/components/blogs/GridBlogsSkeletons";
 import RichBlogCard from "@/components/blogs/RichBlogCard";
 import WithAuth from "@/components/auth/WithAuth";
 import SectionLabel from "@/components/miscellaneous/SectionLabel";
+import { auth } from "@/auth";
+import { prisma } from "@/prisma";
 
 const page = async ({ params }: { params: Promise<{ topicId: string }> }) => {
   const param = await params;

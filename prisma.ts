@@ -1,6 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+declare global {
+  // لضمان Singleton في التطوير
+  var prisma: PrismaClient | undefined;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// إنشاء PrismaClient واحد فقط أثناء التطوير
+export const prisma =
+  global.prisma ||
+  new PrismaClient({
+    // لو تستخدم Prisma Accelerate:
+    // accelerateUrl: process.env.DATABASE_URL,
+  });
+
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;

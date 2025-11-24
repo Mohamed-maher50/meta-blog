@@ -7,13 +7,11 @@ export const createBlogSchema = z.object({
         public_id: z.string().min(3),
         src: z.string().min(5),
       },
-      { required_error: "please provide cover image" }
+      { error: "please provide cover image" }
     )
     .optional(),
-  content: z.any({ message: "content required" }),
-  title: z
-    .string({ required_error: "Title required" })
-    .min(2, "title is too short"),
+  content: z.any(),
+  title: z.string({ error: "Title required" }).min(2, "title is too short"),
   topics: z
     .array(
       z.object({

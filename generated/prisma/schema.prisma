@@ -1,0 +1,244 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+model User {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String      @unique
+  emailVerified DateTime?
+  image         String      @default("")
+  password      String?
+  bio           String      @default("")
+  jobTitle      String      @default("")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Social        Social
+  Blog          Blog[]
+  Favorites     Favorites[]
+  Account       Account[]
+  isFirstVisit  Boolean     @default(true)
+  UserTopic     UserTopic[]
+
+  notificationsAsUser  Notification[] @relation("UserNotifications")
+  notificationsAsActor Notification[] @relation("ActorNotifications")
+
+  BlogLike BlogLike[]
+
+  likedUsers Json @default("[]")
+
+  Comment Comment[]
+
+  CommentLike CommentLike[]
+
+  FollowTopic FollowTopic[]
+
+  followers Follow[] @relation("UserFollowees")
+  followees Follow[] @relation("UserFollowers")
+}
+
+model Visitors {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  visitorId String   @unique
+  userId    String?
+  createdAt DateTime @default(now())
+  blogId    String
+}
+
+model Favorites {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  blogId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  @@unique([userId, blogId])
+}
+
+model BlogLike {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  blogId    String   @db.ObjectId
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+type Social {
+  instagram String @default("")
+  facebook  String @default("")
+  twitter   String @default("")
+  linkedin  String @default("")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model UserTopic {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  user    User   @relation(fields: [userId], references: [id])
+  topicId String @db.ObjectId
+  topic   Topics @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+}
+
+model Blog {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  content     Json
+  title       String
+  cover       Cover
+  images      EagerImage[]
+  authorId    String       @db.ObjectId
+  author      User         @relation(fields: [authorId], references: [id])
+  createdAt   DateTime     @default(now())
+  popularity  Int          @default(0)
+  favorites   Favorites[]
+  views_count Int          @default(0)
+  BlogLike    BlogLike[]
+  Comment     Comment[]
+  BlogTopics  BlogTopics[]
+  readingTime Int
+}
+
+model BlogTopics {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  blogId  String @db.ObjectId
+  blog    Blog   @relation(fields: [blogId], references: [id])
+  topicId String @db.ObjectId
+  topic   Topics @relation(fields: [topicId], references: [id])
+}
+
+model Topics {
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  label             String        @unique @map("name")
+  createdAt         DateTime      @default(now())
+  topPosition       Int           @default(0)
+  numberOfFollowers Int           @default(0)
+  UserTopic         UserTopic[]
+  followers         FollowTopic[]
+
+  BlogTopics BlogTopics[]
+}
+
+model FollowTopic {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  user    User   @relation(fields: [userId], references: [id])
+  topicId String @db.ObjectId
+  topic   Topics @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+}
+
+model VerificationTokens {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  token   String
+  expires DateTime
+  email   String   @unique
+}
+
+type Cover {
+  public_id  String
+  width      Int
+  format     Format
+  height     Int
+  created_at String
+  src        String
+}
+
+type EagerImage {
+  width  Int
+  height Int
+  src    String
+  name   String
+}
+
+enum Format {
+  jpg
+  png
+  webp
+}
+
+model Follow {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  followerId String   @db.ObjectId
+  followeeId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  follower   User     @relation("UserFollowers", fields: [followerId], references: [id])
+  followee   User     @relation("UserFollowees", fields: [followeeId], references: [id])
+
+  @@unique([followerId, followeeId])
+}
+
+model Notification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  type      NotificationType
+  message   String
+  entityId  String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  actorId   String           @db.ObjectId
+  actor     User             @relation("ActorNotifications", fields: [actorId], references: [id])
+  userId    String           @db.ObjectId
+  user      User             @relation("UserNotifications", fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  BLOG
+  LIKE
+  FOLLOW
+  COMMENT
+  CommentLike
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  blogId    String   @db.ObjectId
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+
+  CommentLike CommentLike[]
+}
+
+model CommentLike {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, userId])
+}

@@ -1,9 +1,9 @@
+import { auth } from "@/auth";
 import RichBlogCard from "@/components/blogs/RichBlogCard";
 import WithInfinityFavoritesCards from "@/components/Hocs/WithInfinityFavoritesCards";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@/lib/auth";
 import { GET_USER_FAVORITES } from "@/lib/UserFavoritesBlogs";
 import { CompactFavorites } from "@/types";
 import { RiHeart3Fill } from "@remixicon/react";

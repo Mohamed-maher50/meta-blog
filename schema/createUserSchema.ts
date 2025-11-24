@@ -42,10 +42,10 @@ export const createUserSchema = z.object({
           .or(z.literal("")),
       },
       {
-        required_error: "required send social link",
-        invalid_type_error: "social media links not formatted",
-        message: "eror",
-        description: "sdfds",
+        error: (issue) =>
+          issue.input === undefined
+            ? "required send social link"
+            : "social media links not formatted",
       }
     )
     .required(),

@@ -1,6 +1,5 @@
 import { pusherServer } from "@/lib/pusherClinet";
 import { ApiFutures, requireAuth, withAuth } from "@/lib/utils";
-import { prisma } from "@/prisma";
 import { newNotificationSchema } from "@/schema/NotificationsSchema";
 
 import { NextRequest } from "next/server";
@@ -9,6 +8,7 @@ import {
   PRISMA_USER_INFO_FIELDS_SELECT,
 } from "../constants";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
+import { prisma } from "@/prisma";
 
 export const POST = withAuth(async (req: Request, token) => {
   const body = await req.json();

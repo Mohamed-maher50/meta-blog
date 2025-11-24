@@ -7,7 +7,6 @@ import DisplayChunk from "@/components/utils/DisplayChunk";
 import { GetBlogs } from "@/lib/blogs";
 import { FileText, Tags } from "lucide-react";
 import { GetUserById } from "@/lib/Users";
-import { auth } from "@/lib/auth";
 import ProfileInfinityBlogsSection from "@/components/Hocs/ProfileInfinityBlogsSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import { GridBlogSkeletons } from "@/components/blogs/GridBlogsSkeletons";
 import { RiBookShelfLine } from "@remixicon/react";
 import RichBlogCard from "@/components/blogs/RichBlogCard";
 import { headers } from "next/headers";
+import { auth } from "@/auth";
 
 export default async function ProfilePage({
   params,

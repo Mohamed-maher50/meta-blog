@@ -1,9 +1,9 @@
-import { prisma } from "@/prisma";
 import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 import { BLOGS_FILTRATION_FIELDS, BLOGS_SORT_FIELDS } from "../../constants";
 import { ApiFutures } from "@/lib/utils";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
+import { prisma } from "@/prisma";
 
 export const GET = async (req: NextRequest) => {
   const ApiFuture = new ApiFutures(req)

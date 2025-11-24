@@ -1,4 +1,3 @@
-import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
 import { Geist_Mono, Work_Sans } from "next/font/google";
 import "./globals.css";
@@ -9,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/Footer";
 import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
+import { auth } from "@/auth";
 const Wark_sans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin"],
