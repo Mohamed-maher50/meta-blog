@@ -7,7 +7,6 @@ import { NextRequest } from "next/server";
 import filtrationQuery from "./api/Filtration";
 import pagination from "./api/pagination";
 import { IPagination } from "@/types";
-import * as Sentry from "@sentry/nextjs";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

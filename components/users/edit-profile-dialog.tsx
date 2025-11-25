@@ -70,7 +70,7 @@ export function EditProfileDialog({ user }: EditProfileDialogProps) {
     const dirtyFields = getDirtyValues(form);
 
     const request = axiosClient.put("/api/profile", dirtyFields, {
-      // withCredentials: true,
+      withCredentials: true,
     });
     const toastOptions = {
       success: ({ data }: { data: UserInfo }) => {
