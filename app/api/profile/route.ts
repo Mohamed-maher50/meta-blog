@@ -4,6 +4,7 @@ import { PRISMA_USER_INFO_FIELDS_SELECT } from "../constants";
 import { createUserSchema } from "@/schema/createUserSchema";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { requireAuth } from "@/lib/utils";
+
 const updateUserSchema = createUserSchema.partial().omit({ email: true });
 export const PUT = async (req: Request) => {
   try {

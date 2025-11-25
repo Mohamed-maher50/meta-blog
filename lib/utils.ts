@@ -98,12 +98,7 @@ export async function getImageDimensions(
 }
 
 export async function requireAuth(req: Request) {
-  console.log(process.env.NEXTAUTH_SECRET);
-  console.log(req);
-  Sentry.captureMessage(process.env.NEXTAUTH_SECRET?.toString() || "not found");
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const tokenStr = JSON.stringify(token);
-  Sentry.captureMessage(tokenStr || "no token");
   if (!token) throw UnauthorizedError;
   return token;
 }
