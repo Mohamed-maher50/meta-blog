@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import config from "./prisma/prisma.config";
 
 declare global {
   // لضمان Singleton في التطوير
@@ -9,8 +10,7 @@ declare global {
 export const prisma =
   global.prisma ||
   new PrismaClient({
-    // لو تستخدم Prisma Accelerate:
-    // accelerateUrl: process.env.DATABASE_URL,
+    datasourceUrl: config.datasource.url,
   });
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;

@@ -22,7 +22,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { NotificationMinimal } from "./NotificationCard";
-import { pusherClient } from "@/lib/pusherClinet";
+import { getPusherClient } from "@/lib/pusherClinet";
 import { useSession } from "next-auth/react";
 import { NotificationEmpty } from "./NotificationEmpty";
 import axiosClient from "@/lib/axios.client";
@@ -44,26 +44,23 @@ const NotificationsDropDownMenu = () => {
     return notifications?.filter((n) => !n.read) || [];
   }, [notifications]);
   useEffect(() => {
-    if (data?.user.userId) {
-      const channel = pusherClient.subscribe(
-        `private-user-${data.user.userId}`
+    if (!data?.user.userId) return;
+    const pusher = getPusherClient();
+    const channelName = `private-user-${data.user.userId}`;
+    const channel = pusher.subscribe(channelName);
+    const handler = (payload: NotificationWithActor) => {
+      const isExist = notifications?.find((n) => n.id === payload.id);
+      if (isExist) return;
+      setNotifications((prev) => 
+        !prev ? [payload] : [payload, ...prev]
       );
-      const event = channel.bind(
-        "new-notification",
-        (data: NotificationWithActor) => {
-          setNotifications((prev) => {
-            if (!prev) return [data];
-            return [data, ...prev];
-          });
-        }
-      );
-
-      return () => {
-        channel.unsubscribe();
-        event.unbind();
-        pusherClient.disconnect();
-      };
-    }
+    };
+    channel.bind("new-notification", handler);
+    return () => {
+      channel.unbind_all();
+      channel.unbind("new-notification", handler);
+      pusher.unsubscribe(channelName);
+    };
   }, [data?.user.userId]);
   const next = async () => {
     setLoading(true);

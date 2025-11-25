@@ -12,7 +12,7 @@ import DisplayHomeBlogs from "./_components/DisplayHomeBlogs";
 import InfinityBlogsCardsSection from "./_components/InfinityBlogsSection";
 import { headers as NextHeaders } from "next/headers";
 import { Separator } from "@/components/ui/separator";
-
+import { prisma } from "@/prisma";
 export const BLOGS_SECTIONS = [
   {
     label: "Latest articles 🚀",
@@ -42,6 +42,7 @@ const SectionsCardsLoadingSkeletons = ({ label }: { label: string }) => (
 );
 
 const Home = async () => {
+
   return (
     <main className="min-h-screen transition-transform duration-500  font-work-sans">
       <HeroSection />

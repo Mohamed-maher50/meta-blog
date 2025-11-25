@@ -87,8 +87,6 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
     (_, newValue: boolean) => newValue
   );
   const handleToggleLike = async () => {
-    startTransition(async () => {
-      addOptimistic(!InitialState);
 
       try {
         const { status } = await axiosClient.post("/api/blogs/liked", {
@@ -104,9 +102,7 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
         setInitialState(!InitialState);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        addOptimistic(InitialState);
       }
-    });
   };
   const shareUrl = useMemo(() => {
     // if (!window) return "";

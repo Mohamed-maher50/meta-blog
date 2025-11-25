@@ -1,8 +1,9 @@
 import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { pusherServer } from "@/lib/pusherClinet";
+import { getPusherServer } from "@/lib/pusherClinet";
 import { requireAuth } from "@/lib/utils";
 export const POST = async (req: Request) => {
   try {
+    const pusherServer = getPusherServer();
     const raw = await req.text();
     const params = new URLSearchParams(raw);
     const token = await requireAuth(req);

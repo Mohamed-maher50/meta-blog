@@ -25,11 +25,12 @@ export default async function ProfilePage({
 }) {
   const { userId } = await params;
   const session = await auth();
+  const headers = new Headers(await NextHeaders());
   if (!userId) notFound();
   const user = await GetUserById<UserInfo & { isFollowing: boolean }>(
     userId,
-    ``,
-    { cache: "no-store" }
+    `status=true`,
+    { cache: "no-store",headers }
   );
   if (!user) notFound();
 

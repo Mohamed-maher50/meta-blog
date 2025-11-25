@@ -79,7 +79,7 @@ export function ProfileHeader({
             ) : (
               <FollowButton
                 isFollowed={user.isFollowing}
-                params={new Promise((res) => res({ userId: "123" }))}
+                params={new Promise((res) => res({ userId: user.id}))}
               />
             )}
           </WithAuth>

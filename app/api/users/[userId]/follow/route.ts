@@ -1,5 +1,5 @@
 import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { pusherServer } from "@/lib/pusherClinet";
+import { getPusherServer } from "@/lib/pusherClinet";
 import { requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
 
@@ -50,35 +50,36 @@ export const PATCH = async (
       },
     });
 
-    const notification = await prisma.notification.create({
-      data: {
-        actorId: token.userId,
-        message: `started following you.`,
-        userId: validationResult.userId,
-        type: "FOLLOW",
-        entityId: token.userId,
-        read: false,
-      },
-      include: {
-        actor: {
-          select: {
-            name: true,
-            image: true,
-            id: true,
-            email: true,
-          },
-        },
-        user: {
-          select: { name: true, image: true, id: true, email: true },
-        },
-      },
-    });
+    // const notification = await prisma.notification.create({
+    //   data: {
+    //     actorId: token.userId,
+    //     message: `started following you.`,
+    //     userId: validationResult.userId,
+    //     type: "FOLLOW",
+    //     entityId: token.userId,
+    //     read: false,
+    //   },
+    //   include: {
+    //     actor: {
+    //       select: {
+    //         name: true,
+    //         image: true,
+    //         id: true,
+    //         email: true,
+    //       },
+    //     },
+    //     user: {
+    //       select: { name: true, image: true, id: true, email: true },
+    //     },
+    //   },
+    // });
+    // const pusherServer = getPusherServer();
 
-    await pusherServer.trigger(
-      `private-user-${validationResult.userId}`,
-      "new-notification",
-      notification
-    );
+    // await pusherServer.trigger(
+    //   `private-user-${validationResult.userId}`,
+    //   "new-notification",
+    //   notification
+    // );
 
     return Response.json({ message: "success following" }, { status: 201 });
   } catch (error) {

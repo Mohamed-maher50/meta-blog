@@ -1,4 +1,4 @@
-import { pusherServer } from "@/lib/pusherClinet";
+import { getPusherServer } from "@/lib/pusherClinet";
 import { ApiFutures, requireAuth, withAuth } from "@/lib/utils";
 import { newNotificationSchema } from "@/schema/NotificationsSchema";
 
@@ -40,6 +40,7 @@ export const POST = withAuth(async (req: Request, token) => {
       },
     });
 
+    const pusherServer = getPusherServer();
     await pusherServer.trigger(
       `private-user-${validationResult.userId}`,
       "new-notification",

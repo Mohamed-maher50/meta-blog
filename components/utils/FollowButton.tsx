@@ -1,6 +1,6 @@
 "use client";
 
-import { UserMinus, UserPlus } from "lucide-react";
+import { CloudCog, UserMinus, UserPlus } from "lucide-react";
 import React, { use, useOptimistic, useState, useTransition } from "react";
 import {
   AlertDialog,
@@ -26,45 +26,37 @@ const FollowButton = ({
 }) => {
   const { userId } = use(params);
   const [following, setFollowing] = useState(isFollowed);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, startTransition] = useTransition();
-  const [followingOptimistic, setFollowingOptimistic] =
-    useOptimistic(following);
   const session = useSession();
-  const unFollowHandle = () => {
-    startTransition(async () => {
-      try {
-        setFollowingOptimistic(false);
-        const { status } = await axiosClient.delete(
-          `/api/users/${userId}/follow`
-        );
-        if (status === 200) setFollowing(false);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        setFollowingOptimistic(true);
-      }
-    });
-  };
-  const followHandle = () => {
-    startTransition(async () => {
-      try {
-        setFollowingOptimistic(true);
-        const { status } = await axiosClient.patch(
-          `/api/users/${userId}/follow`
-        );
-        if (status !== 201) setFollowingOptimistic(false);
-        setFollowing(true);
+  const unFollowHandle = async () => {
+    setFollowing(false)
+    try {
+      const { status } = await axiosClient.delete(
+        `/api/users/${userId}/follow`
+      );
 
-        await axiosClient.post("/api/notifications", {
-          type: NotificationType.FOLLOW,
-          userId: userId,
-          entityId: session.data?.user.userId,
-        });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        setFollowingOptimistic(false);
-      }
-    });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setFollowing(true);
+    }
+
+  };
+  const followHandle = async () => {
+
+    try {
+      setFollowing(true)
+      const { status } = await axiosClient.patch(
+        `/api/users/${userId}/follow`
+      );
+      await axiosClient.post("/api/notifications", {
+        type: NotificationType.FOLLOW,
+        userId: userId,
+        entityId: session.data?.user.userId,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setFollowing(false);
+    }
+
   };
 
   const handleFollow = async () => {
@@ -76,18 +68,18 @@ const FollowButton = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          key={followingOptimistic ? "followed" : "not-followed"}
+          key={isFollowed ? "followed" : "not-followed"}
           size={"sm"}
           variant={"outline"}
           className="flex-shrink-0 rounded-full px-4 h-8 text-sm font-medium"
-          aria-pressed={followingOptimistic}
+          aria-pressed={isFollowed}
           aria-label={
-            followingOptimistic
+            isFollowed
               ? `Unfollow ${"userName"}`
               : `Follow ${"userName"}`
           }
         >
-          {followingOptimistic ? (
+          {following ? (
             <>
               <UserMinus className="h-4 w-4" />
               Unfollow

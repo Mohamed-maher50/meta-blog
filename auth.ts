@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth, { CredentialsSignin, NextAuthConfig } from "next-auth";
 import GitHubProvider from "next-auth/providers/github"; // optional
 import GoogleProvider from "next-auth/providers/google"; // optional
 import CredentialsProvider from "next-auth/providers/credentials"; // optional
@@ -7,20 +7,26 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { generateToken, sendVerificationEmail } from "./lib/VerificationEmail";
 import { prisma } from "@/prisma";
 import type { Adapter } from "next-auth/adapters";
+import { requiredEnv, verifyHashed } from "./lib/utils";
+class InvalidLoginError extends CredentialsSignin {
+  constructor() {
+    super("Invalid identifier or password");
+  }
+  code = "Invalid identifier or password";
+}
 export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GitHubProvider({
-      clientId: (process.env.GITHUB_ID as string) || "",
-      clientSecret: (process.env.GITHUB_SECRET as string) || "",
+      clientId: requiredEnv("GITHUB_ID"),
+      clientSecret: requiredEnv("GITHUB_SECRET"),
     }),
     GoogleProvider({
-      clientId: (process.env.GOOGLE_ID as string) || "",
-      clientSecret: (process.env.GOOGLE_SECRET as string) || "",
+      clientId: requiredEnv("GOOGLE_ID"),
+      clientSecret: requiredEnv("GOOGLE_SECRET"),
     }),
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         email: {
           label: "Email",
@@ -38,7 +44,12 @@ export const authOptions: NextAuthConfig = {
             email: validationResult.email,
           },
         });
-        if (!user) return null;
+        if (!user || !user.password) return null;
+        const valid = await verifyHashed(
+          user.password,
+          validationResult.password
+        );
+        if (!valid) throw new InvalidLoginError();
         return {
           email: user.email,
           id: user.id,
@@ -109,7 +120,7 @@ export const authOptions: NextAuthConfig = {
     },
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
-  trustHost: true,
+  secret: requiredEnv("NEXTAUTH_SECRET"),
+  trustHost: requiredEnv("AUTH_TRUST_HOST") === "true",
 };
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

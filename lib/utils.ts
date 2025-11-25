@@ -10,7 +10,14 @@ import { IPagination } from "@/types";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
+export
+  const requiredEnv = (name: string) => {
+    const value = process.env[name];
+    if (!value) {
+      throw new Error(`Missing environment variable: ${name}`);
+    }
+    return value;
+  };
 /**
  * Formats a given timestamp into a long date string (e.g., "January 1, 2024").
  *
@@ -144,14 +151,14 @@ export class ApiFutures {
     take: number;
     include: Record<string, unknown>;
   } = {
-    where: {},
-    orderBy: [],
-    omit: {},
-    skip: 0,
-    take: 0,
-    include: {},
-  };
-  constructor(private readonly req: NextRequest) {}
+      where: {},
+      orderBy: [],
+      omit: {},
+      skip: 0,
+      take: 0,
+      include: {},
+    };
+  constructor(private readonly req: NextRequest) { }
   sortBy(
     fields: string[],
     extraOrderBy?: (searchParams: URLSearchParams) => Record<string, unknown>

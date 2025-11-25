@@ -46,7 +46,18 @@ export const GET = async (
       },
       ...(include && { include }),
     });
-    return Response.json(user, { status: 200 });
+    if (!user) {
+      return Response.json(
+        { message: "User not found", success: false },
+        { status: 404 }
+      );
+    }
+    const isFollowing =
+      followStatusOperation && "followers" in user
+        ? !!user.followers?.length
+        : undefined;
+    const responsePayload = isFollowing === undefined ? user : { ...user, isFollowing };
+    return Response.json(responsePayload, { status: 200 });
   } catch (error) {
     return Response.json(...ErrorHandler(error, false));
   }

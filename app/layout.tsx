@@ -31,12 +31,13 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <ReactQueryProvider>
-      <SessionProvider session={session}>
-        <html lang="en" className="scroll-smooth " suppressHydrationWarning>
-          <body
-            className={`${Wark_sans.variable} ${geistMono.variable} min-h-dvh antialiased`}
-          >
+
+    <html lang="en" className="scroll-smooth " suppressHydrationWarning>
+      <body
+        className={`${Wark_sans.variable} ${geistMono.variable} min-h-dvh antialiased`}
+      >
+        <SessionProvider session={session}>
+          <ReactQueryProvider>
             <SidebarProvider defaultOpen={false} className="flex flex-col">
               <ThemeProvider
                 attribute="class"
@@ -52,9 +53,10 @@ export default async function RootLayout({
               </ThemeProvider>
             </SidebarProvider>
             <Toaster richColors expand />
-          </body>
-        </html>
-      </SessionProvider>
-    </ReactQueryProvider>
+          </ReactQueryProvider>
+        </SessionProvider>
+      </body>
+    </html>
+
   );
 }
