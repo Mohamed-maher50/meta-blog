@@ -16,8 +16,7 @@ export default function Error({
     // Log the error to an error reporting service
     console.error(error);
   }, [error]);
-  console.log("errormessage");
-  console.log(error.message);
+
   const ErrorMessage = error.message || "Something went wrong!";
   const status = error.name || 500;
   return (

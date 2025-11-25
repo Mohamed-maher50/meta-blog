@@ -79,7 +79,6 @@ const ChooseTopics = () => {
       <form
         className="gap-4 flex-col flex"
         onSubmit={form.handleSubmit(submitHandler, (e) => {
-          console.log(e);
           Object.entries(e).map(([_, value]) => {
             toast.warning(value.message);
           });

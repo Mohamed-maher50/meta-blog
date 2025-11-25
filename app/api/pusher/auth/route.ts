@@ -1,4 +1,3 @@
-// pages/api/pusher/auth.js
 import { pusherServer } from "@/lib/pusherClinet";
 import { requireAuth } from "@/lib/utils";
 export const POST = async (req: Request) => {

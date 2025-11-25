@@ -25,7 +25,6 @@ export default function Error({ error }: ErrorProps) {
 
     return err;
   }, [error]);
-  console.log(processedError);
   return (
     <>
       <ErrorView
