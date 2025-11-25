@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { ResponseSuccess } from "@/types";
 import { Topics } from "@prisma/client";
 import Link from "next/link";
-import React from "react";
 import InfinityTopicsSection from "./InfinityTopicsSection";
 import { baseUrl } from "@/lib/baseUrl";
 

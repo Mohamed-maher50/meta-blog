@@ -7,6 +7,7 @@ export const getTopics = async (
   query?: string
 ): Promise<ResponseSuccess<Topics[]>> => {
   const queryTrimmed = query ? `?${query}` : "";
+  console.log(baseUrl);
   const topicsResponse = await fetch(`${baseUrl}/api/topics${queryTrimmed}`);
   if (!topicsResponse.ok) new ExtendingError(`con't get topics`, "500");
   return await topicsResponse.json();
