@@ -1,7 +1,7 @@
 import { EmptyStateAlert } from "@/components/EmptyStateAlert";
 import UserCard from "@/components/users/UserCard";
 import { ResponseSuccess, UserInfo } from "@/types";
-import { headers } from "next/headers";
+import { headers as NextHeaders } from "next/headers";
 import React from "react";
 import WithUsers from "./WithUsers";
 import { baseUrl } from "@/lib/baseUrl";
@@ -24,11 +24,11 @@ const page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
   const { q } = await searchParams;
-  const requestHeaders = await headers();
+  const headers = new Headers(await NextHeaders());
   const { data, pagination } = await getUsers(
     `q=${q}&limit=${LIMIT_ITEMS}&page=1`,
     {
-      headers: requestHeaders,
+      headers,
     }
   );
   if (!pagination.totalItems)

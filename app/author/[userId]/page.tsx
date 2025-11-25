@@ -15,7 +15,7 @@ import { GridTopicSkeleton } from "@/components/topics/GridTopicSkeleton";
 import { GridBlogSkeletons } from "@/components/blogs/GridBlogsSkeletons";
 import { RiBookShelfLine } from "@remixicon/react";
 import RichBlogCard from "@/components/blogs/RichBlogCard";
-import { headers } from "next/headers";
+import { headers as NextHeaders } from "next/headers";
 import { auth } from "@/auth";
 
 export default async function ProfilePage({
@@ -65,11 +65,11 @@ export default async function ProfilePage({
           <Suspense fallback={<GridBlogSkeletons />}>
             <DisplayChunk
               fetcher={async () => {
-                const requestHeaders = await headers();
+                const headers = new Headers(await NextHeaders());
                 const { data } = await GetBlogs<BlogCardProps>(
                   `authorId=${userId}`,
                   {
-                    headers: requestHeaders,
+                    headers,
                   }
                 );
                 return data;

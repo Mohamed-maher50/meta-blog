@@ -8,18 +8,18 @@ import { GET_USER_FAVORITES } from "@/lib/UserFavoritesBlogs";
 import { CompactFavorites } from "@/types";
 import { RiHeart3Fill } from "@remixicon/react";
 import { Home } from "lucide-react";
-import { headers } from "next/headers";
+import { headers as NextHeaders } from "next/headers";
 import Link from "next/link";
 import React from "react";
 // export const revalidate = 60;
 const page = async () => {
   const session = await auth();
   if (!session?.user) return;
-  const requestHeaders = await headers();
+  const headers = new Headers(await NextHeaders());
   const { data, pagination } = await GET_USER_FAVORITES<CompactFavorites[]>(
     "?limit=10&page=1",
     {
-      headers: requestHeaders,
+      headers,
     }
   );
   return (

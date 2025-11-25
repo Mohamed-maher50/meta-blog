@@ -10,7 +10,7 @@ import DisplayChunk from "@/components/utils/DisplayChunk";
 import { GetRecommendedBlogs } from "@/lib/blogs";
 import DisplayHomeBlogs from "./_components/DisplayHomeBlogs";
 import InfinityBlogsCardsSection from "./_components/InfinityBlogsSection";
-import { headers } from "next/headers";
+import { headers as NextHeaders } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 
 export const BLOGS_SECTIONS = [
@@ -43,7 +43,7 @@ const SectionsCardsLoadingSkeletons = ({ label }: { label: string }) => (
 
 const Home = async () => {
   return (
-    <main className="min-h-screen transition-transform duration-500  font-[family-name:var(--font-work-sans)]">
+    <main className="min-h-screen transition-transform duration-500  font-work-sans">
       <HeroSection />
       <Container>
         <div className="flex justify-between  max-md:flex-col py-10 gap-2">
@@ -71,9 +71,9 @@ const Home = async () => {
                     }}
                     errorMessage={() => <>{section.errorMessage}</>}
                     fetcher={async () => {
-                      const requestHeaders = await headers();
-                      await GetRecommendedBlogs(section.query, {
-                        headers: requestHeaders,
+                      const headers = new Headers(await NextHeaders());
+                      return await GetRecommendedBlogs(section.query, {
+                        headers,
                       });
                     }}
                   />
