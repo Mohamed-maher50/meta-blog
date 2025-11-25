@@ -65,10 +65,11 @@ export default async function ProfilePage({
           <Suspense fallback={<GridBlogSkeletons />}>
             <DisplayChunk
               fetcher={async () => {
+                const requestHeaders = await headers();
                 const { data } = await GetBlogs<BlogCardProps>(
                   `authorId=${userId}`,
                   {
-                    headers: await headers(),
+                    headers: requestHeaders,
                   }
                 );
                 return data;

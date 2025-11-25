@@ -2,7 +2,6 @@ import BlogCardHorizontal from "@/components/blogs/RichBlogCardHorizontal";
 import { EmptyStateAlert } from "@/components/EmptyStateAlert";
 import { GetBlogs } from "@/lib/blogs";
 import { BlogCardProps, ResponseSuccess } from "@/types";
-import React from "react";
 const page = async ({
   searchParams,
 }: {

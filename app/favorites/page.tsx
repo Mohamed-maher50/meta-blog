@@ -15,10 +15,11 @@ import React from "react";
 const page = async () => {
   const session = await auth();
   if (!session?.user) return;
+  const requestHeaders = await headers();
   const { data, pagination } = await GET_USER_FAVORITES<CompactFavorites[]>(
     "?limit=10&page=1",
     {
-      headers: await headers(),
+      headers: requestHeaders,
     }
   );
   return (

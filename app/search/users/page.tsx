@@ -24,10 +24,11 @@ const page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
   const { q } = await searchParams;
+  const requestHeaders = await headers();
   const { data, pagination } = await getUsers(
     `q=${q}&limit=${LIMIT_ITEMS}&page=1`,
     {
-      headers: await headers(),
+      headers: requestHeaders,
     }
   );
   if (!pagination.totalItems)

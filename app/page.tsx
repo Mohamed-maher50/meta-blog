@@ -70,11 +70,12 @@ const Home = async () => {
                       );
                     }}
                     errorMessage={() => <>{section.errorMessage}</>}
-                    fetcher={async () =>
+                    fetcher={async () => {
+                      const requestHeaders = await headers();
                       await GetRecommendedBlogs(section.query, {
-                        headers: await headers(),
-                      })
-                    }
+                        headers: requestHeaders,
+                      });
+                    }}
                   />
                 </Suspense>
               );

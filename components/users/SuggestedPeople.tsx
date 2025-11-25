@@ -14,9 +14,10 @@ const SuggestedPeople = async ({
   fetchQuery?: string;
   limit?: number;
 }) => {
+  const requestHeaders = await headers();
   const getUserResponse = await GetUsers<
     (UserInfo & { isFollowing: boolean })[]
-  >(fetchQuery as string, { headers: await headers() });
+  >(fetchQuery as string, { headers: requestHeaders });
   return (
     <div className="flex py-2  gap-1 flex-wrap">
       {getUserResponse.data.map((t) => {

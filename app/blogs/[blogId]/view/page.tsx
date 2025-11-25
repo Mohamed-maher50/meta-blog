@@ -18,10 +18,11 @@ type UserWithBlogs = Join<Blog, string[], "BlogLike">;
 type BlogPageResponse = IAuthorBlog & UserWithBlogs;
 const page = async ({ params }: { params: Promise<{ blogId: string }> }) => {
   const { blogId } = await params;
-  const res = await fetch(`${baseUrl}/api/blogs/${blogId}`, {
-    headers: await headers(),
-  });
 
+  const requestHeaders = await headers();
+  const res = await fetch(`${baseUrl}/api/blogs/${blogId}`, {
+    headers: requestHeaders,
+  });
   if (!res.ok)
     throw new AppError("FIELD TO GET BLOG ID CHECK BLOG ID IS CORRECT!", 400);
   const d: BlogPageResponse = await res.json();
