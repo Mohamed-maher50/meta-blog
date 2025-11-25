@@ -98,7 +98,10 @@ export async function getImageDimensions(
 }
 
 export async function requireAuth(req: Request) {
+  console.log(process.env.NEXTAUTH_SECRET);
+  console.log(req);
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  console.log(token);
   if (!token) throw UnauthorizedError;
   return token;
 }
