@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,7 @@ import {
 import { CommentWithAuthor } from "@/types";
 import { Blog, NotificationType } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import axiosClient from "@/lib/axios.client";
 
 interface NewCommentFormProps {
   blogId: string;
@@ -43,13 +44,13 @@ export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const { status, data }: AxiosResponse<CommentWithAuthor> =
-        await axios.post(`/api/blogs/${blogId}/comments`, {
+        await axiosClient.post(`/api/blogs/${blogId}/comments`, {
           ...values,
         });
 
       if (status !== 201) throw new Error("Failed to post comment");
       if (!data) throw new Error("No comment data returned");
-      await axios.post("/api/notifications", {
+      await axiosClient.post("/api/notifications", {
         type: NotificationType.COMMENT,
         userId: blog.authorId,
         entityId: blogId,

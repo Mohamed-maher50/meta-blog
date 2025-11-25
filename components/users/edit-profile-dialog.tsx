@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { socialLink } from "@/constants/socialMediaLinks";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { toast } from "sonner";
-import axios from "axios";
+
 import { useSession } from "next-auth/react";
 import UploadAvatarInput from "../UploadAvatarInput";
 import { Label } from "../ui/label";
@@ -31,6 +29,7 @@ import { onUpload } from "../utils/image-upload";
 import { createUserSchema, createUserValues } from "@/schema/createUserSchema";
 import { Social } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import axiosClient from "@/lib/axios.client";
 
 interface EditProfileDialogProps {
   user: UserInfo;
@@ -69,7 +68,10 @@ export function EditProfileDialog({ user }: EditProfileDialogProps) {
       setUpdatedImage(null);
     }
     const dirtyFields = getDirtyValues(form);
-    const request = axios.put("/api/profile", dirtyFields);
+
+    const request = axiosClient.put("/api/profile", dirtyFields, {
+      // withCredentials: true,
+    });
     const toastOptions = {
       success: ({ data }: { data: UserInfo }) => {
         update({

@@ -2,11 +2,12 @@ import React, { useMemo, useOptimistic, useState, useTransition } from "react";
 import { ResponseComment } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { Heart } from "lucide-react";
-import axios from "axios";
+
 import { useSession } from "next-auth/react";
 import { NotificationType } from "@prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import axiosClient from "@/lib/axios.client";
 
 const CommentCard = ({
   id,
@@ -31,17 +32,17 @@ const CommentCard = ({
 
       try {
         if (isLiked) {
-          const { status } = await axios.delete(
+          const { status } = await axiosClient.delete(
             `/api/blogs/${blogId}/comments/${id}/likes`
           );
           if (status != 204) throw new Error("Failed to unlike the comment");
           setIsLiked(false);
         } else {
-          const { status } = await axios.post(
+          const { status } = await axiosClient.post(
             `/api/blogs/${blogId}/comments/${id}/likes`
           );
           if (status != 201) throw new Error("Failed to like the comment");
-          await axios.post("/api/notifications", {
+          await axiosClient.post("/api/notifications", {
             type: NotificationType.CommentLike,
             userId: author.id,
             entityId: id,

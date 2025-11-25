@@ -15,6 +15,7 @@ const SuggestedPeople = async ({
   limit?: number;
 }) => {
   const requestHeaders = await headers();
+  new Headers(requestHeaders);
   const getUserResponse = await GetUsers<
     (UserInfo & { isFollowing: boolean })[]
   >(fetchQuery as string, { headers: requestHeaders });

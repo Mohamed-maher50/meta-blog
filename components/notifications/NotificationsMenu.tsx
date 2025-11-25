@@ -8,7 +8,7 @@ import React, {
   useTransition,
 } from "react";
 import InfiniteScroll from "../ui/InfiniteScroll";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { Bell, Loader2 } from "lucide-react";
 
 import { NotificationWithActor, ResponseSuccess } from "@/types";
@@ -25,6 +25,7 @@ import { NotificationMinimal } from "./NotificationCard";
 import { pusherClient } from "@/lib/pusherClinet";
 import { useSession } from "next-auth/react";
 import { NotificationEmpty } from "./NotificationEmpty";
+import axiosClient from "@/lib/axios.client";
 
 const NotificationsDropDownMenu = () => {
   const [page, setPage] = React.useState(1);
@@ -72,7 +73,7 @@ const NotificationsDropDownMenu = () => {
         data,
         status,
       }: AxiosResponse<ResponseSuccess<NotificationWithActor[]>> =
-        await axios.get(
+        await axiosClient.get(
           `/api/notifications?limit=10&page=${page}&includes=actor&orderBy[]=-createdAt`
         );
       if (status != 200) throw new Error("can't fetch notifications");
@@ -103,7 +104,7 @@ const NotificationsDropDownMenu = () => {
     startTransition(async () => {
       try {
         setOptimistic(updatedNotifications);
-        const { status: responseStatus } = await axios.patch(
+        const { status: responseStatus } = await axiosClient.patch(
           "/api/notifications/read",
           {
             ids,

@@ -11,10 +11,11 @@ import { BlogCardProps } from "@/types";
 import SavedButton from "./SavedButton";
 import WithAuth from "../auth/WithAuth";
 import Link from "next/link";
-import axios from "axios";
+
 import { toast } from "sonner";
 import { memo, useCallback, useMemo } from "react";
 import { formatCompactNumber } from "@/lib/utils";
+import axiosClient from "@/lib/axios.client";
 const RichBlogCard = ({
   BlogTopics,
   cover,
@@ -47,7 +48,7 @@ const RichBlogCard = ({
     return formatCompactNumber(views_count);
   }, [views_count]);
   const deleteBlogHandler = useCallback(async () => {
-    const deleteAxiosPromise = axios.delete(`/api/blogs/${id}`);
+    const deleteAxiosPromise = axiosClient.delete(`/api/blogs/${id}`);
     toast.promise(deleteAxiosPromise, {
       loading: "please wait ",
       success: `success`,

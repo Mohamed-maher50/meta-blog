@@ -12,7 +12,7 @@ import { Bookmark, Heart, Share2 } from "lucide-react";
 import React, { useMemo, useOptimistic, useState, useTransition } from "react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Blog, NotificationType, User } from "@prisma/client";
-import axios from "axios";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,7 @@ import Link from "next/link";
 import { IFavorites, ResponseSuccess } from "@/types";
 import WithAuth from "./auth/WithAuth";
 import { useSession } from "next-auth/react";
+import axiosClient from "@/lib/axios.client";
 
 interface UserBlogNavProps {
   user: User;
@@ -50,7 +51,9 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
     queryKey: [`saved_blog_${blogId}_status`],
     queryFn: async () => {
       try {
-        const { data } = await axios.get(`/api/favorites?blogId=${blogId}`);
+        const { data } = await axiosClient.get(
+          `/api/favorites?blogId=${blogId}`
+        );
         return data;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
@@ -61,7 +64,7 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
   });
   const mutation = useMutation({
     mutationFn: async ({ blogId, signal }: AddFavoriteArgs) => {
-      const res = await axios.post(
+      const res = await axiosClient.post(
         `/api/favorites?blogId=${blogId}`,
         { blogId },
         { signal }
@@ -88,11 +91,11 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
       addOptimistic(!InitialState);
 
       try {
-        const { status } = await axios.post("/api/blogs/liked", {
+        const { status } = await axiosClient.post("/api/blogs/liked", {
           blogId,
         });
         if (status == 201) {
-          await axios.post("/api/notifications", {
+          await axiosClient.post("/api/notifications", {
             type: NotificationType.LIKE,
             userId: user.id,
             entityId: blogId,

@@ -14,12 +14,13 @@ import {
 } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signUpSchema, TSignUpSchema } from "@/schema/authSchema";
 import ProvidersFooter from "./ProvidersFooter";
 import Link from "next/link";
+import axiosClient from "@/lib/axios.client";
 
 const SignUpForm = ({ className, ...props }: React.ComponentProps<"form">) => {
   const form = useForm<TSignUpSchema>({
@@ -29,7 +30,7 @@ const SignUpForm = ({ className, ...props }: React.ComponentProps<"form">) => {
   const router = useRouter();
   const handleSubmit = async (values: TSignUpSchema) => {
     try {
-      toast.promise(axios.post("/api/auth/", values), {
+      toast.promise(axiosClient.post("/api/auth/", values), {
         loading: "please wait...",
         success: async ({ status }) => {
           if (status == 201) {

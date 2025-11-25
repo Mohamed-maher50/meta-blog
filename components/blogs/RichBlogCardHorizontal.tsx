@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { BlogCardProps } from "@/types";
-import axios from "axios";
+
 import { toast } from "sonner";
 import Image from "next/image";
 import WithAuth from "../auth/WithAuth";
 import SavedButton from "./SavedButton";
 import Link from "next/link";
 import { memo } from "react";
+import axiosClient from "@/lib/axios.client";
 
 const BlogCardHorizontal = ({
   BlogTopics,
@@ -36,7 +37,7 @@ const BlogCardHorizontal = ({
   const likesCount = _count.BlogLike || 0;
   const commentsCount = _count.Comment || 0;
   const deleteBlogHandler = async () => {
-    const deleteAxiosPromise = axios.delete(`/api/blogs/${id}`);
+    const deleteAxiosPromise = axiosClient.delete(`/api/blogs/${id}`);
 
     toast.promise(deleteAxiosPromise, {
       loading: "please wait ",

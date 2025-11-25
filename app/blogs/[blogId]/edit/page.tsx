@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -34,6 +34,7 @@ import { onUpload } from "@/components/utils/image-upload";
 import { getTopics } from "@/lib/Topics";
 import { getBlogById } from "@/lib/blogs";
 import BlogPageLoading from "./loading";
+import axiosClient from "@/lib/axios.client";
 const EDIT_TOAST_OPTIONS = {
   loading: "SAVING...",
   success: "Blog published successfully!",
@@ -66,7 +67,7 @@ const EditBlogPage = () => {
   const session = useSession();
   const onCreateTopic = async (v: Option): Promise<Option | null> => {
     try {
-      const { data }: { data: Topics } = await axios.post("/api/topics", {
+      const { data }: { data: Topics } = await axiosClient.post("/api/topics", {
         label: v.value,
       });
       v.value = data.id;
@@ -85,7 +86,7 @@ const EditBlogPage = () => {
         src: secure_url,
       };
     }
-    const request = axios.put(`/api/blogs/${blogId}`, dirtyFields);
+    const request = axiosClient.put(`/api/blogs/${blogId}`, dirtyFields);
     toast.promise(request, EDIT_TOAST_OPTIONS);
     request.finally(() => {
       form.reset(form.getValues());

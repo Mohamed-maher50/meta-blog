@@ -3,7 +3,7 @@ import { BlogWithRelations } from "@/types";
 import React, { FC } from "react";
 import { Button } from "../ui/button";
 import { Pen, Trash } from "lucide-react";
-import axios from "axios";
+
 import { toast } from "sonner";
 import {
   Dialog,
@@ -15,11 +15,12 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { useRouter } from "next/navigation";
+import axiosClient from "@/lib/axios.client";
 
 export const BlogOperationHeader: FC<BlogWithRelations> = (blog) => {
   const router = useRouter();
   const deleteBlogHandler = async () => {
-    const deleteAxiosPromise = axios.delete(`/api/blogs/${blog.id}`);
+    const deleteAxiosPromise = axiosClient.delete(`/api/blogs/${blog.id}`);
 
     toast.promise(deleteAxiosPromise, {
       loading: "please wait ",

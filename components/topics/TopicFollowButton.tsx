@@ -1,9 +1,10 @@
 "use client";
-import axios from "axios";
+
 import React, { use, useOptimistic, useState, useTransition } from "react";
 
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import axiosClient from "@/lib/axios.client";
 
 const TopicFollowButton = ({
   params,
@@ -22,7 +23,9 @@ const TopicFollowButton = ({
     startTransition(async () => {
       try {
         setFollowingOptimistic(false);
-        const { status } = await axios.delete(`/api/topics/${topicId}/follow`);
+        const { status } = await axiosClient.delete(
+          `/api/topics/${topicId}/follow`
+        );
         if (status === 204) {
           setFollowing(false);
           router.refresh();
@@ -37,7 +40,9 @@ const TopicFollowButton = ({
     startTransition(async () => {
       try {
         setFollowingOptimistic(true);
-        const { status } = await axios.post(`/api/topics/${topicId}/follow`);
+        const { status } = await axiosClient.post(
+          `/api/topics/${topicId}/follow`
+        );
         if (status !== 201) setFollowingOptimistic(false);
         setFollowing(true);
         router.refresh();

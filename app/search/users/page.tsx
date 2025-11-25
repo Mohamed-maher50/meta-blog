@@ -2,7 +2,6 @@ import { EmptyStateAlert } from "@/components/EmptyStateAlert";
 import UserCard from "@/components/users/UserCard";
 import { ResponseSuccess, UserInfo } from "@/types";
 import { headers as NextHeaders } from "next/headers";
-import React from "react";
 import WithUsers from "./WithUsers";
 import { baseUrl } from "@/lib/baseUrl";
 

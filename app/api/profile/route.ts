@@ -6,11 +6,10 @@ import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { requireAuth } from "@/lib/utils";
 const updateUserSchema = createUserSchema.partial().omit({ email: true });
 export const PUT = async (req: Request) => {
-  const updatedValues = await req.json();
-  const token = await requireAuth(req);
-  const validationResult = updateUserSchema.parse(updatedValues);
-
   try {
+    const updatedValues = await req.json();
+    const token = await requireAuth(req);
+    const validationResult = updateUserSchema.parse(updatedValues);
     const updatedUser = await prisma.user.update({
       where: {
         id: token.userId,
@@ -25,8 +24,8 @@ export const PUT = async (req: Request) => {
 };
 
 export const GET = async (req: Request) => {
-  const token = await requireAuth(req);
   try {
+    const token = await requireAuth(req);
     const user: User | null = await prisma.user.findUnique({
       where: {
         id: token.userId,

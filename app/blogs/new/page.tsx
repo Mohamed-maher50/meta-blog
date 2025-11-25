@@ -27,13 +27,14 @@ import {
 import { ResponseSuccess } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Topics } from "@prisma/client";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { useSession } from "next-auth/react";
 import { EditorInstance } from "novel";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useDebouncedCallback } from "use-debounce";
+import axiosClient from "@/lib/axios.client";
 const unProvidedValues = {
   title: "",
   preview: "",
@@ -89,7 +90,7 @@ const NewArticle = () => {
   };
   const onCreateTopic = async (v: Option): Promise<Option | null> => {
     try {
-      const { data }: { data: Topics } = await axios.post("/api/topics", {
+      const { data }: { data: Topics } = await axiosClient.post("/api/topics", {
         label: v.value,
       });
       v.value = data.id;
@@ -107,7 +108,7 @@ const NewArticle = () => {
       },
     });
     formValues.cover = { src: secure_url, public_id };
-    const request = axios.post("/api/blogs", formValues);
+    const request = axiosClient.post("/api/blogs", formValues);
     toast.promise(request, {
       loading: "Publishing...",
       success: () => {
@@ -126,7 +127,7 @@ const NewArticle = () => {
   const onSearchTopics = async (value: string): Promise<Option[]> => {
     try {
       const { data }: AxiosResponse<ResponseSuccess<Topics[]>> =
-        await axios.get("/api/topics?limit=10&q=" + value);
+        await axiosClient.get("/api/topics?limit=10&q=" + value);
       return data.data.map((topic) => ({
         label: topic.label,
         value: topic.id,

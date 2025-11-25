@@ -10,12 +10,13 @@ import {
   ChooseTopicsSchema,
   ChooseTopicsSchemaTypes,
 } from "@/schema/UserTopicsSchema";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 import ToggleCheckBox from "@/components/miscellaneous/ToggleCheckBox";
 import { ResponseSuccess } from "@/types";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import axiosClient from "@/lib/axios.client";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -38,7 +39,7 @@ const ChooseTopics = () => {
   const router = useRouter();
   const submitHandler = async (args: { topics: string[] }) => {
     try {
-      const res = await axios.post("/api/topics/choose", args);
+      const res = await axiosClient.post("/api/topics/choose", args);
       if (res.status == 200) {
         update({ topicsSelected: true }).then(() => {
           router.replace("/");

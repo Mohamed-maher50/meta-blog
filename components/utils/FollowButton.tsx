@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+
 import { UserMinus, UserPlus } from "lucide-react";
 import React, { use, useOptimistic, useState, useTransition } from "react";
 import {
@@ -15,6 +15,7 @@ import {
 import { Button } from "../ui/button";
 import { NotificationType } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import axiosClient from "@/lib/axios.client";
 
 const FollowButton = ({
   params,
@@ -34,7 +35,9 @@ const FollowButton = ({
     startTransition(async () => {
       try {
         setFollowingOptimistic(false);
-        const { status } = await axios.delete(`/api/users/${userId}/follow`);
+        const { status } = await axiosClient.delete(
+          `/api/users/${userId}/follow`
+        );
         if (status === 200) setFollowing(false);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
@@ -46,11 +49,13 @@ const FollowButton = ({
     startTransition(async () => {
       try {
         setFollowingOptimistic(true);
-        const { status } = await axios.patch(`/api/users/${userId}/follow`);
+        const { status } = await axiosClient.patch(
+          `/api/users/${userId}/follow`
+        );
         if (status !== 201) setFollowingOptimistic(false);
         setFollowing(true);
 
-        await axios.post("/api/notifications", {
+        await axiosClient.post("/api/notifications", {
           type: NotificationType.FOLLOW,
           userId: userId,
           entityId: session.data?.user.userId,
