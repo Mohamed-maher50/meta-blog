@@ -7,16 +7,16 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json();
     const validationResult = ChooseTopicsSchema.parse(body);
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const UserTopics = await prisma.userTopic.createMany({
       data: validationResult.topics.map((tpc) => ({
         topicId: tpc,
-        userId: token.userId,
+        userId: user.userId,
       })),
     });
     await prisma.user.update({
       where: {
-        id: token.userId,
+        id: user.userId,
       },
       data: {
         isFirstVisit: false,

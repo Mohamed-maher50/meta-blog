@@ -29,7 +29,7 @@ export interface ApiGetFavoritesSuccess {
 }
 export const POST = async (req: Request) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const data = await req.json();
     const validationResult = newFavoriteSchema.parse(data);
 
@@ -39,7 +39,7 @@ export const POST = async (req: Request) => {
           blogId: validationResult.blogId.toString(),
         },
         {
-          userId: token.userId,
+          userId: user.userId,
         },
       ],
     };
@@ -51,7 +51,7 @@ export const POST = async (req: Request) => {
     if (!findIfInFavorites) {
       const newFavorite = await prisma.favorites.create({
         data: {
-          userId: token.userId,
+          userId: user.userId,
           blogId: validationResult.blogId.toString(),
         },
       });
@@ -72,10 +72,10 @@ export const POST = async (req: Request) => {
 };
 export const GET = async (req: NextRequest) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const apiFutures = new ApiFutures(req)
       .filter(["blogId"], () => ({
-        userId: token.userId,
+        userId: user.userId,
       }))
       .paginateQuery()
       .extractFields(["userId", "blogId"])
@@ -90,7 +90,7 @@ export const GET = async (req: NextRequest) => {
         include: {
           favorites: {
             where: {
-              userId: token?.userId,
+              userId: user.userId,
             },
             select: {
               userId: true,
@@ -98,7 +98,7 @@ export const GET = async (req: NextRequest) => {
           },
           BlogLike: {
             where: {
-              userId: token?.userId,
+              userId: user.userId,
             },
             select: {
               userId: true,

@@ -11,12 +11,12 @@ export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GitHubProvider({
-      clientId: (process.env.GITHUB_ID as string) || "",
-      clientSecret: (process.env.GITHUB_SECRET as string) || "",
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     GoogleProvider({
-      clientId: (process.env.GOOGLE_ID as string) || "",
-      clientSecret: (process.env.GOOGLE_SECRET as string) || "",
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -110,6 +110,6 @@ export const authOptions: NextAuthConfig = {
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-  trustHost: true,
+  trustHost: process.env.AUTH_TRUST_HOST === "true",
 };
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

@@ -9,7 +9,7 @@ export const POST = async (
   { params }: { params: Promise<{ blogId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const body = await req.json();
     const { blogId } = await params;
 
@@ -19,7 +19,7 @@ export const POST = async (
       data: {
         content: result.content,
         blogId: blogId,
-        authorId: token.userId,
+        authorId: user.userId,
       },
     });
 

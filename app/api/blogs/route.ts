@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
     const body = await req.json();
 
     const result = createBlogSchema.parse(body);
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
 
     const { cover, topics, ...blogValues } = result;
     const formattedCover = {
@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
       const createBlog = await tx.blog.create({
         data: {
           cover: formattedCover,
-          authorId: token.userId,
+          authorId: user.userId,
           ...blogValues,
         },
       });

@@ -53,7 +53,7 @@ export const POST = withAuth(async (req: Request, token) => {
 
 export const GET = async (req: NextRequest) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
 
     const apiFutures = new ApiFutures(req)
       .search({ label: "message" })
@@ -64,7 +64,7 @@ export const GET = async (req: NextRequest) => {
 
     apiFutures.Query.where = {
       ...apiFutures.Query.where,
-      userId: token.userId,
+      userId: user.userId,
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { skip, take, include, omit, ...countQuery } = apiFutures.Query;

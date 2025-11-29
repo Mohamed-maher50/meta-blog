@@ -70,7 +70,7 @@ export const DELETE = async (
   { params }: { params: Promise<{ blogId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
 
     const { blogId } = await params;
 
@@ -91,7 +91,7 @@ export const DELETE = async (
       const blogAfterDelete = await tx.blog.delete({
         where: {
           id: blogId,
-          authorId: token.userId,
+          authorId: user.userId,
         },
       });
       return blogAfterDelete;
@@ -107,7 +107,7 @@ export const PUT = async (
   { params }: { params: Promise<{ blogId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
 
     const body = await req.json();
 
@@ -159,7 +159,7 @@ export const PUT = async (
 
     await prisma.blog.update({
       where: {
-        authorId: token.userId,
+        authorId: user.userId,
         id: blogId,
       },
       data: {

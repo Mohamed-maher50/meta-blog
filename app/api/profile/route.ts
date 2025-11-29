@@ -8,11 +8,11 @@ const updateUserSchema = createUserSchema.partial().omit({ email: true });
 export const PUT = async (req: Request) => {
   try {
     const updatedValues = await req.json();
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const validationResult = updateUserSchema.parse(updatedValues);
     const updatedUser = await prisma.user.update({
       where: {
-        id: token.userId,
+        id: user.userId,
       },
       data: validationResult,
       select: PRISMA_USER_INFO_FIELDS_SELECT,
@@ -23,21 +23,21 @@ export const PUT = async (req: Request) => {
   }
 };
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   try {
-    const token = await requireAuth(req);
-    const user: User | null = await prisma.user.findUnique({
+    const { user } = await requireAuth();
+    const userData: User | null = await prisma.user.findUnique({
       where: {
-        id: token.userId,
+        id: user.userId,
       },
     });
-    if (user) {
+    if (userData) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...userWithoutPassword } = user;
+      const { password, ...userWithoutPassword } = userData;
       return Response.json(userWithoutPassword, { status: 200 });
     }
 
-    return Response.json(user, { status: 200 });
+    return Response.json(userData, { status: 200 });
   } catch (error) {
     return Response.json(...ErrorHandler(error, false));
   }

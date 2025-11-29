@@ -5,13 +5,13 @@ export const POST = async (req: Request) => {
   try {
     const raw = await req.text();
     const params = new URLSearchParams(raw);
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const socket_id = params.get("socket_id");
     const channel_name = params.get("channel_name");
     if (!socket_id || !channel_name) throw new AppError("Invalid params", 400);
     if (channel_name.startsWith("private-user")) {
       const userId = channel_name.replace("private-user-", "");
-      if (userId != token.userId) throw new AppError("Forbidden", 403);
+      if (userId != user.userId) throw new AppError("Forbidden", 403);
       const authResponse = pusherServer.authorizeChannel(
         socket_id!,
         channel_name!

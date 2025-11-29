@@ -1,5 +1,5 @@
 import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { pusherServer } from "@/lib/pusherClinet";
+
 import { requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
 
@@ -13,10 +13,10 @@ export const POST = async (req: Request) => {
     const validationResult = followRequestSchema.parse(body);
 
     const { userId } = validationResult;
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const res = await prisma.follow.findFirst({
       where: {
-        followerId: token.id,
+        followerId: user.userId,
         followeeId: userId,
       },
     });
@@ -26,7 +26,7 @@ export const POST = async (req: Request) => {
       where: {
         id: res.id,
         followeeId: userId,
-        followerId: token.userId,
+        followerId: user.userId,
       },
     });
 
@@ -40,13 +40,13 @@ export const PATCH = async (
   { params }: { params: Promise<{ userId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const param = await params;
     const validationResult = followRequestSchema.parse(param);
     await prisma.follow.create({
       data: {
         followeeId: validationResult.userId,
-        followerId: token.userId,
+        followerId: user.userId,
       },
     });
 
@@ -90,14 +90,14 @@ export const DELETE = async (
   { params }: { params: Promise<{ userId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const param = await params;
     const validationResult = followRequestSchema.parse(param);
     const { userId } = validationResult;
     await prisma.follow.deleteMany({
       where: {
         followeeId: userId,
-        followerId: token.userId,
+        followerId: user.userId,
       },
     });
     return Response.json({ message: "success deleted" }, { status: 200 });
