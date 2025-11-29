@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
 
     const data = await req.json();
     const validationResult = userLikedBlogSchema.parse(data);
@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
     const isLikedBefore = await prisma.blogLike.findFirst({
       where: {
         blogId: validationResult.blogId,
-        userId: token.userId,
+        userId: user.userId,
       },
     });
 
@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json("deleted successfully", { status: 200 });
     } else {
       const liked = await prisma.blogLike.create({
-        data: { blogId: validationResult.blogId, userId: token.userId },
+        data: { blogId: validationResult.blogId, userId: user.userId },
       });
       return NextResponse.json(liked, { status: 201 });
     }

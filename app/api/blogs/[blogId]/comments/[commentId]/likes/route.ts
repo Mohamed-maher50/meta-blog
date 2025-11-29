@@ -7,13 +7,13 @@ export const POST = async (
   { params }: { params: Promise<{ commentId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const { commentId } = await params;
 
     const isLikedBefore = await prisma.commentLike.findFirst({
       where: {
         commentId: commentId,
-        userId: token.userId,
+        userId: user.userId,
       },
     });
     if (isLikedBefore)
@@ -22,7 +22,7 @@ export const POST = async (
     const createdCommentLike = await prisma.commentLike.create({
       data: {
         commentId: commentId,
-        userId: token.userId,
+        userId: user.userId,
       },
     });
 
@@ -37,13 +37,13 @@ export const DELETE = async (
   { params }: { params: Promise<{ commentId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const { commentId } = await params;
 
     await prisma.commentLike.deleteMany({
       where: {
         commentId: commentId,
-        userId: token.userId,
+        userId: user.userId,
       },
     });
 

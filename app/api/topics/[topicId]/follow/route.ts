@@ -16,10 +16,10 @@ export const POST = async (
   try {
     const { topicId } = await params;
 
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const res = await prisma.followTopic.findFirst({
       where: {
-        userId: token.userId,
+        userId: user.userId,
         topicId,
       },
     });
@@ -30,7 +30,7 @@ export const POST = async (
       );
     const createdFollowing = await prisma.followTopic.create({
       data: {
-        userId: token.userId,
+        userId: user.userId,
         topicId,
       },
     });
@@ -52,13 +52,13 @@ export const DELETE = async (
   { params }: { params: Promise<{ topicId: string }> }
 ) => {
   try {
-    const token = await requireAuth(req);
+    const { user } = await requireAuth();
     const { topicId } = await params;
 
     await prisma.followTopic.deleteMany({
       where: {
         topicId,
-        userId: token.userId,
+        userId: user.userId,
       },
     });
     return new NextResponse(null, { status: 204 });

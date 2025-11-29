@@ -18,12 +18,12 @@ export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     GitHubProvider({
-      clientId: requiredEnv("GITHUB_ID"),
-      clientSecret: requiredEnv("GITHUB_SECRET"),
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     GoogleProvider({
-      clientId: requiredEnv("GOOGLE_ID"),
-      clientSecret: requiredEnv("GOOGLE_SECRET"),
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -121,7 +121,7 @@ export const authOptions: NextAuthConfig = {
     },
   },
 
-  secret: requiredEnv("NEXTAUTH_SECRET"),
-  trustHost: requiredEnv("AUTH_TRUST_HOST") === "true",
+  secret: process.env.NEXTAUTH_SECRET,
+  trustHost: process.env.AUTH_TRUST_HOST === "true",
 };
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

@@ -10,14 +10,13 @@ import { IPagination } from "@/types";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export
-  const requiredEnv = (name: string) => {
-    const value = process.env[name];
-    if (!value) {
-      throw new Error(`Missing environment variable: ${name}`);
-    }
-    return value;
-  };
+export const requiredEnv = (name: string) => {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing environment variable: ${name}`);
+  }
+  return value;
+};
 /**
  * Formats a given timestamp into a long date string (e.g., "January 1, 2024").
  *
@@ -103,10 +102,11 @@ export async function getImageDimensions(
   });
 }
 
-export async function requireAuth(req: Request) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  if (!token) throw UnauthorizedError;
-  return token;
+export async function requireAuth() {
+  const session = await auth();
+
+  if (!session) throw UnauthorizedError;
+  return session;
 }
 export const withAuth = (
   cb: (req: NextRequest, token: JWT) => Promise<Response>
@@ -151,14 +151,14 @@ export class ApiFutures {
     take: number;
     include: Record<string, unknown>;
   } = {
-      where: {},
-      orderBy: [],
-      omit: {},
-      skip: 0,
-      take: 0,
-      include: {},
-    };
-  constructor(private readonly req: NextRequest) { }
+    where: {},
+    orderBy: [],
+    omit: {},
+    skip: 0,
+    take: 0,
+    include: {},
+  };
+  constructor(private readonly req: NextRequest) {}
   sortBy(
     fields: string[],
     extraOrderBy?: (searchParams: URLSearchParams) => Record<string, unknown>
@@ -264,6 +264,7 @@ export const GetReadTime = (words: string | number) => {
 };
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { UnauthorizedError } from "./GlobalErrorHandler";
+import { auth } from "@/auth";
 
 /**
  * Extracts only the dirty fields and their current values from a React Hook Form instance.
