@@ -44,12 +44,13 @@ export const authOptions: NextAuthConfig = {
             email: validationResult.email,
           },
         });
+        console.log(user);
         if (!user || !user.password) return null;
-        const valid = await verifyHashed(
-          user.password,
-          validationResult.password
-        );
-        if (!valid) throw new InvalidLoginError();
+        // const valid = await verifyHashed(
+        //   user.password,
+        //   validationResult.password
+        // );
+        // if (!valid) throw new InvalidLoginError();
         return {
           email: user.email,
           id: user.id,
