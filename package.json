@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "prisma": {
+      "seed": "ts-node prisma/seed.ts"
+    }
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.53",
@@ -50,6 +53,7 @@
     "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
     "highlight.js": "^11.11.1",
+    "input-otp": "^1.4.2",
     "install": "^0.13.0",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.554.0",
@@ -66,7 +70,7 @@
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.57.0",
     "react-markdown": "^10.1.0",
-    "resend": "^6.0.1",
+    "resend": "^6.5.2",
     "sonner": "^2.0.5",
     "swr": "^2.3.6",
     "tailwind-merge": "^3.3.0",

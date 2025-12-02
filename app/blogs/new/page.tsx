@@ -30,7 +30,7 @@ import { Topics } from "@prisma/client";
 import { AxiosResponse } from "axios";
 import { useSession } from "next-auth/react";
 import { EditorInstance } from "novel";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useDebouncedCallback } from "use-debounce";
@@ -39,17 +39,19 @@ const unProvidedValues = {
   title: "",
   preview: "",
   topics: [],
-  content: {},
+  content: undefined,
   readingTime: 0,
 };
 const NewArticle = () => {
   const session = useSession();
+
   const [words, setWords] = useState(0);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const previewUrl = coverFile ? URL.createObjectURL(coverFile) : undefined;
   const form = useForm<createBlogSchemaTypes>({
     resolver: zodResolver(createBlogSchema),
   });
+  const [key, setKey] = useState("1");
   useEffect(() => {
     const localStoragePrevious = window.localStorage.getItem(
       "previous_defaultValues_form"
@@ -67,13 +69,14 @@ const NewArticle = () => {
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
       const text = editor.getText();
-      setWords(wordsNumber(text));
+
+      setWords(text.length === 0 ? 0 : wordsNumber(text));
       const formValues = form.watch();
       form.setValue("readingTime", GetReadTime(text), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      formValues.readingTime = GetReadTime(text);
+      formValues.readingTime = text.length == 0 ? 0 : GetReadTime(text);
       window.localStorage.setItem(
         "previous_defaultValues_form",
         JSON.stringify(formValues)
@@ -112,11 +115,14 @@ const NewArticle = () => {
     toast.promise(request, {
       loading: "Publishing...",
       success: () => {
+        localStorage.removeItem("novel-content");
+        localStorage.removeItem("html-content");
         localStorage.removeItem("previous_defaultValues_form");
         window.localStorage.removeItem("novel-content-length");
         // editor?.commands.clearContent();
         setCoverFile(null);
         form.setValue("content", undefined);
+        setKey(Math.random().toString());
         form.reset(unProvidedValues);
         return "Blog published successfully!";
       },
@@ -138,6 +144,7 @@ const NewArticle = () => {
     }
   };
   const readingTime = form.watch("readingTime");
+  console.log(form.watch("content"));
   return (
     <div className=" py-5 ">
       <Dialog>
@@ -158,7 +165,7 @@ const NewArticle = () => {
             wordsCount={words}
           />
         </div>
-        <DialogContent className="!max-w-full py-24 rounded-none max-h-full !h-full !w-full">
+        <DialogContent className="max-w-full! py-24 rounded-none max-h-full h-full! w-full!">
           <Form {...form}>
             <form
               className="flex flex-col   gap-2 "
@@ -189,7 +196,7 @@ const NewArticle = () => {
 
                     <DialogTitle>
                       <span className=" font-work-sans">Blog Title : </span>
-                      <code className="text-muted-foreground !text-xl">
+                      <code className="text-muted-foreground text-xl!">
                         {form.getValues("title")}
                       </code>
                     </DialogTitle>
@@ -259,7 +266,8 @@ const NewArticle = () => {
         </DialogContent>
       </Dialog>
       <TailwindAdvancedEditor
-        defaultContent={form.getValues("content") || defaultEditorContent}
+        key={key}
+        defaultContent={form.watch("content") || defaultEditorContent}
         onUpdate={onEditorUpdate}
       />
     </div>

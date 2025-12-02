@@ -19,7 +19,7 @@ export const PATCH = async (req: NextRequest) => {
         blogId: validationResult.blogId,
         OR: [
           { visitorId: { in: validationResult.visitor_ids } },
-          { userId: validationResult.userId },
+          { userId: validationResult.userId ?? undefined },
         ],
       },
     });

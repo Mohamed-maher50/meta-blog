@@ -1,9 +1,9 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 import { BLOGS_FILTRATION_FIELDS, BLOGS_SORT_FIELDS } from "../../constants";
 import { ApiFutures } from "@/lib/utils";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { prisma } from "@/prisma";
+import { auth } from "@/auth";
 
 export const GET = async (req: NextRequest) => {
   const ApiFuture = new ApiFutures(req)
@@ -33,14 +33,11 @@ export const GET = async (req: NextRequest) => {
     })
     .paginateQuery();
 
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  const session = await auth();
 
   const userTopics = await prisma.userTopic.findMany({
     where: {
-      userId: token?.userId,
+      userId: session?.user?.userId,
     },
   });
   const userTopicIds = userTopics.map((topic) => topic.topicId);
@@ -53,7 +50,7 @@ export const GET = async (req: NextRequest) => {
     ApiFuture.Query.include = {
       favorites: {
         where: {
-          userId: token?.userId,
+          userId: session?.user?.userId,
         },
         select: {
           userId: true,
@@ -61,7 +58,7 @@ export const GET = async (req: NextRequest) => {
       },
       BlogLike: {
         where: {
-          userId: token?.userId,
+          userId: session?.user?.userId,
         },
         select: {
           userId: true,

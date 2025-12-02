@@ -12,7 +12,7 @@ export const PATCH = withAuth(async (req: Request, token) => {
   try {
     const newNotification = await prisma.notification.updateMany({
       where: {
-        userId: token.userId,
+        userId: token.user.userId,
         read: false,
         id: { in: validatedValues.ids },
       },

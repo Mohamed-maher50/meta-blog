@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   description:
     "Meta Blog is a platform where you can read and write insightful blogs on various topics. Join our community to share your thoughts and discover new ideas.",
 };
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -42,7 +43,6 @@ export default async function RootLayout({
                 attribute="class"
                 defaultTheme="light"
                 enableSystem
-                disableTransitionOnChange
               >
                 <div className="flex flex-col">
                   <Navbar />

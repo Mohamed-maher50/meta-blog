@@ -1,8 +1,9 @@
+import { auth } from "@/auth";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { ApiFutures } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { Prisma } from "@prisma/client";
-import { getToken } from "next-auth/jwt";
+
 import { NextRequest } from "next/server";
 const isFollowingQuery = (userId?: string) => {
   return {
@@ -21,7 +22,8 @@ export const GET = async (
   { params }: { params: Promise<{ userId?: string }> }
 ) => {
   const { userId } = await params;
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const session = await auth();
+
   const followStatusOperation = !!req.nextUrl.searchParams.get("status");
 
   const apiFutures = new ApiFutures(req)
@@ -35,7 +37,7 @@ export const GET = async (
   if (followStatusOperation)
     apiFutures.Query.include = {
       ...apiFutures.Query.include,
-      ...isFollowingQuery(token?.userId),
+      ...isFollowingQuery(session?.user?.userId),
     };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   try {

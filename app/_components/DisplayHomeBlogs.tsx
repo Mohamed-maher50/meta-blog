@@ -14,7 +14,7 @@ async function DisplayHomeBlogs({
       <SectionLabel className="max-sm:flex max-sm:flex-col max-sm:items-center max-sm:mx-auto max-sm:justify-center ">
         {label}
       </SectionLabel>
-      <div className="grid gap-2 max-sm:place-items-center place-content-center my-2 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-2 max-sm:place-items-center place-content-center my-2 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {blogs.map((b) => {
           return <RichBlogCard {...b} key={b.id} />;
         })}

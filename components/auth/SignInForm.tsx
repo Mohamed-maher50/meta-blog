@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -7,13 +7,14 @@ import Logo from "../miscellaneous/Logo";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, TLoginSchema } from "@/schema/authSchema";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ProvidersFooter from "./ProvidersFooter";
-import { authErrorMessages } from "@/lib/authErrorMessages";
+import { LoginAction } from "@/actions/LoginAction";
+import { useSession } from "next-auth/react";
+
 const FormHeader = () => {
   return (
     <>
@@ -27,68 +28,34 @@ const FormHeader = () => {
     </>
   );
 };
+const defaultValues = {
+  email: "",
+  password: "",
+};
+
 const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
+  const { update } = useSession();
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues,
   });
+  const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [submitted, setSubmitted] = useState(false);
   const handleSubmit = async (values: TLoginSchema) => {
-    toast.promise(
-      signIn("credentials", {
-        ...values,
-      }),
-      {
-        loading: "please wait...",
-        // success: (res) => {
-        //   if (res.error == "verificationError") {
-        //     // toast.warning(
-        //     //   <div>
-        //     //     Verification required.{" "}
-        //     //     <Button
-        //     //       variant="link"
-        //     //       className="p-0 h-auto text-primary  align-baseline"
-        //     //       onClick={async () => {
-        //     //         toast.promise(resend.emails.send({
-        //     //           from:"maher",
-        //     //           to:values.email,
-        //     //           subject:"verification link",
-        //     //           html:`<a href="${}"></a>`
-        //     //         }), {
-        //     //           loading: "verification message creating...",
-        //     //           success: "sended successful",
-        //     //           error: "something wrong",
-        //     //         });
-        //     //       }}
-        //     //     >
-        //     //       Send Verification link
-        //     //     </Button>
-        //     //   </div>
-        //     // );
-        //     return null;
-        //   }
-        //   if (res.error) throw new Error(res.error);
-        //   return "Successfully submitted";
-        // },
-        error: (result) => {
-          const message = authErrorMessages(result.message);
-          return message;
-        },
-      }
-    );
-  };
-  const params = useSearchParams();
-  const error = params.get("error");
-  useEffect(() => {
-    if (error) {
-      switch (error) {
-        case "OAuthAccountNotLinked":
-          toast.warning("you already logged in with this email before");
-      }
+    const result = await LoginAction(values);
+    if (result.status == 302)
+      return router.replace(`/auth/verify-email?email=${values.email}`);
+    if (!result.success) {
+      return toast.error(result.message, {
+        position: "top-center",
+      });
     }
-  }, [error]);
+    toast.success("successfully login");
+    await update();
+    if (result.status == 200) router.replace("/");
+  };
+
   return (
     <Form {...form}>
       <form
@@ -145,7 +112,11 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
               }}
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button
+            disabled={form.formState.isSubmitting || submitted}
+            type="submit"
+            className="w-full"
+          >
             Login
           </Button>
           <ProvidersFooter />

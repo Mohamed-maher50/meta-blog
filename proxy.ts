@@ -1,7 +1,6 @@
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { auth } from "./auth";
-const authPages = ["/auth/signin", "/auth/signUp"];
+const authPages = ["/auth/signin", "/auth/signUp", "/auth/verify-email"];
 const protectedPages = ["/author", "/blogs/new", "/topics/choose"];
 export default auth(async (req) => {
   const newUrl = new URL("/", req.nextUrl.origin);
@@ -15,12 +14,13 @@ export default auth(async (req) => {
     url.pathname = authPages[0];
     return Response.redirect(url);
   }
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  const session = await auth();
 
-  if (token && token.isFirstVisit && req.nextUrl.pathname != "/topics/choose")
+  if (
+    session &&
+    session.user.isFirstVisit &&
+    req.nextUrl.pathname != "/topics/choose"
+  )
     return Response.redirect(new URL("/topics/choose", req.nextUrl.origin));
   return NextResponse.next();
 });

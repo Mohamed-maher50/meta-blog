@@ -2,6 +2,7 @@ import { getTopics } from "@/lib/Topics";
 import Link from "next/link";
 import React from "react";
 import { Badge } from "../ui/badge";
+import { EmptyStateAlert } from "../EmptyStateAlert";
 
 const SuggestedTopics = async ({
   query,
@@ -13,6 +14,8 @@ const SuggestedTopics = async ({
   limit?: number;
 }) => {
   const { data, pagination } = await getTopics(fetchQuery);
+  if (pagination.totalItems < 1)
+    return <EmptyStateAlert searchQuery={query} type="topics" />;
   return (
     <div className="flex py-2  gap-1 flex-wrap">
       {data.map((t) => {

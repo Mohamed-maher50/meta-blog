@@ -16,11 +16,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { signUpSchema, TSignUpSchema } from "@/schema/authSchema";
-import ProvidersFooter from "./ProvidersFooter";
 import Link from "next/link";
-import axiosClient from "@/lib/axios.client";
+import { RegistrationAction } from "@/actions/RegisterAction";
+import { toast } from "sonner";
 
 const SignUpForm = ({ className, ...props }: React.ComponentProps<"form">) => {
   const form = useForm<TSignUpSchema>({
@@ -30,20 +29,12 @@ const SignUpForm = ({ className, ...props }: React.ComponentProps<"form">) => {
   const router = useRouter();
   const handleSubmit = async (values: TSignUpSchema) => {
     try {
-      toast.promise(axiosClient.post("/api/auth/", values), {
-        loading: "please wait...",
-        success: async ({ status }) => {
-          if (status == 201) {
-            setTimeout(() => {
-              router.push("/auth/signin");
-            }, 500);
-            return "email created Successfully";
-          }
-        },
-        error: (err: { message: string }) => {
-          return err.message || "something wrong!";
-        },
-      });
+      const registerResult = await RegistrationAction(values);
+      if (registerResult.status === 201)
+        router.replace(`/auth/verify-email?email=${values.email}`);
+      else if (registerResult.status > 204 && registerResult.status < 404)
+        toast.error(registerResult.message);
+      else toast.error("server error");
     } catch (error) {
       console.log(error);
     }
@@ -148,7 +139,6 @@ const SignUpForm = ({ className, ...props }: React.ComponentProps<"form">) => {
           <Button type="submit" className="w-full">
             Login
           </Button>
-          <ProvidersFooter />
         </div>
         <div className="text-center text-sm">
           Don&apos;t have an account?{" "}

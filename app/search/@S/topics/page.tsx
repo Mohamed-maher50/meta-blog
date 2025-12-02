@@ -10,7 +10,7 @@ const page = async ({
   const { q } = await searchParams;
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="flex flex-col gap-2 flex-wrap">
       <h1 className="text-secondary-900 font-work-sans font-semibold text-lg">
         Posts matching {q}
       </h1>

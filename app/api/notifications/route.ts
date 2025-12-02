@@ -21,7 +21,7 @@ export const POST = withAuth(async (req: Request, token) => {
       data: {
         message,
         userId: validationResult.userId,
-        actorId: token.userId,
+        actorId: token.user.userId,
         type: validationResult.type,
         entityId: validationResult.entityId,
       },

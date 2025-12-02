@@ -71,8 +71,8 @@ const CommentCard = ({
             src={author.image || "/placeholder.svg"}
             alt={author.name}
           />
-          <AvatarFallback className="bg-secondary text-secondary-foreground">
-            {author.name}
+          <AvatarFallback className="bg-secondary uppercase! font-semibold text-secondary-foreground">
+            {author.name?.slice(0, 1)}
           </AvatarFallback>
         </Avatar>
 

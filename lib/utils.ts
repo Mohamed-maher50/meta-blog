@@ -2,12 +2,12 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import bcrypt from "bcryptjs";
 import { UploadApiResponse } from "cloudinary";
-import { getToken, JWT } from "next-auth/jwt";
+
 import { NextRequest } from "next/server";
 import filtrationQuery from "./api/Filtration";
 import pagination from "./api/pagination";
 import { IPagination } from "@/types";
-import * as Sentry from "@sentry/nextjs";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -110,14 +110,11 @@ export async function requireAuth() {
   return session;
 }
 export const withAuth = (
-  cb: (req: NextRequest, token: JWT) => Promise<Response>
+  cb: (req: NextRequest, token: Session) => Promise<Response>
 ) => {
   return async (req: NextRequest) => {
-    const token = await getToken({
-      req,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-    if (!token || !token.userId) throw UnauthorizedError;
+    const token = await auth();
+    if (!token || !token.user.userId) throw UnauthorizedError;
 
     return cb(req, token);
   };
@@ -152,14 +149,6 @@ export class ApiFutures {
     take: number;
     include: Record<string, unknown>;
   } = {
-    where: {},
-    orderBy: [],
-    omit: {},
-    skip: 0,
-    take: 0,
-    include: {},
-  };
-  constructor(private readonly req: NextRequest) {}
     where: {},
     orderBy: [],
     omit: {},
@@ -264,7 +253,7 @@ export const wait = async (time?: number): Promise<boolean> => {
 export const wordsNumber = (words: string) => words.trim().split(/\s+/).length;
 export const GetReadTime = (words: string | number) => {
   if (typeof words === "string") {
-    const wordCount = wordsNumber(words);
+    const wordCount = words.length == 0 ? 0 : wordsNumber(words);
     const readTime = Math.ceil(wordCount / 200);
     return readTime;
   }
@@ -274,6 +263,7 @@ export const GetReadTime = (words: string | number) => {
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { UnauthorizedError } from "./GlobalErrorHandler";
 import { auth } from "@/auth";
+import { Session } from "next-auth";
 
 /**
  * Extracts only the dirty fields and their current values from a React Hook Form instance.

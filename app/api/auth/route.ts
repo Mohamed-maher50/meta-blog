@@ -2,7 +2,7 @@ import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { hashPassword } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { NextResponse } from "next/server";
-const initialSocial = {
+export const initialSocial = {
   facebook: "",
   instagram: "",
   linkedin: "",

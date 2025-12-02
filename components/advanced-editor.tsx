@@ -43,9 +43,6 @@ const TailwindAdvancedEditor = ({
   editable = true,
   onUpdate,
 }: TailwindAdvancedEditorProps) => {
-  //   const [saveStatus, setSaveStatus] = useState("Saved");
-  //   const [charsCount, setCharsCount] = useState();
-
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
@@ -83,7 +80,7 @@ const TailwindAdvancedEditor = ({
     500
   );
 
-  if (!defaultContent) return null;
+  if (!defaultContent?.content) return null;
 
   return (
     <div className="relative  w-full ">
@@ -91,6 +88,7 @@ const TailwindAdvancedEditor = ({
         <EditorContent
           editable={editable}
           initialContent={defaultContent}
+          autofocus
           extensions={extensions}
           className="relative min-h-[500px] w-full border-muted  sm:mb-[calc(20vh)]   "
           editorProps={{

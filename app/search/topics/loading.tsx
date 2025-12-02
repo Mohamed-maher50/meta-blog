@@ -1,6 +1,5 @@
 "use client";
 import TopicBadgeSkeleton from "@/components/topics/TopicBadgeSkeleton";
-import React from "react";
 
 function Loading() {
   return (

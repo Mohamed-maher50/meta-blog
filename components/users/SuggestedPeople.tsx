@@ -4,6 +4,7 @@ import { GetUsers } from "@/lib/Users";
 import { headers } from "next/headers";
 import { UserInfo } from "@/types";
 import { UserSuggestionCard } from "./userSuggestionCard";
+import { EmptyStateAlert } from "../EmptyStateAlert";
 
 const SuggestedPeople = async ({
   query,
@@ -19,6 +20,9 @@ const SuggestedPeople = async ({
   const getUserResponse = await GetUsers<
     (UserInfo & { isFollowing: boolean })[]
   >(fetchQuery as string, { headers: requestHeaders });
+
+  if (getUserResponse.pagination.totalItems < 1)
+    return <EmptyStateAlert searchQuery={query} type="blogs" />;
   return (
     <div className="flex py-2  gap-1 flex-wrap">
       {getUserResponse.data.map((t) => {

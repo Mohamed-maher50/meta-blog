@@ -1,7 +1,6 @@
 import { ApiFutures, requireAuth } from "@/lib/utils";
 import { createBlogSchema } from "@/schema/createBlogSchema";
 import { prisma } from "@/prisma";
-import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 import {
   BLOGS_FILTRATION_FIELDS,
@@ -10,6 +9,7 @@ import {
 } from "../constants";
 import { Format } from "@prisma/client";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
+import { auth } from "@/auth";
 
 export const POST = async (req: Request) => {
   try {
@@ -63,10 +63,7 @@ export const POST = async (req: Request) => {
 };
 
 export const GET = async (req: NextRequest) => {
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  const session = await auth();
 
   const ApiFuture = new ApiFutures(req)
     .search()
@@ -92,7 +89,7 @@ export const GET = async (req: NextRequest) => {
     ApiFuture.Query.include = {
       favorites: {
         where: {
-          userId: token?.userId,
+          userId: session?.user.userId,
         },
         select: {
           userId: true,
@@ -100,7 +97,7 @@ export const GET = async (req: NextRequest) => {
       },
       BlogLike: {
         where: {
-          userId: token?.userId,
+          userId: session?.user?.userId,
         },
         select: {
           userId: true,

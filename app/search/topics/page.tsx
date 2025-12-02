@@ -23,6 +23,7 @@ const page = async ({
   const initialTopics = await getTopics(`page=1&limit=50&q=${q}`);
   if (!initialTopics.pagination.totalItems)
     return <EmptyStateAlert type="topics" searchQuery={q} />;
+
   return (
     <div className="flex flex-col justify-center">
       <div className="flex gap-2  flex-wrap">

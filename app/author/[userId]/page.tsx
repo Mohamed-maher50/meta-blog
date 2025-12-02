@@ -96,7 +96,12 @@ export default async function ProfilePage({
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {d.map((e) => {
                       return (
-                        <RichBlogCard {...e} key={e.id} Editable Deletable />
+                        <RichBlogCard
+                          {...e}
+                          key={e.id}
+                          Editable={e.author.id === session?.user.userId}
+                          Deletable={e.author.id === session?.user.userId}
+                        />
                       );
                     })}
                     <ProfileInfinityBlogsSection

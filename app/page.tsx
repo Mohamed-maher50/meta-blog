@@ -46,6 +46,7 @@ const Home = async () => {
     <main className="min-h-screen transition-transform duration-500  font-work-sans">
       <HeroSection />
       <Container>
+        {/* <TopicsCarousel /> */}
         <div className="flex justify-between  max-md:flex-col py-10 gap-2">
           <div className="relative flex-col flex gap-10  w-full">
             {BLOGS_SECTIONS.map((section) => {

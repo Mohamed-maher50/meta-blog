@@ -1,12 +1,19 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth, {
+  AuthError,
+  CredentialsSignin,
+  NextAuthConfig,
+} from "next-auth";
 import GitHubProvider from "next-auth/providers/github"; // optional
 import GoogleProvider from "next-auth/providers/google"; // optional
 import CredentialsProvider from "next-auth/providers/credentials"; // optional
 import { loginSchema } from "@/schema/authSchema";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { generateToken, sendVerificationEmail } from "./lib/VerificationEmail";
 import { prisma } from "@/prisma";
 import type { Adapter } from "next-auth/adapters";
+import { verifyHashed } from "./lib/utils";
+class InvalidLoginError extends CredentialsSignin {
+  code = "Email or Password not correct";
+}
 export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
@@ -20,7 +27,6 @@ export const authOptions: NextAuthConfig = {
     }),
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         email: {
           label: "Email",
@@ -32,21 +38,37 @@ export const authOptions: NextAuthConfig = {
         },
       },
       async authorize(credentials) {
-        const validationResult = loginSchema.parse(credentials);
-        const user = await prisma.user.findUnique({
-          where: {
-            email: validationResult.email,
-          },
-        });
-        if (!user) return null;
-        return {
-          email: user.email,
-          id: user.id,
-          name: user.name,
-          image: user.image,
-          emailVerified: user.emailVerified,
-          isFirstVisit: user.isFirstVisit,
-        };
+        try {
+          const validationResult = loginSchema.safeParse(credentials);
+
+          if (!validationResult.success) throw new InvalidLoginError();
+          const user = await prisma.user.findUnique({
+            where: {
+              email: validationResult.data.email,
+            },
+          });
+
+          if (!user || !user.password) throw new InvalidLoginError();
+
+          const isVerified = await verifyHashed(
+            validationResult.data.password,
+            user.password
+          );
+          if (!isVerified) throw new InvalidLoginError();
+          console.log(user);
+          console.log("scur");
+          return {
+            email: user.email,
+            id: user.id,
+            name: user.name,
+            image: user.image,
+            emailVerified: user.emailVerified,
+            isFirstVisit: user.isFirstVisit,
+          };
+        } catch (error) {
+          if (error instanceof AuthError) throw error;
+          throw new InvalidLoginError();
+        }
       },
     }),
   ],
@@ -54,36 +76,21 @@ export const authOptions: NextAuthConfig = {
     signIn: "/auth/signin",
   },
   events: {
-    linkAccount: async ({ user }) => {
-      await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          emailVerified: new Date(),
-        },
-      });
-    },
+    // linkAccount: async ({ user }) => {
+    //   await prisma.user.update({
+    //     where: {
+    //       id: user.id,
+    //     },
+    //     data: {
+    //       emailVerified: new Date(),
+    //     },
+    //   });
+    // },
   },
   session: {
     strategy: "jwt",
   },
   callbacks: {
-    signIn: async ({ user, account }) => {
-      if (account && account.provider == "credentials") {
-        return true;
-        const newToken = await generateToken(user.email);
-        if (!user.emailVerified) {
-          await sendVerificationEmail(newToken);
-          return `/auth/signin?error=${encodeURIComponent(
-            `verificationError`
-          )}`;
-        }
-      }
-
-      return true;
-    },
-
     jwt({ token, user, trigger, session }) {
       // after signin will go to jwt and return token data
       if (trigger === "update" && session.image) token.image = session.image;

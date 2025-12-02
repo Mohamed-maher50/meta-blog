@@ -10,7 +10,6 @@ import { headers as NextHeaders } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/prisma";
 import { JSONContent } from "novel";
-import React from "react";
 import { AppError } from "@/lib/GlobalErrorHandler";
 import { baseUrl } from "@/lib/baseUrl";
 type IAuthorBlog = Join<Blog, User, "author">;

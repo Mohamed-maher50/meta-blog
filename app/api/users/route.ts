@@ -1,12 +1,13 @@
+import { auth } from "@/auth";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { ApiFutures } from "@/lib/utils";
 import { prisma } from "@/prisma";
-import { getToken } from "next-auth/jwt";
+
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const session = await auth();
 
     const apiFutures = new ApiFutures(req)
       .search({ label: "name" })
@@ -25,7 +26,7 @@ export const GET = async (req: NextRequest) => {
 
         followers: {
           where: {
-            followerId: token?.userId,
+            followerId: session?.user?.userId,
           },
           select: {
             id: true,

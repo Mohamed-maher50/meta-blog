@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getTopics } from "@/lib/Topics";
 import { RiFireFill } from "@remixicon/react";
 import Link from "next/link";
-import React from "react";
 
 const DiscoverTopics = async () => {
   const { data: topics } = await getTopics(
@@ -19,7 +18,7 @@ const DiscoverTopics = async () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="  grid-cols-1 lg:grid-cols-2 gap-1.5 grid">
+          <div className=" grid-cols-1 max-sm:grid-cols-2 gap-1.5 grid">
             {topics.map((topic) => (
               <Link
                 href={`/topics/${topic.id}/`}

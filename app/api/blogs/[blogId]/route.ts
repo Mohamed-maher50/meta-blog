@@ -1,10 +1,10 @@
+import { auth } from "@/auth";
 import { extractFields } from "@/lib/api/extractFields";
 import cloudinary from "@/lib/cloudinary/cloudinary";
 import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { EditBlogSchema } from "@/schema/EditBlogSchema";
-import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 
 export const GET = async (
@@ -12,10 +12,7 @@ export const GET = async (
   { params }: { params: Promise<{ blogId: string }> }
 ) => {
   try {
-    const token = await getToken({
-      req,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    const session = await auth();
 
     const { blogId } = await params;
     const searchParams = req.nextUrl.searchParams;
@@ -34,7 +31,7 @@ export const GET = async (
         },
         BlogLike: {
           where: {
-            userId: token?.userId,
+            userId: session?.user?.userId,
           },
           select: {
             userId: true,

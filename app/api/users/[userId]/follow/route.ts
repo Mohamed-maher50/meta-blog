@@ -50,13 +50,13 @@ export const PATCH = async (
       },
     });
 
-    const notification = await prisma.notification.create({
+    await prisma.notification.create({
       data: {
-        actorId: token.userId,
+        actorId: user.userId,
         message: `started following you.`,
         userId: validationResult.userId,
         type: "FOLLOW",
-        entityId: token.userId,
+        entityId: user.userId,
         read: false,
       },
       include: {
@@ -73,12 +73,6 @@ export const PATCH = async (
         },
       },
     });
-
-    await pusherServer.trigger(
-      `private-user-${validationResult.userId}`,
-      "new-notification",
-      notification
-    );
 
     return Response.json({ message: "success following" }, { status: 201 });
   } catch (error) {
