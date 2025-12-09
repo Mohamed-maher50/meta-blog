@@ -1,5 +1,5 @@
 import { ApiFutures, requireAuth } from "@/lib/utils";
-import { createBlogSchema } from "@/schema/createBlogSchema";
+import { newBlogApiSchema } from "@/schema/createBlogSchema";
 import { prisma } from "@/prisma";
 import { NextRequest } from "next/server";
 import {
@@ -15,9 +15,8 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json();
 
-    const result = createBlogSchema.parse(body);
+    const result = newBlogApiSchema.parse(body);
     const { user } = await requireAuth();
-
     const { cover, topics, ...blogValues } = result;
     const formattedCover = {
       format: Format.webp,
@@ -58,6 +57,7 @@ export const POST = async (req: Request) => {
     });
     return Response.json(UserBlog, { status: 201 });
   } catch (error) {
+    console.log(error);
     return Response.json(...ErrorHandler(error, false));
   }
 };

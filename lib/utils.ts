@@ -251,7 +251,7 @@ export const wait = async (time?: number): Promise<boolean> => {
   return new Promise((resolve) => setTimeout(() => resolve(true), time || 500));
 };
 export const wordsNumber = (words: string) => words.trim().split(/\s+/).length;
-export const GetReadTime = (words: string | number) => {
+export const getReadTime = (words: string | number) => {
   if (typeof words === "string") {
     const wordCount = words.length == 0 ? 0 : wordsNumber(words);
     const readTime = Math.ceil(wordCount / 200);

@@ -20,6 +20,10 @@ export const createBlogSchema = z.object({
       })
     )
     .min(1),
+});
+export const newBlogApiSchema = createBlogSchema.extend({
   readingTime: z.number().min(1, "Reading time must be at least 1 minute"),
 });
+export type newBlogApiSchemaType = z.infer<typeof newBlogApiSchema>;
+
 export type createBlogSchemaTypes = z.infer<typeof createBlogSchema>;

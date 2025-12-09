@@ -21,6 +21,7 @@ import {
   Youtube,
   GlobalDragHandle,
 } from "novel";
+import { Heading } from "@tiptap/extension-heading";
 import AutoJoiner from "tiptap-extension-auto-joiner";
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
@@ -146,8 +147,98 @@ const mathematics = Mathematics.configure({
 });
 
 const characterCount = CharacterCount.configure();
+import { Extension } from "@tiptap/core";
+import { Plugin } from "prosemirror-state";
+import { Decoration, DecorationSet } from "prosemirror-view";
+import type { EditorView } from "prosemirror-view";
+import type { Transaction } from "prosemirror-state";
+
+export const ForceTitleExtension = Extension.create({
+  name: "forceTitle",
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        props: {
+          // 1. منع حذف أول عقدة (العنوان H1)
+          handleKeyDown: (view: EditorView, event: KeyboardEvent): boolean => {
+            if (event.key === "Backspace" || event.key === "Delete") {
+              const { selection } = view.state;
+              // إذا كان المؤشر في بداية المستند تماماً قبل العنوان
+              if (selection.empty && selection.anchor === 0) {
+                // anchor === 0 هو بداية المستند
+                console.log("Prevented deletion of the main title area.");
+                return true; // منع الحدث الافتراضي (الحذف)
+              }
+            }
+            return false;
+          },
+
+          // 2. ضمان ألا يكون العنوان فارغًا تمامًا (Placeholder إجباري)
+          decorations: (state) => {
+            const decorations: Decoration[] = [];
+            const firstNode = state.doc.firstChild;
+
+            // التحقق من أن العقدة الأولى هي H1 وأنها فارغة
+            if (
+              firstNode &&
+              firstNode.type.name === "heading" &&
+              firstNode.attrs.level === 1 &&
+              firstNode.content.size === 0
+            ) {
+              // إضافة Placeholder لجعلها تبدو وكأنها تحتوي على نص
+              decorations.push(
+                Decoration.node(0, firstNode.nodeSize, {
+                  class: "is-empty-title-placeholder",
+                })
+              );
+            }
+            return DecorationSet.create(state.doc, decorations);
+          },
+
+          // 3. منع إضافة أي style آخر غير H1 لأول سطر
+          // هذا يتم التعامل معه جزئياً في الـ Plugin التالي، ولكن هذا يمنع المستخدم من تطبيق زر الـ style toolbar
+        },
+      }),
+
+      // Plugin 2: التأكد من أن أول سطر هو H1 دائماً
+      new Plugin({
+        state: {
+          init: () => null,
+          apply: (tr: Transaction, value, oldState, newState) => {
+            const firstNode = newState.doc.firstChild;
+
+            // إذا لم يكن أول عنصر H1، نقوم بتعديله فوراً
+            if (
+              firstNode &&
+              (firstNode.type.name !== "heading" || firstNode.attrs.level !== 1)
+            ) {
+              // replaceWith يستخدم نطاق العقدة الأولى بالكامل
+              tr.replaceWith(
+                0,
+                firstNode.nodeSize,
+                newState.schema.nodes.heading.create(
+                  { level: 1 },
+                  firstNode.content
+                )
+              );
+
+              // تطبيق التغيير فوراً
+              // ملاحظة: في Tiptap، يفضل إرسال المعاملة الجديدة بدلاً من استخدام view.focus() هنا مباشرة
+              // view.dispatch(tr); // لا يمكن الوصول إلى view هنا
+            }
+            return value;
+          },
+        },
+      }),
+    ];
+  },
+});
 
 export const defaultExtensions = [
+  Heading.configure({
+    levels: [1, 2, 3],
+  }),
   starterKit,
   placeholder,
   tiptapLink,
