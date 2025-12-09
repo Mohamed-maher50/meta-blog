@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { Prisma } from "@prisma/client";
 
@@ -23,14 +23,12 @@ export const GET = async (
 ) => {
   const { userId } = await params;
   const session = await auth();
-
   const followStatusOperation = !!req.nextUrl.searchParams.get("status");
-
-  const apiFutures = new ApiFutures(req)
+  const apiFutures = new ApiFuturesQuery(req)
     .search({ label: "name" })
-    .extractFields(["password", "isFirstVisit", "emailVerified"])
+    .omit(["password", "isFirstVisit", "emailVerified"])
     .paginateQuery()
-    .sortBy(["createdAt"])
+    .sort(["createdAt"])
     .filter(["id", "label"], () => ({
       id: userId,
     }));
@@ -41,14 +39,29 @@ export const GET = async (
     };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   try {
-    const { where, include } = apiFutures.Query;
+    const { where, include, omit } = apiFutures.Query;
     const user = await prisma.user.findUnique({
       where: {
         ...(where as Prisma.UserWhereUniqueInput),
       },
-      ...(include && { include }),
+      include: {
+        ...include,
+        followers: {
+          where: {
+            followerId: session?.user.userId,
+          },
+          select: { followerId: true },
+        },
+      },
+      omit,
     });
-    return Response.json(user, { status: 200 });
+    if (!user) return Response.json(user, { status: 200 });
+    if (!followStatusOperation) return Response.json(user, { status: 200 });
+
+    return Response.json(
+      { ...user, isFollowing: user.followers.length > 0 },
+      { status: 200 }
+    );
   } catch (error) {
     return Response.json(...ErrorHandler(error, false));
   }

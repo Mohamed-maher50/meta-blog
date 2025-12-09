@@ -1,21 +1,21 @@
+import SectionLabel from "@/components/miscellaneous/SectionLabel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getTopics } from "@/lib/Topics";
 import { RiFireFill } from "@remixicon/react";
 import Link from "next/link";
-import React from "react";
 
 const DiscoverTopics = async () => {
   const { data: topics } = await getTopics(
-    "limit=7&page=1&orderBy[]=-numberOfFollowers"
+    "limit=7&page=1&sort=-numberOfFollowers"
   );
 
   return (
-    <div className="space-y-6  sticky max-md:w-full max-md:text-center duration-500 transition top-1 h-fit  w-72  md:w-92">
+    <div className="space-y-6 max-sm:hidden sticky max-md:w-full max-md:text-center duration-500 transition top-1 h-fit  w-72  md:w-92">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <RiFireFill className="w-5 h-5 text-primary" />
-            Popular Topics
+            <SectionLabel>Popular Topics</SectionLabel>
           </CardTitle>
         </CardHeader>
         <CardContent>

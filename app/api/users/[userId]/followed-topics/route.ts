@@ -1,5 +1,5 @@
 import { PRISMA_USER_INFO_FIELDS_SELECT } from "@/app/api/constants";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { NextRequest } from "next/server";
 
@@ -9,11 +9,11 @@ export const GET = async (
 ) => {
   try {
     const { userId } = await params;
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .search({ label: "name" })
-      .extractFields([])
+      .omit([])
       .paginateQuery()
-      .sortBy(["createdAt"])
+      .sort(["createdAt"])
       .filter(["id", "topicId"], () => ({ userId }));
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { skip, take, include, omit, ...countQuery } = apiFutures.Query;

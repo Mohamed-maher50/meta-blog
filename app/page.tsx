@@ -16,17 +16,17 @@ import { Separator } from "@/components/ui/separator";
 export const BLOGS_SECTIONS = [
   {
     label: "Latest articles 🚀",
-    query: "orderBy[]=-createdAt&",
+    query: "sort=-createdAt&",
     errorMessage: "sorry can't fetch latest blogs",
   },
   {
     label: "Most views",
-    query: "orderBy[]=-views_count&",
+    query: "sort=-views_count&",
     errorMessage: "sorry can't fetch most viewed blogs",
   },
   {
     label: "Most Loved Articles ❤️",
-    query: "orderBy[]=-BlogLike&",
+    query: "sort=-BlogLike&",
     errorMessage: "sorry can't fetch most loved blogs",
   },
 ];
@@ -46,7 +46,6 @@ const Home = async () => {
     <main className="min-h-screen transition-transform duration-500  font-work-sans">
       <HeroSection />
       <Container>
-        {/* <TopicsCarousel /> */}
         <div className="flex justify-between  max-md:flex-col py-10 gap-2">
           <div className="relative flex-col flex gap-10  w-full">
             {BLOGS_SECTIONS.map((section) => {
@@ -65,7 +64,9 @@ const Home = async () => {
                             blogs={data}
                             label={section.label}
                           />
-                          <InfinityBlogsCardsSection query={section.query} />
+                          {data.length > 10 && (
+                            <InfinityBlogsCardsSection query={section.query} />
+                          )}
                           <Separator className="my-5" />
                         </section>
                       );

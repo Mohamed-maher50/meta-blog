@@ -95,7 +95,7 @@ const page = async ({ params }: { params: Promise<{ topicId: string }> }) => {
         <DisplayChunk
           fetcher={async () => {
             const { data } = await GetBlogs<BlogCardProps>(
-              `topicId=${param.topicId}&orderBy[]=createAt`
+              `topicId=${param.topicId}&sort=createAt`
             );
             return data;
           }}

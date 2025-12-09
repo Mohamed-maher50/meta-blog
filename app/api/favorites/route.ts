@@ -3,7 +3,7 @@ import { z } from "zod";
 import { ObjectId } from "mongodb";
 import { NextRequest } from "next/server";
 import { Favorites } from "@prisma/client";
-import { ApiFutures, requireAuth } from "@/lib/utils";
+import { ApiFuturesQuery, requireAuth } from "@/lib/utils";
 import { PRISMA_USER_INFO_FIELDS_SELECT } from "../constants";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 const newFavoriteSchema = z.object({
@@ -73,13 +73,13 @@ export const POST = async (req: Request) => {
 export const GET = async (req: NextRequest) => {
   try {
     const { user } = await requireAuth();
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .filter(["blogId"], () => ({
         userId: user.userId,
       }))
       .paginateQuery()
-      .extractFields(["userId", "blogId"])
-      .sortBy(["createdAt"]);
+      .omit(["userId", "blogId"])
+      .sort(["createdAt"]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { omit, include, take, skip, ...CountQuery } = apiFutures.Query;
     const numberOfDocuments = await prisma.favorites.count(CountQuery);

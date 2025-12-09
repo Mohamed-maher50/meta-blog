@@ -46,7 +46,7 @@ export function ProfileHeader({
     <div className="space-y-8">
       {/* Profile Info */}
       <div className="flex items-start justify-between">
-        <div className="flex gap-6">
+        <div className="flex max-sm:flex-col gap-6">
           <Avatar className="h-24 w-24 border-2 border-border">
             <AvatarImage
               src={
@@ -79,7 +79,7 @@ export function ProfileHeader({
             ) : (
               <FollowButton
                 isFollowed={user.isFollowing}
-                params={new Promise((res) => res({ userId: "123" }))}
+                params={new Promise((res) => res({ userId: user.id }))}
               />
             )}
           </WithAuth>
@@ -94,7 +94,7 @@ export function ProfileHeader({
       )}
 
       {/* Contact & Social Media */}
-      <div className="flex flex-wrap gap-8">
+      <div className="flex max-sm:flex-col flex-wrap gap-8">
         {user.email && (
           <div>
             <h3 className="text-sm font-semibold mb-2">Email</h3>

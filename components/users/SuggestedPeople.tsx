@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 import { GetUsers } from "@/lib/Users";
 import { headers } from "next/headers";
 import { UserInfo } from "@/types";

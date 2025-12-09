@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
-import { extractFields } from "@/lib/api/extractFields";
 import cloudinary from "@/lib/cloudinary/cloudinary";
 import { AppError, ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { requireAuth } from "@/lib/utils";
+import { ApiFuturesQuery, requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { EditBlogSchema } from "@/schema/EditBlogSchema";
 import { NextRequest } from "next/server";
@@ -15,8 +14,7 @@ export const GET = async (
     const session = await auth();
 
     const { blogId } = await params;
-    const searchParams = req.nextUrl.searchParams;
-    const extractedFields = extractFields(searchParams);
+    const ApiFutures = new ApiFuturesQuery(req).omit([])
 
     const blog = await prisma.blog.findUnique({
       where: {
@@ -49,7 +47,7 @@ export const GET = async (
           },
         },
       },
-      omit: extractedFields,
+      omit: ApiFutures.Query.omit,
     });
     if (!blog)
       throw new AppError(
@@ -72,13 +70,13 @@ export const DELETE = async (
     const { blogId } = await params;
 
     const result = await prisma.$transaction(async (tx) => {
-      const isBlogExist = await prisma.blog.findUnique({
-        where: { id: blogId },
+      const isBlogExist = await tx.blog.findUnique({
+        where: { id: blogId, authorId: user.userId },
       });
       if (!isBlogExist)
         throw new AppError(
           "not found any blog belong to this id :" + blogId,
-          204
+          400
         );
       const query = { where: { blogId: blogId } };
       await tx.blogLike.deleteMany(query);
@@ -94,8 +92,9 @@ export const DELETE = async (
       return blogAfterDelete;
     });
 
-    return Response.json(result, { status: 204 });
+    return Response.json(result, { status: 200 });
   } catch (error) {
+
     return Response.json(...ErrorHandler(error, false));
   }
 };

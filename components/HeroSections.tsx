@@ -34,13 +34,13 @@ const HeroSection = async () => {
   const session = await auth();
   const writeNewStoryLink = session?.user ? "/blogs/new" : "/auth/signin";
   return (
-    <section className="bg-gradient-to-br py-4 from-primary/5 to-primary/10 border-b border-border">
+    <section className="bg-linear-to-br py-4 from-primary/5 to-primary/10 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="max-w-2xl">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
+          <h2 className="text-4xl max-sm:text-2xl md:text-5xl font-bold text-foreground mb-4 text-balance">
             Discover Stories, Ideas & Insights
           </h2>
-          <p className="text-lg text-secondary-foreground mb-8">
+          <p className="text-lg max-sm:text-lg text-secondary-foreground mb-8">
             Explore a community of writers sharing knowledge about web
             development, design, and technology.
           </p>

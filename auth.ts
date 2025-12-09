@@ -55,8 +55,7 @@ export const authOptions: NextAuthConfig = {
             user.password
           );
           if (!isVerified) throw new InvalidLoginError();
-          console.log(user);
-          console.log("scur");
+
           return {
             email: user.email,
             id: user.id,

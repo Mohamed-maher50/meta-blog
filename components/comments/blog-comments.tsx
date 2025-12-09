@@ -30,7 +30,7 @@ const BlogComments: React.FC<BlogCommentsProps> = ({ blogId, blog }) => {
     queryFn: async ({ pageParam = 1 }) => {
       const res = await GetComments<ResponseComment>({
         id: blogId,
-        query: `?limit=10&page=${pageParam}&orderBy[]=-createdAt`,
+        query: `?limit=10&page=${pageParam}&sort=-createdAt`,
       });
       return res;
     },

@@ -1,6 +1,7 @@
-import { ApiFutures, requireAuth } from "@/lib/utils";
+import { ApiFuturesQuery, requireAuth } from "@/lib/utils";
 import { newBlogApiSchema } from "@/schema/createBlogSchema";
 import { prisma } from "@/prisma";
+import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
 import {
   BLOGS_FILTRATION_FIELDS,
@@ -9,7 +10,6 @@ import {
 } from "../constants";
 import { Format } from "@prisma/client";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { auth } from "@/auth";
 
 export const POST = async (req: Request) => {
   try {
@@ -63,9 +63,12 @@ export const POST = async (req: Request) => {
 };
 
 export const GET = async (req: NextRequest) => {
-  const session = await auth();
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  const ApiFuture = new ApiFutures(req)
+  const ApiFuture = new ApiFuturesQuery(req)
     .search()
     .filter(BLOGS_FILTRATION_FIELDS, ({ searchParams }) => {
       if (!searchParams.get("topicId")) return null;
@@ -77,8 +80,8 @@ export const GET = async (req: NextRequest) => {
         },
       };
     })
-    .extractFields([])
-    .sortBy(BLOGS_SORT_FIELDS)
+    .omit([])
+    .sort(BLOGS_SORT_FIELDS)
     .paginateQuery();
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -89,7 +92,7 @@ export const GET = async (req: NextRequest) => {
     ApiFuture.Query.include = {
       favorites: {
         where: {
-          userId: session?.user.userId,
+          userId: token?.userId,
         },
         select: {
           userId: true,
@@ -97,7 +100,7 @@ export const GET = async (req: NextRequest) => {
       },
       BlogLike: {
         where: {
-          userId: session?.user?.userId,
+          userId: token?.userId,
         },
         select: {
           userId: true,

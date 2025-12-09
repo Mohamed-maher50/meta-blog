@@ -17,7 +17,6 @@ export const LoginAction = async (values: TLoginSchema) => {
         email: validationResult.email,
       },
     });
-    console.log(user);
 
     if (!user || !user.password)
       throw new AppError(`cont't find this user`, 403);
@@ -40,7 +39,6 @@ export const LoginAction = async (values: TLoginSchema) => {
 
     throw new AppError("verification email required check your email", 302);
   } catch (error) {
-    console.log(error);
     const handledError = ErrorHandler(error, false);
     return { ...handledError[0], status: handledError[1].status };
   }

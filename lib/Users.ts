@@ -16,10 +16,7 @@ export const GetUserById = async <T>(
   options?: RequestInit
 ): Promise<T> => {
   const queryTrimmed = query ? `?${query}` : "";
-  const res = await fetch(
-    `${baseUrl}/api/users/${id}/${queryTrimmed}`,
-    options
-  );
+  const res = await fetch(`${baseUrl}/api/users/${id}${queryTrimmed}`, options);
   const data = await res.json();
   return data;
 };

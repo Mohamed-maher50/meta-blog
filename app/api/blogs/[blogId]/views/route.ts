@@ -44,7 +44,6 @@ export const PATCH = async (req: NextRequest) => {
 
     return Response.json(result);
   } catch (error) {
-    console.log(error);
     return Response.json(...ErrorHandler(error, false));
   }
 };

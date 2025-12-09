@@ -1,7 +1,8 @@
+import { EmptyStateAlert } from "@/components/EmptyStateAlert";
+import WithInfinityTopics from "@/components/Hocs/withInfinityTopics";
+import { Button } from "@/components/ui/button";
 import { followedTopics } from "@/lib/Topics";
 import Link from "next/link";
-
-import React from "react";
 
 const TopicsFetcher = async ({
   userId,
@@ -28,6 +29,26 @@ const TopicsFetcher = async ({
           </p>
         </Link>
       ))}
+      {data.length > 10 && (
+        <WithInfinityTopics query={`userId=${userId}`} userId={userId} />
+      )}
+      {data.length === 0 && (
+        <>
+          {data.length === 0 && (
+            <div className="bg-secondary shadow flex  flex-col place-content-center w-full col-span-full rounded-sm">
+              <EmptyStateAlert type="topics" />
+              <Button
+                variant={"outline"}
+                className="w-fit mx-auto -translate-y-10"
+                size={"sm"}
+                asChild
+              >
+                <Link href={"/"}>Discover Topics</Link>
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

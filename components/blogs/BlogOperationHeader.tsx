@@ -24,7 +24,10 @@ export const BlogOperationHeader: FC<BlogWithRelations> = (blog) => {
 
     toast.promise(deleteAxiosPromise, {
       loading: "please wait ",
-      success: `success`,
+      success: () => {
+        router.refresh();
+        return `success`;
+      },
       error: "something is wrong!",
     });
   };

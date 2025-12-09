@@ -18,7 +18,7 @@ function BlogsRelatedWithTopicSection({ topicId }: { topicId?: string }) {
 
     try {
       const { data, success } = await GetBlogs<BlogCardProps>(
-        `limit=10&page=${page}&omit[]=content&topicId=${topicId}`
+        `limit=10&page=${page}&omit=content&topicId=${topicId}`
       );
       if (!success) throw new Error("can't fetch blogs");
       setBlogs((prev) => {

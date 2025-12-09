@@ -38,7 +38,6 @@ const Navbar = () => {
   const { setTheme, theme } = useTheme();
   const [isSearching, setIsSearching] = useState(false);
   const searchInput = useRef<HTMLInputElement | null>(null);
-  console.log(status);
   const isDark = theme === "dark";
   const handleSearchInput = () => {
     if (!isSearching) setIsSearching(true);
@@ -87,7 +86,7 @@ const Navbar = () => {
                   aria-label="profile links"
                   className="cursor-pointer "
                 >
-                  <Avatar>
+                  <Avatar className="flex items-center justify-center">
                     <AvatarImage
                       src={data.user.image as string}
                       className=" rounded-full"
@@ -194,14 +193,15 @@ const Navbar = () => {
                             </p>
                           </div>
                         </div>
-                        <Link href="/profile">
-                          <Button
-                            variant="ghost"
-                            className="w-full justify-start"
-                          >
+                        <Button
+                          variant="ghost"
+                          asChild
+                          className="w-full justify-start"
+                        >
+                          <Link href={`/author/${data.user.userId}`}>
                             My Profile
-                          </Button>
-                        </Link>
+                          </Link>
+                        </Button>
                         <Link href="/settings">
                           <Button
                             variant="ghost"
@@ -211,6 +211,11 @@ const Navbar = () => {
                           </Button>
                         </Link>
                         <Button
+                          onClick={() =>
+                            signOut({
+                              redirectTo: "/",
+                            })
+                          }
                           variant="ghost"
                           className="w-full justify-start text-red-600 hover:text-red-600"
                         >

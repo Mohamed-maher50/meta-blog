@@ -1,14 +1,14 @@
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const apiFutures = new ApiFutures(req)
-      .extractFields()
+    const apiFutures = new ApiFuturesQuery(req)
+      .omit()
       .paginateQuery()
-      .sortBy(["createdAt"])
+      .sort(["createdAt"])
       .filter(["id", "followerId", "followeeId"]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { skip, take, include, omit, ...countQuery } = apiFutures.Query;

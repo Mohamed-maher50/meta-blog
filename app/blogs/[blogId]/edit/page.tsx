@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { getDirtyValues, GetReadTime } from "@/lib/utils";
+import { getDirtyValues } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Topics } from "@prisma/client";
 import { toast } from "sonner";
@@ -99,11 +99,7 @@ const EditBlogPage = () => {
       form.setValue("title", firstNode.textContent.trim(), {
         shouldDirty: true,
       });
-    const readingTime = GetReadTime(editor.getText());
-    if (form.getValues("readingTime") != readingTime)
-      form.setValue("readingTime", GetReadTime(editor.getText()), {
-        shouldDirty: true,
-      });
+
     form.setValue("content", editor.getJSON(), { shouldDirty: true });
   };
   const onSearchTopics = async (query: string): Promise<Option[]> => {
@@ -134,7 +130,7 @@ const EditBlogPage = () => {
             Publish
           </Button>
         </DialogTrigger>
-        <DialogContent className="!max-w-full py-24 rounded-none max-h-full !h-full !w-full">
+        <DialogContent className="max-w-full! py-24 rounded-none max-h-full h-full! w-full!">
           <Form {...form}>
             <form
               className="flex flex-col   gap-2 "

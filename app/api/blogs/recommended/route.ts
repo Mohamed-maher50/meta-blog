@@ -1,36 +1,39 @@
 import { NextRequest } from "next/server";
 import { BLOGS_FILTRATION_FIELDS, BLOGS_SORT_FIELDS } from "../../constants";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { prisma } from "@/prisma";
 import { auth } from "@/auth";
+const blogLikeCondition = (searchParams: URLSearchParams) => {
+  const blogLikeKey = searchParams.get("sort")?.split(',');
+  return [{
+    BlogLike: {
+      _count: blogLikeKey?.includes("-BlogLike") ? "desc" : "asc",
+    },
+  }, {
+    views_count: "desc"
 
+  }]
+}
 export const GET = async (req: NextRequest) => {
-  const ApiFuture = new ApiFutures(req)
+  const ApiFuture = new ApiFuturesQuery(req)
     .search()
     .filter(BLOGS_FILTRATION_FIELDS, ({ searchParams }) => {
       if (!searchParams.get("topicId")) return null;
       return {
         ...(userTopicIds.length > 0
           ? {
-              BlogTopics: {
-                some: {
-                  topicId: { in: userTopicIds },
-                },
+            BlogTopics: {
+              some: {
+                topicId: { in: userTopicIds },
               },
-            }
+            },
+          }
           : {}),
       };
     })
-    .extractFields([])
-    .sortBy(BLOGS_SORT_FIELDS, (searchParams) => {
-      const blogLikeKey = searchParams.getAll("orderBy[]");
-      return {
-        BlogLike: {
-          _count: blogLikeKey.includes("-BlogLike") ? "desc" : "asc",
-        },
-      };
-    })
+    .omit().sortAppend(blogLikeCondition)
+    .sort(BLOGS_SORT_FIELDS)
     .paginateQuery();
 
   const session = await auth();

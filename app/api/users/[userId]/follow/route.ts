@@ -20,6 +20,7 @@ export const POST = async (req: Request) => {
         followeeId: userId,
       },
     });
+
     if (!res) throw new AppError("you already unfollowed", 400);
 
     await prisma.follow.delete({
@@ -42,7 +43,16 @@ export const PATCH = async (
   try {
     const { user } = await requireAuth();
     const param = await params;
+
     const validationResult = followRequestSchema.parse(param);
+
+    const isFollowing = await prisma.follow.findFirst({
+      where: {
+        followeeId: validationResult.userId,
+        followerId: user.userId,
+      },
+    });
+    if (isFollowing) throw new AppError("you already following", 401);
     await prisma.follow.create({
       data: {
         followeeId: validationResult.userId,

@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useEffect,
-  useMemo,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import InfiniteScroll from "../ui/InfiniteScroll";
 import { AxiosResponse } from "axios";
 import { Bell, Loader2 } from "lucide-react";
@@ -36,10 +30,7 @@ const NotificationsDropDownMenu = () => {
   >(null);
   const { data } = useSession();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isPending, startTransition] = useTransition();
-  const [optimistic, setOptimistic] = useOptimistic<
-    NotificationWithActor[] | null
-  >(notifications);
+
   const unreadNotifications = useMemo(() => {
     return notifications?.filter((n) => !n.read) || [];
   }, [notifications]);
@@ -74,7 +65,7 @@ const NotificationsDropDownMenu = () => {
         status,
       }: AxiosResponse<ResponseSuccess<NotificationWithActor[]>> =
         await axiosClient.get(
-          `/api/notifications?limit=10&page=${page}&includes=actor&orderBy[]=-createdAt`
+          `/api/notifications?limit=10&page=${page}&includes=actor&sort=-createdAt`
         );
       if (status != 200) throw new Error("can't fetch notifications");
       setNotifications((prev) => {
@@ -98,26 +89,24 @@ const NotificationsDropDownMenu = () => {
       ...n,
       read: true,
     }));
+    const cloneNotifications = [...(notifications || [])];
     if (unreadNotifications.length === 0) return;
     const ids = unreadNotifications.map((n) => n.id);
     if (ids.length === 0) return;
-    startTransition(async () => {
-      try {
-        setOptimistic(updatedNotifications);
-        const { status: responseStatus } = await axiosClient.patch(
-          "/api/notifications/read",
-          {
-            ids,
-          }
-        );
-        if (responseStatus == 200) {
-          setNotifications(updatedNotifications);
+    try {
+      setNotifications(updatedNotifications);
+      const { status: responseStatus } = await axiosClient.patch(
+        "/api/notifications/read",
+        {
+          ids,
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        setOptimistic(notifications);
-      }
-    });
+      );
+      if (responseStatus == 200) setNotifications(updatedNotifications);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setNotifications(cloneNotifications);
+    }
   };
   return (
     <div>
@@ -146,16 +135,16 @@ const NotificationsDropDownMenu = () => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          {optimistic?.map((n) => {
+          {notifications?.map((n) => {
             return (
               <DropdownMenuItem key={n.id}>
                 <NotificationMinimal notification={n} />
               </DropdownMenuItem>
             );
           })}
-          <NotificationEmpty hidden={!!optimistic?.length} />
+          {!loading && <NotificationEmpty hidden={!!notifications?.length} />}
 
-          <DropdownMenuSeparator hidden={!optimistic?.length} />
+          <DropdownMenuSeparator hidden={!notifications?.length} />
           <InfiniteScroll
             hasMore={hasMore}
             isLoading={loading}

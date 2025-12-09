@@ -18,7 +18,6 @@ const InfinityBlogsCardsSection: FC<InfinityTopicsSectionProps> = ({
   next,
   isLoading,
 }) => {
-  console.log(data);
   return (
     <>
       {data?.map((blog) => {

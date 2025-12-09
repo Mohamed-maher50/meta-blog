@@ -48,6 +48,7 @@ const WithInfinityScroll = <T extends object, P>(
         next={next}
         threshold={1}
         data={users}
+        query={props.query}
         {...(props as T)}
       />
     );

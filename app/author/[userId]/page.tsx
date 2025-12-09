@@ -10,13 +10,13 @@ import { GetUserById } from "@/lib/Users";
 import ProfileInfinityBlogsSection from "@/components/Hocs/ProfileInfinityBlogsSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import WithInfinityTopics from "@/components/Hocs/withInfinityTopics";
 import { GridTopicSkeleton } from "@/components/topics/GridTopicSkeleton";
 import { GridBlogSkeletons } from "@/components/blogs/GridBlogsSkeletons";
 import { RiBookShelfLine } from "@remixicon/react";
 import RichBlogCard from "@/components/blogs/RichBlogCard";
 import { headers as NextHeaders } from "next/headers";
 import { auth } from "@/auth";
+import { EmptyStateAlert } from "@/components/EmptyStateAlert";
 
 export default async function ProfilePage({
   params,
@@ -26,13 +26,13 @@ export default async function ProfilePage({
   const { userId } = await params;
   const session = await auth();
   if (!userId) notFound();
+  const headers = new Headers(await NextHeaders());
   const user = await GetUserById<UserInfo & { isFollowing: boolean }>(
     userId,
-    ``,
-    { cache: "no-store" }
+    `status=true`,
+    { cache: "no-store", headers }
   );
   if (!user) notFound();
-
   const isOwnProfile = session?.user.userId === user.id;
   return (
     <div className="max-w-5xl  mx-auto space-y-12">
@@ -95,6 +95,8 @@ export default async function ProfilePage({
                 return (
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {d.map((e) => {
+                      console.log(e.author.id, "+", session?.user.userId);
+                      console.log(e.author.id === session?.user.userId);
                       return (
                         <RichBlogCard
                           {...e}
@@ -104,10 +106,24 @@ export default async function ProfilePage({
                         />
                       );
                     })}
-                    <ProfileInfinityBlogsSection
-                      query={`userId=${user.id}`}
-                      withHeader={true}
-                    />
+                    {d.length > 10 && (
+                      <ProfileInfinityBlogsSection
+                        query={`userId=${user.id}`}
+                        withHeader={true}
+                      />
+                    )}
+                    {d.length === 0 && (
+                      <div className="bg-secondary shadow flex  flex-col place-content-center w-full col-span-full rounded-sm">
+                        <EmptyStateAlert type="blogs" />
+                        <Button
+                          variant={"outline"}
+                          className="w-fit mx-auto -translate-y-10"
+                          size={"sm"}
+                        >
+                          New Blog
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 );
               }}
@@ -131,10 +147,9 @@ export default async function ProfilePage({
           <Suspense fallback={<GridTopicSkeleton />}>
             <TopicsFetcher
               userId={userId}
-              query={"omit[]=userId&omit[]=user&omit[]=topicId&page=1&limit=10"}
+              query={"omit=userId,user,topicId&page=1&limit=10"}
             />
           </Suspense>
-          <WithInfinityTopics query={`userId=${userId}`} userId={userId} />
         </div>
       </section>
     </div>

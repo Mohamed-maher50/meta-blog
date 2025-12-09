@@ -1,5 +1,5 @@
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { NextRequest } from "next/server";
 
@@ -9,8 +9,8 @@ export const GET = async (
 ) => {
   try {
     const { topicId } = await params;
-    const apiFutures = new ApiFutures(req)
-      .extractFields()
+    const apiFutures = new ApiFuturesQuery(req)
+      .omit()
       .filter(["id", "label"]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { where, take, skip, orderBy, ...query } = apiFutures.Query;

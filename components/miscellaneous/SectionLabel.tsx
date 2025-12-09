@@ -10,7 +10,7 @@ function SectionLabel({
     <div className={cn("w-fit  mb-2", className)}>
       <h2
         className={cn(
-          "text-3xl font-bold my-4 capitalize font-work-sans leading-4 text-foreground  text-balance"
+          "text-xl sm:text-3xl font-bold my-4 capitalize font-work-sans leading-4 text-foreground  text-balance"
         )}
         {...attr}
       >

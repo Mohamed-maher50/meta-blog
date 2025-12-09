@@ -1,6 +1,6 @@
 import { PRISMA_USER_INFO_FIELDS_SELECT } from "@/app/api/constants";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures, requireAuth } from "@/lib/utils";
+import { ApiFuturesQuery, requireAuth } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { createCommentSchema } from "@/schema/Comments";
 import { NextRequest } from "next/server";
@@ -38,17 +38,17 @@ export const GET = async (
   try {
     const { blogId } = await params;
 
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .search({
         label: "content",
       })
-      .extractFields()
+      .omit()
       .filter(COMMENTS_FILTRATION_FIELDS, () => {
         return {
           blogId,
         };
       })
-      .sortBy(commentsSortFields)
+      .sort(commentsSortFields)
       .paginateQuery();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

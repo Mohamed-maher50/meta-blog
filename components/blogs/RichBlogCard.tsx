@@ -56,8 +56,8 @@ const RichBlogCard = ({
     });
   }, [id]);
   return (
-    <Card className="group relative w-full max-w-sm overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <div className="relative h-48 w-full overflow-hidden bg-muted">
+    <Card className="group max-sm:gap-2 relative w-full max-w-sm overflow-hidden transition-all duration-300 hover:shadow-xl">
+      <div className="relative h-40 sm:h-48 w-full overflow-hidden bg-muted">
         <Image
           src={cover.src || "/placeholder.svg"}
           alt={title}
@@ -103,7 +103,7 @@ const RichBlogCard = ({
       </div>
 
       {/* Content */}
-      <CardContent className="space-y-3  pt-4">
+      <CardContent className="md:space-y-3  pt-4">
         {/* Title */}
         <Link href={`/blogs/${id}/view`}>
           <h3 className="text-lg font-semibold line-clamp-2 text-card-foreground hover:text-primary transition-colors duration-200">

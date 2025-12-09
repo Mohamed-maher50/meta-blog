@@ -46,8 +46,8 @@ import NewBlogDialogForm from "./NewBlogDialogForm";
 import { useForm } from "react-hook-form";
 import axiosClient from "@/lib/axios.client";
 import { toast } from "sonner";
-import { defaultEditorContent } from "@/lib/content";
 import useGenerativeMenu from "@/hooks/useGenerativeMenu";
+import { DEFAULT_BLOG_EDITOR_CONTENT } from "@/constants/defaultBlogEditorContent";
 const extensions = [...defaultExtensions, slashCommand, ForceTitleExtension];
 interface TailwindAdvancedEditorProps {
   defaultContent?: JSONContent | null;
@@ -58,7 +58,7 @@ const unProvidedValues = {
   title: "Write your amazing title here...",
   preview: "",
   topics: [],
-  content: defaultEditorContent,
+  content: DEFAULT_BLOG_EDITOR_CONTENT,
   readingTime: 0,
 };
 const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {

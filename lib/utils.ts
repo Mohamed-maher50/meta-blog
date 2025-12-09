@@ -4,8 +4,6 @@ import bcrypt from "bcryptjs";
 import { UploadApiResponse } from "cloudinary";
 
 import { NextRequest } from "next/server";
-import filtrationQuery from "./api/Filtration";
-import pagination from "./api/pagination";
 import { IPagination } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -130,9 +128,11 @@ export function formatCompactNumber(num: number): string {
 
   return scaled.toFixed(scaled < 10 ? 1 : 0) + unit;
 }
-export function sortBy(searchParams: URLSearchParams, fields: string[]) {
-  const orderByValues = searchParams.getAll("orderBy[]");
-  return orderByValues.reduce<Record<string, string>>((current, next) => {
+
+export function sort(searchParams: URLSearchParams, fields: string[]) {
+  const orderByValues = searchParams.get("sort");
+  const splitFields = orderByValues?.split(",") || [];
+  return splitFields?.reduce<Record<string, string>>((current, next) => {
     if (!fields.includes(next.replace("-", ""))) return current;
     if (next.startsWith("-")) current[next.slice(1)] = "desc";
     else current[next] = "asc";
@@ -140,7 +140,20 @@ export function sortBy(searchParams: URLSearchParams, fields: string[]) {
   }, {});
 }
 
-export class ApiFutures {
+const filtrationQuery = <T extends string[]>(
+  searchParams: URLSearchParams,
+  availableFields: T
+): Partial<Record<T[number], string>> => {
+  type FilteredKeys = T[number];
+  const keys = Array.from(searchParams.keys());
+  const filtration: Partial<Record<T[number], string>> = {};
+  keys.forEach((k) => {
+    if (availableFields.includes(k as FilteredKeys))
+      filtration[k as FilteredKeys] = searchParams.get(k) as string;
+  });
+  return filtration;
+};
+export class ApiFuturesQuery {
   public Query: {
     where: Record<string, unknown>;
     orderBy: Record<string, unknown>[];
@@ -156,64 +169,19 @@ export class ApiFutures {
     take: 0,
     include: {},
   };
-  constructor(private readonly req: NextRequest) {}
-  sortBy(
-    fields: string[],
-    extraOrderBy?: (searchParams: URLSearchParams) => Record<string, unknown>
-  ) {
-    const sortedFields = sortBy(this.req.nextUrl.searchParams, fields);
-    const extraSortedFields = extraOrderBy
-      ? extraOrderBy(this.req.nextUrl.searchParams)
-      : {};
-    this.Query.orderBy = [
-      ...this.Query.orderBy,
-      sortedFields,
-      {
-        ...extraSortedFields,
-      },
-    ];
-    return this;
+  private request: NextRequest;
+  constructor(route: NextRequest) {
+    this.request = route;
   }
-  search(options?: SearchOptions) {
-    const { label = "title", mode = "insensitive" } = options || {};
-    const searchValue = this.req.nextUrl.searchParams.get("q") || null;
-
-    if (!searchValue) return this;
-    const SearchResult = {
-      [label]: {
-        contains: this.req.nextUrl.searchParams.get("q") || null,
-        mode,
-      },
-    };
-    this.Query.where = { ...this.Query.where, ...SearchResult };
-    return this;
-  }
-  filter(
-    fields: string[],
-    nested?: ({ searchParams }: { searchParams: URLSearchParams }) => unknown
-  ) {
-    const filterResult = filtrationQuery<typeof fields>(
-      this.req.nextUrl.searchParams,
-      fields
-    );
-    const extractNested =
-      nested && nested({ searchParams: this.req.nextUrl.searchParams });
-    this.Query.where = {
-      ...this.Query.where,
-      ...filterResult,
-      ...(extractNested ? extractNested : {}),
-    };
-    return this;
-  }
-  extractFields(extraFields?: string[]) {
-    let fields: string[] | null =
-      this.req.nextUrl.searchParams.getAll("omit[]");
-
-    fields = fields.concat(extraFields || []);
-    if (!fields || fields.length <= 0) return this;
-
-    const extractedFields = fields.reduce<Record<string, boolean>>(
+  omit(extraFields?: string[]) {
+    const omittedFields: string | null =
+      this.request.nextUrl.searchParams.get("omit");
+    let splitFields = omittedFields?.split(",");
+    splitFields = splitFields?.concat(extraFields || []);
+    if (!splitFields || splitFields.length <= 0) return this;
+    const extractedFields = splitFields.reduce<Record<string, boolean>>(
       (store, c) => {
+        if (!c) return store;
         store[c] = true;
         return store;
       },
@@ -222,14 +190,28 @@ export class ApiFutures {
     this.Query.omit = { ...this.Query.omit, ...extractedFields };
     return this;
   }
+  sortAppend(cb: (s: URLSearchParams) => Record<string, unknown>[]) {
+    const object = cb(this.request.nextUrl.searchParams);
+
+    this.Query.orderBy = [...object, ...this.Query.orderBy];
+    return this;
+  }
+  sort(fields: string[]) {
+    const sortedFields = sort(this.request.nextUrl.searchParams, fields);
+    this.Query.orderBy = [
+      ...this.Query.orderBy,
+      ...Object.entries(sortedFields).map(([key, value]) => ({ [key]: value })),
+    ];
+    return this;
+  }
   paginateQuery() {
-    this.Query.take = pagination(this.req.nextUrl.searchParams).take;
-    this.Query.skip = pagination(this.req.nextUrl.searchParams).skip;
+    this.Query.take = pagination(this.request.nextUrl.searchParams).take;
+    this.Query.skip = pagination(this.request.nextUrl.searchParams).skip;
     return this;
   }
   paginate(totalDocs: number): IPagination {
-    const limit = +(this.req.nextUrl.searchParams.get("limit") || "10");
-    const page = +(this.req.nextUrl.searchParams.get("page") || "1");
+    const limit = +(this.request.nextUrl.searchParams.get("limit") || "10");
+    const page = +(this.request.nextUrl.searchParams.get("page") || "1");
     if (limit <= 0) throw new Error("`take` must be greater than 0");
     this.Query.take = limit;
     this.Query.skip = (page - 1) * limit;
@@ -241,6 +223,37 @@ export class ApiFutures {
       hasNextPage: page < totalPages ? page + 1 : null,
       hasPrevPage: page > 1 ? page - 1 : null,
     };
+  }
+  search(options?: SearchOptions) {
+    const { label = "title", mode = "insensitive" } = options || {};
+    const searchValue = this.request.nextUrl.searchParams.get("q") || null;
+
+    if (!searchValue) return this;
+    const SearchResult = {
+      [label]: {
+        contains: this.request.nextUrl.searchParams.get("q") || null,
+        mode,
+      },
+    };
+    this.Query.where = { ...this.Query.where, ...SearchResult };
+    return this;
+  }
+  filter(
+    fields: string[],
+    nested?: ({ searchParams }: { searchParams: URLSearchParams }) => unknown
+  ) {
+    const filterResult = filtrationQuery<typeof fields>(
+      this.request.nextUrl.searchParams,
+      fields
+    );
+    const extractNested =
+      nested && nested({ searchParams: this.request.nextUrl.searchParams });
+    this.Query.where = {
+      ...this.Query.where,
+      ...filterResult,
+      ...(extractNested ? extractNested : {}),
+    };
+    return this;
   }
 }
 interface SearchOptions {
@@ -278,3 +291,12 @@ export function getDirtyValues<T extends FieldValues>(
     return acc;
   }, {} as Partial<T>);
 }
+const pagination = (searchParams: URLSearchParams) => {
+  const page = +(searchParams.get("page") || "1");
+  const limit = searchParams.get("limit") || "10";
+  const skip = (page - 1) * +limit;
+  return {
+    skip,
+    take: parseInt(limit),
+  };
+};

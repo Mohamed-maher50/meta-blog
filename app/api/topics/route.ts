@@ -1,5 +1,5 @@
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { createCategorySchema } from "@/schema/createCategorySchema";
 import { NextRequest } from "next/server";
@@ -29,11 +29,11 @@ export const POST = async (req: Request) => {
 };
 export const GET = async (req: NextRequest) => {
   try {
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .search({ label: "label" })
-      .extractFields()
+      .omit()
       .paginateQuery()
-      .sortBy(["createdAt", "topPosition", "numberOfFollowers"])
+      .sort(["createdAt", "topPosition", "numberOfFollowers"])
       .filter(["id", "label"]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { skip, take, include, omit, ...countQuery } = apiFutures.Query;

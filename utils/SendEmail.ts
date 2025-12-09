@@ -17,14 +17,13 @@ export const sendEmail = async ({
   templateProps: EmailTemplateProps;
 }) => {
   try {
-    const { data, error } = await resend.emails.send({
+    await resend.emails.send({
       from: from,
       to: [to],
       subject: subject,
       react: EmailTemplate(templateProps),
     });
-    console.log(data);
-    console.log(error);
+
   } catch (error) {
     console.log(error);
   }

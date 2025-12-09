@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { Topics } from "@prisma/client";
@@ -33,7 +33,7 @@ const ChooseTopics = () => {
   const { update } = useSession();
 
   const { data, isLoading } = useSWR<ResponseSuccess<Topics[]>>(
-    `/api/topics?limit=50&orderBy[]=-topPosition`,
+    `/api/topics?limit=50&sort=-topPosition`,
     fetcher
   );
   const router = useRouter();

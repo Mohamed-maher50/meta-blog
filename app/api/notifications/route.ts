@@ -1,5 +1,5 @@
 import { pusherServer } from "@/lib/pusherClinet";
-import { ApiFutures, requireAuth, withAuth } from "@/lib/utils";
+import { ApiFuturesQuery, requireAuth, withAuth } from "@/lib/utils";
 import { newNotificationSchema } from "@/schema/NotificationsSchema";
 
 import { NextRequest } from "next/server";
@@ -55,10 +55,10 @@ export const GET = async (req: NextRequest) => {
   try {
     const { user } = await requireAuth();
 
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .search({ label: "message" })
-      .sortBy(["createdAt"])
-      .extractFields()
+      .sort(["createdAt"])
+      .omit()
       .paginateQuery()
       .filter(["actorId", "type", "read", "userId"]);
 

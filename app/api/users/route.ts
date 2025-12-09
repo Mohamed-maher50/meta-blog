@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { ErrorHandler } from "@/lib/GlobalErrorHandler";
-import { ApiFutures } from "@/lib/utils";
+import { ApiFuturesQuery } from "@/lib/utils";
 import { prisma } from "@/prisma";
 
 import { NextRequest } from "next/server";
@@ -9,11 +9,11 @@ export const GET = async (req: NextRequest) => {
   try {
     const session = await auth();
 
-    const apiFutures = new ApiFutures(req)
+    const apiFutures = new ApiFuturesQuery(req)
       .search({ label: "name" })
-      .extractFields(["password", "isFirstVisit", "emailVerified"])
+      .omit(["password", "isFirstVisit", "emailVerified"])
       .paginateQuery()
-      .sortBy(["createdAt"])
+      .sort(["createdAt"])
       .filter(["id", "label"]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { skip, take, include, omit, ...countQuery } = apiFutures.Query;
@@ -23,7 +23,6 @@ export const GET = async (req: NextRequest) => {
       ...apiFutures.Query,
       include: {
         ...apiFutures.Query.include,
-
         followers: {
           where: {
             followerId: session?.user?.userId,

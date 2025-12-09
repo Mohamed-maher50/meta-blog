@@ -45,7 +45,9 @@ export function EmptyStateAlert({ type, searchQuery }: EmptyStateAlertProps) {
         />
       </div>
 
-      <p className="text-secondary-foreground-500 max-w-md">{config.message}</p>
+      <p className="text-secondary-foreground-500 max-w-md font-semibold font-work-sans">
+        {config.message}
+      </p>
     </div>
   );
 }

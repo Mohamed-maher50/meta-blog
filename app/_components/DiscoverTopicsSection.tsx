@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const DiscoverTopics = async () => {
   const { data: topics } = await getTopics(
-    "limit=7&page=1&orderBy[]=-numberOfFollowers"
+    "limit=7&page=1&sort=-numberOfFollowers"
   );
 
   return (

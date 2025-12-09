@@ -10,7 +10,7 @@ const page = async ({
   const { q } = await searchParams;
 
   const initialBlogs: ResponseSuccess<BlogCardProps[]> = await GetBlogs(
-    `page=1&limit=10&q=${q}&omit[]=content&omit[]=authorId`
+    `page=1&limit=10&q=${q}&omit=content,authorId`
   );
   if (!initialBlogs.pagination.totalItems)
     return <EmptyStateAlert type="blogs" searchQuery={q} />;

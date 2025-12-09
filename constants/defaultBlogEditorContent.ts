@@ -1,4 +1,4 @@
-export const defaultEditorContent = {
+export const DEFAULT_BLOG_EDITOR_CONTENT = {
   type: "doc",
   content: [
     {
