@@ -1,17 +1,15 @@
-import React from "react";
 import Container from "../utils/Container";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Mail } from "lucide-react";
+
 import { Separator } from "../ui/separator";
 import Logo from "../miscellaneous/Logo";
+import SubscriptionForm from "../SubscriptionForm";
 
 const Footer = () => {
   return (
     <footer className="bg-secondary-50 place-items-end dark:bg-secondary-900 text-secondary-foreground-500 dark:text-secondary-foreground-400 py-16 border-t border-secondary-100 dark:border-t-secondary-700">
       <Container>
         <div className=" mb-16 max-md:flex-col flex basis-1 gap-5 text-lg font-semibold font-work-sans ">
-          <div className="flex-[2] basis-2 ">
+          <div className="flex-2 basis-2 ">
             <h1 className=" text-secondary-foreground-800 dark:text-white">
               About
             </h1>
@@ -63,7 +61,7 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <form className="flex-[1.8]  gap-7 justify-center items-center flex flex-col  bg-white dark:bg-secondary-700 rounded-2xl p-9">
+          <div className="flex-[1.8]  gap-7 justify-center items-center flex flex-col  bg-white dark:bg-secondary-700 rounded-2xl p-9">
             <div className="flex flex-col gap-2 text-center">
               <h1 className="text-secondary-foreground-800 dark:text-white font-semibold text-xl">
                 Weekly Newsletter
@@ -72,19 +70,8 @@ const Footer = () => {
                 Get blog articles and offers via email
               </p>
             </div>
-            <div className="w-full grid gap-2">
-              <div className="relative">
-                <Input
-                  className="w-full bg-white placeholder:text-secondary-foreground-400 dark:!bg-secondary-800  p-3.5 min-h-12"
-                  placeholder="Your Email"
-                />
-                <Mail className="absolute right-0 -translate-x-1/2 pointer-events-none text-secondary-foreground-500 translate-y-1/2 top-0" />
-              </div>
-              <Button size={"lg"} className="w-full">
-                Subscribe
-              </Button>
-            </div>
-          </form>
+            <SubscriptionForm />
+          </div>
         </div>
         <div className="flex p-8 ">
           <div className="grow">
