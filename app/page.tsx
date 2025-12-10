@@ -1,9 +1,6 @@
 import Container from "@/components/utils/Container";
-
 import HeroSection from "@/components/HeroSections";
 import { Suspense } from "react";
-import DiscoverTopics from "./_components/DiscoverTopics";
-import DiscoverTopicsSkeleton from "./_components/DiscoverTopicsSkeletons";
 import SectionLabel from "@/components/miscellaneous/SectionLabel";
 import SkeletonCard from "@/components/SkeletonCard";
 import DisplayChunk from "@/components/utils/DisplayChunk";
@@ -12,6 +9,7 @@ import DisplayHomeBlogs from "./_components/DisplayHomeBlogs";
 import InfinityBlogsCardsSection from "./_components/InfinityBlogsSection";
 import { headers as NextHeaders } from "next/headers";
 import { Separator } from "@/components/ui/separator";
+import HomeTopicsSwiper from "@/components/topics/TopicsSwiper";
 
 export const BLOGS_SECTIONS = [
   {
@@ -46,6 +44,11 @@ const Home = async () => {
     <main className="min-h-screen transition-transform duration-500  font-work-sans">
       <HeroSection />
       <Container>
+        <HomeTopicsSwiper
+          query="&sort=-topPosition"
+          desc="Explore and discover content you love"
+          label="🔥Popular Topics"
+        />
         <div className="flex justify-between  max-md:flex-col py-10 gap-2">
           <div className="relative flex-col flex gap-10  w-full">
             {BLOGS_SECTIONS.map((section) => {
@@ -83,9 +86,6 @@ const Home = async () => {
               );
             })}
           </div>
-          <Suspense fallback={<DiscoverTopicsSkeleton />}>
-            <DiscoverTopics />
-          </Suspense>
         </div>
       </Container>
     </main>
