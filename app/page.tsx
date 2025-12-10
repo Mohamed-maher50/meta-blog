@@ -31,7 +31,7 @@ export const BLOGS_SECTIONS = [
 const SectionsCardsLoadingSkeletons = ({ label }: { label: string }) => (
   <>
     <SectionLabel className="my-8">{label}</SectionLabel>
-    <div className="grid gap-5 my-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+    <div className="grid gap-5 my-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3">
       {Array.from({ length: 4 }).map((_, i) => (
         <SkeletonCard key={i} />
       ))}
