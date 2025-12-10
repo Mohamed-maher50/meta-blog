@@ -56,7 +56,7 @@ const RichBlogCard = ({
     });
   }, [id]);
   return (
-    <Card className="group max-sm:gap-2 relative w-full max-w-sm overflow-hidden transition-all duration-300 hover:shadow-xl">
+    <Card className="group max-sm:gap-2 relative w-full  overflow-hidden transition-all duration-300 hover:shadow-xl">
       <div className="relative h-40 sm:h-48 w-full overflow-hidden bg-muted">
         <Image
           src={cover.src || "/placeholder.svg"}
