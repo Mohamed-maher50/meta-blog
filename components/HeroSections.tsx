@@ -1,13 +1,11 @@
-import React from "react";
 import { Button } from "./ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { BLOGS_SECTIONS } from "@/app/page";
 import { auth } from "@/auth";
 import Image from "next/image";
 export const HeroSectionSkeleton = () => {
   return (
-    <section className="bg-gradient-to-br py-4 from-primary/5 to-primary/10 border-b border-border">
+    <section className="bg-linear-to-br py-4 from-primary/5 to-primary/10 border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="max-w-2xl space-y-6">
           {/* Heading skeleton */}
@@ -65,7 +63,7 @@ const HeroSection = async () => {
                 size={"lg"}
                 className="bg-primary rounded-full hover:bg-primary/90 text-primary-foreground"
               >
-                <Link scroll={true} href={`#${BLOGS_SECTIONS[0].label}`}>
+                <Link scroll={true} href={`#blog_categories`}>
                   Start Reading
                 </Link>
               </Button>

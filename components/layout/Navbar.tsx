@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import Container from "../utils/Container";
 import Logo from "../miscellaneous/Logo";
 
@@ -16,7 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "debounce";
 
@@ -25,10 +24,7 @@ import WithAuth from "../auth/WithAuth";
 import { Button } from "../ui/button";
 import InputSearchLoader from "../InputSearchLoader";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-const Switch = dynamic(() => import("../ui/switch").then((mod) => mod.Switch), {
-  ssr: false,
-  loading: () => null,
-});
+import { Switch } from "../ui/switch";
 
 const Navbar = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);

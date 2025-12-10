@@ -23,6 +23,7 @@ export const GET = async (req: NextRequest) => {
       ...apiFutures.Query,
       include: {
         ...apiFutures.Query.include,
+
         followers: {
           where: {
             followerId: session?.user?.userId,

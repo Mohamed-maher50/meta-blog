@@ -1,7 +1,7 @@
 import RichBlogCard from "@/components/blogs/RichBlogCard";
 import SectionLabel from "@/components/miscellaneous/SectionLabel";
 import { BlogCardProps } from "@/types";
-import React from "react";
+import { ReactNode } from "react";
 async function DisplayHomeBlogs({
   blogs,
   label,
@@ -19,6 +19,22 @@ async function DisplayHomeBlogs({
           return <RichBlogCard {...b} key={b.id} />;
         })}
       </div>
+    </div>
+  );
+}
+export function GridBlogs({
+  blogs,
+  children,
+}: {
+  blogs: BlogCardProps[];
+  children?: ReactNode;
+}) {
+  return (
+    <div className="grid gap-2 max-sm:place-items-center place-content-center my-2 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      {blogs.map((b) => {
+        return <RichBlogCard {...b} key={b.id} />;
+      })}
+      {children}
     </div>
   );
 }

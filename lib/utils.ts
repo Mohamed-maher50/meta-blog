@@ -163,7 +163,7 @@ export class ApiFuturesQuery {
     include: Record<string, unknown>;
   } = {
     where: {},
-    orderBy: [],
+    orderBy: [{ id: "asc" }],
     omit: {},
     skip: 0,
     take: 0,
