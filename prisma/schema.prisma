@@ -247,3 +247,11 @@ model CommentLike {
 
   @@unique([commentId, userId])
 }
+
+model Subscriptions {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+  isActive     Boolean? @default(true)
+}
