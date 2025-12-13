@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSections";
 
 import HomeTopicsSwiper from "@/components/topics/TopicsSwiper";
 import HomeBlogSection from "@/components/sections/HomeBlogSection";
-import { prisma } from "@/prisma";
+import UsersSmallCardsSwiper from "@/components/users/UsersSmallCardsSwiper";
 
 const Home = async () => {
   return (
@@ -22,6 +22,11 @@ const Home = async () => {
           <HomeBlogSection
             query="sort=createdAt&&omit=content&"
             label={"Latest articles 🚀"}
+          />
+          <UsersSmallCardsSwiper
+            query="&omit=Social,bio,followers,likedUsers"
+            label="Discover Creators You'll Love ✨"
+            desc="Find talented creators and expand your network"
           />
           <HomeBlogSection
             query="sort=-views_count&omit=content&"

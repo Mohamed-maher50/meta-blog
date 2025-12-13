@@ -27,7 +27,6 @@ const ChunkBlogs = async ({ query }: { query: string }) => {
     headers,
     next: { revalidate: 60 },
   });
-  console.log(res);
   return (
     <>
       <GridBlogs blogs={res.data}>
