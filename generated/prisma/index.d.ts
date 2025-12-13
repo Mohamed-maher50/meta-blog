@@ -158,7 +158,7 @@ export const NotificationType: typeof $Enums.NotificationType
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -190,6 +190,13 @@ export class PrismaClient<
    * Disconnect from the database
    */
   $disconnect(): $Utils.JsPromise<void>;
+
+  /**
+   * Add a middleware
+   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
+   * @see https://pris.ly/d/extensions
+   */
+  $use(cb: Prisma.Middleware): void
 
 /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
@@ -444,8 +451,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.1
-   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
+   * Prisma Client JS version: 6.5.0
+   * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
    */
   export type PrismaVersion = {
     client: string
@@ -458,7 +465,6 @@ export namespace Prisma {
    */
 
 
-  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -2080,24 +2086,16 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Shorthand for `emit: 'stdout'`
+     * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events only
+     * // Emit as events
      * log: [
-     *   { emit: 'event', level: 'query' },
-     *   { emit: 'event', level: 'info' },
-     *   { emit: 'event', level: 'warn' }
-     *   { emit: 'event', level: 'error' }
+     *   { emit: 'stdout', level: 'query' },
+     *   { emit: 'stdout', level: 'info' },
+     *   { emit: 'stdout', level: 'warn' }
+     *   { emit: 'stdout', level: 'error' }
      * ]
-     * 
-     * / Emit as events and log to stdout
-     * og: [
-     *  { emit: 'stdout', level: 'query' },
-     *  { emit: 'stdout', level: 'info' },
-     *  { emit: 'stdout', level: 'warn' }
-     *  { emit: 'stdout', level: 'error' }
-     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -2153,15 +2151,10 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
-
-  export type GetLogType<T> = CheckIsLogLevel<
-    T extends LogDefinition ? T['level'] : T
-  >;
-
-  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
-    ? GetLogType<T[number]>
-    : never;
+  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
+  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
+    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
+    : never
 
   export type QueryEvent = {
     timestamp: Date
@@ -2201,6 +2194,25 @@ export namespace Prisma {
     | 'runCommandRaw'
     | 'findRaw'
     | 'groupBy'
+
+  /**
+   * These options are being passed into the middleware as "params"
+   */
+  export type MiddlewareParams = {
+    model?: ModelName
+    action: PrismaAction
+    args: any
+    dataPath: string[]
+    runInTransaction: boolean
+  }
+
+  /**
+   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
+   */
+  export type Middleware<T = any> = (
+    params: MiddlewareParams,
+    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
+  ) => $Utils.JsPromise<T>
 
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
@@ -2537,7 +2549,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Social model
-   */
+   */ 
   interface SocialFieldRefs {
     readonly instagram: FieldRef<"Social", 'String'>
     readonly facebook: FieldRef<"Social", 'String'>
@@ -2614,7 +2626,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Cover model
-   */
+   */ 
   interface CoverFieldRefs {
     readonly public_id: FieldRef<"Cover", 'String'>
     readonly width: FieldRef<"Cover", 'Int'>
@@ -2687,7 +2699,7 @@ export namespace Prisma {
 
   /**
    * Fields of the EagerImage model
-   */
+   */ 
   interface EagerImageFieldRefs {
     readonly width: FieldRef<"EagerImage", 'Int'>
     readonly height: FieldRef<"EagerImage", 'Int'>
@@ -3411,7 +3423,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */
+   */ 
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
@@ -4678,7 +4690,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Visitors model
-   */
+   */ 
   interface VisitorsFieldRefs {
     readonly id: FieldRef<"Visitors", 'String'>
     readonly visitorId: FieldRef<"Visitors", 'String'>
@@ -5611,7 +5623,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Favorites model
-   */
+   */ 
   interface FavoritesFieldRefs {
     readonly id: FieldRef<"Favorites", 'String'>
     readonly blogId: FieldRef<"Favorites", 'String'>
@@ -6583,7 +6595,7 @@ export namespace Prisma {
 
   /**
    * Fields of the BlogLike model
-   */
+   */ 
   interface BlogLikeFieldRefs {
     readonly id: FieldRef<"BlogLike", 'String'>
     readonly blogId: FieldRef<"BlogLike", 'String'>
@@ -7685,7 +7697,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Account model
-   */
+   */ 
   interface AccountFieldRefs {
     readonly id: FieldRef<"Account", 'String'>
     readonly userId: FieldRef<"Account", 'String'>
@@ -8657,7 +8669,7 @@ export namespace Prisma {
 
   /**
    * Fields of the UserTopic model
-   */
+   */ 
   interface UserTopicFieldRefs {
     readonly id: FieldRef<"UserTopic", 'String'>
     readonly userId: FieldRef<"UserTopic", 'String'>
@@ -9725,7 +9737,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Blog model
-   */
+   */ 
   interface BlogFieldRefs {
     readonly id: FieldRef<"Blog", 'String'>
     readonly content: FieldRef<"Blog", 'Json'>
@@ -10787,7 +10799,7 @@ export namespace Prisma {
 
   /**
    * Fields of the BlogTopics model
-   */
+   */ 
   interface BlogTopicsFieldRefs {
     readonly id: FieldRef<"BlogTopics", 'String'>
     readonly blogId: FieldRef<"BlogTopics", 'String'>
@@ -11812,7 +11824,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Topics model
-   */
+   */ 
   interface TopicsFieldRefs {
     readonly id: FieldRef<"Topics", 'String'>
     readonly label: FieldRef<"Topics", 'String'>
@@ -12847,7 +12859,7 @@ export namespace Prisma {
 
   /**
    * Fields of the FollowTopic model
-   */
+   */ 
   interface FollowTopicFieldRefs {
     readonly id: FieldRef<"FollowTopic", 'String'>
     readonly userId: FieldRef<"FollowTopic", 'String'>
@@ -13817,7 +13829,7 @@ export namespace Prisma {
 
   /**
    * Fields of the OtpCode model
-   */
+   */ 
   interface OtpCodeFieldRefs {
     readonly id: FieldRef<"OtpCode", 'String'>
     readonly code: FieldRef<"OtpCode", 'String'>
@@ -14750,7 +14762,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Follow model
-   */
+   */ 
   interface FollowFieldRefs {
     readonly id: FieldRef<"Follow", 'String'>
     readonly followerId: FieldRef<"Follow", 'String'>
@@ -15762,7 +15774,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Notification model
-   */
+   */ 
   interface NotificationFieldRefs {
     readonly id: FieldRef<"Notification", 'String'>
     readonly type: FieldRef<"Notification", 'NotificationType'>
@@ -16754,7 +16766,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Comment model
-   */
+   */ 
   interface CommentFieldRefs {
     readonly id: FieldRef<"Comment", 'String'>
     readonly content: FieldRef<"Comment", 'String'>
@@ -17751,7 +17763,7 @@ export namespace Prisma {
 
   /**
    * Fields of the CommentLike model
-   */
+   */ 
   interface CommentLikeFieldRefs {
     readonly id: FieldRef<"CommentLike", 'String'>
     readonly commentId: FieldRef<"CommentLike", 'String'>
@@ -18722,7 +18734,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Subscriptions model
-   */
+   */ 
   interface SubscriptionsFieldRefs {
     readonly id: FieldRef<"Subscriptions", 'String'>
     readonly email: FieldRef<"Subscriptions", 'String'>
@@ -19286,7 +19298,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references
+   * Field references 
    */
 
 
@@ -21497,7 +21509,7 @@ export namespace Prisma {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
-  export type JsonFilter<$PrismaModel = never> =
+  export type JsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonFilterBase<$PrismaModel>>
@@ -21732,7 +21744,7 @@ export namespace Prisma {
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
   }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+  export type JsonWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonWithAggregatesFilterBase<$PrismaModel>>
@@ -23733,7 +23745,7 @@ export namespace Prisma {
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
   }
-  export type NestedJsonFilter<$PrismaModel = never> =
+  export type NestedJsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
         Required<NestedJsonFilterBase<$PrismaModel>>
