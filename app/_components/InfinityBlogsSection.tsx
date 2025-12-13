@@ -42,6 +42,8 @@ const InfinityBlogsCardsSection: FC<InfinityTopicsSectionProps> = ({
 export default WithInfinityScroll(
   memo(InfinityBlogsCardsSection),
   async ({ page, query }) => {
-    return await GetRecommendedBlogs(`${query}page=${page}&limit=10`);
+    return await GetRecommendedBlogs(`${query}page=${page}&limit=10`, {
+      next: { revalidate: 60 },
+    });
   }
 );

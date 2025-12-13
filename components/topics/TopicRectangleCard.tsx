@@ -9,7 +9,7 @@ export function TopicRectangleCard({ topic }: TopicCardProps) {
   return (
     <Badge
       variant="outline"
-      className="px-4 py-2 text-sm border-accent/50 hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+      className="px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
     >
       {topic.label}
     </Badge>

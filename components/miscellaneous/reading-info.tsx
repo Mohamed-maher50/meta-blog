@@ -9,18 +9,18 @@ import {
 } from "@/components/ui/tooltip";
 import { Clock, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEditor } from "novel";
 
 type ReadingInfoProps = {
-  wordsCount: number; // the article text or HTML
   wpm?: number; // words per minute (default 200)
   className?: string;
 };
 
 export default function ReadingInfo({
-  wordsCount,
   wpm = 200,
   className,
 }: ReadingInfoProps) {
+  const { editor } = useEditor();
   return (
     <TooltipProvider>
       <Tooltip>
@@ -39,7 +39,7 @@ export default function ReadingInfo({
               className="flex items-center gap-1 text-sm font-medium px-2 py-1"
             >
               <FileText className="w-4 h-4" />
-              {wordsCount} words
+              {editor?.storage.characterCount.characters()} characters
             </Badge>
           </div>
         </TooltipTrigger>

@@ -42,7 +42,6 @@ import { slashCommand, suggestionItems } from "../slash-command";
 import { TextButtons } from "../novel/selectors/text-buttons";
 import GenerativeMenuSwitch from "../novel/generative/generative-menu-switch";
 import NewBlogDialogForm from "./NewBlogDialogForm";
-
 import { useForm } from "react-hook-form";
 import axiosClient from "@/lib/axios.client";
 import { toast } from "sonner";
@@ -169,11 +168,6 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
                 Publish
               </Button>
             </DialogTrigger>
-            <ReadingInfo
-              className="w-fit bg-background flex gap-1.5"
-              wpm={time}
-              wordsCount={words.length == 0 ? 0 : wordsNumber(words)}
-            />
           </div>
 
           <EditorRoot>
@@ -199,8 +193,15 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
               }}
               onUpdate={({ editor }) => {
                 if (!editor || !editor.state.doc.content.childCount) return "";
+                console.log(editor.getHTML());
                 debouncedUpdates(editor);
               }}
+              slotBefore={
+                <ReadingInfo
+                  className="w-fit bg-background flex gap-1.5"
+                  wpm={time}
+                />
+              }
               slotAfter={<ImageResizer />}
             >
               <NewBlogDialogForm

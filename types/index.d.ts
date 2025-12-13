@@ -7,13 +7,14 @@ import {
   User,
   UserTopic,
 } from "@prisma/client";
+import { JSONContent } from "novel";
 
 interface populatedBlogTopics {
   id: string;
   topic: Topics;
 }
 export interface BlogCardProps extends Omit<Blog, "content" | "authorId"> {
-  author: Pick<User, "name" | "email" | "id" | "image" | "jobTitle">;
+  author: UserInfo;
   BlogTopics: populatedBlogTopics[];
   isSaved: boolean;
   _count: {

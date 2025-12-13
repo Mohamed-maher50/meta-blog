@@ -102,7 +102,7 @@ const TopicsSwiper = ({ query = "", label, desc }: HomeTopicsSwiperProps) => {
                 hasMore={hasNextPage}
                 isLoading={isFetchingNextPage}
                 next={fetchNextPage}
-                threshold={150}
+                threshold={1}
               >
                 {hasNextPage && (
                   <div className="mr-10">

@@ -9,9 +9,15 @@ import {
 } from "next-share";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, Heart, Share2 } from "lucide-react";
-import React, { useMemo, useOptimistic, useState, useTransition } from "react";
+import React, {
+  memo,
+  useMemo,
+  useOptimistic,
+  useState,
+  useTransition,
+} from "react";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import { Blog, NotificationType, User } from "@prisma/client";
+import { NotificationType } from "@prisma/client";
 
 import {
   DropdownMenu,
@@ -21,16 +27,16 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { IFavorites, ResponseSuccess } from "@/types";
+import { BlogCardProps, IFavorites, ResponseSuccess, UserInfo } from "@/types";
 import WithAuth from "./auth/WithAuth";
 import { useSession } from "next-auth/react";
 import axiosClient from "@/lib/axios.client";
 
 interface UserBlogNavProps {
-  user: User;
+  user: UserInfo;
   blogId: string;
   isLiked: boolean;
-  blog: Blog;
+  blog: BlogCardProps;
 }
 type AddFavoriteArgs = {
   blogId: string;
@@ -121,7 +127,7 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
     await mutation.mutateAsync({ blogId: blogId, signal: controller.signal });
   };
   return (
-    <div className="bg-card my-2 mt-6 text-card-foreground border border-border rounded-lg shadow-xs  p-4 hover:bg-muted/50 transition-colors duration-200">
+    <div className="bg-card w-full my-2 mt-6 text-card-foreground border border-border rounded-lg shadow-xs  p-4 hover:bg-muted/50 transition-colors duration-200">
       <div className="flex items-center justify-between">
         {/* Left - User Info */}
         <div className="flex items-center gap-3">
@@ -248,4 +254,4 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
   );
 };
 
-export default UserBlogNav;
+export default memo(UserBlogNav);

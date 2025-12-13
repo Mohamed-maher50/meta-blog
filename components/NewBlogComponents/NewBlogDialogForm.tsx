@@ -67,7 +67,6 @@ const NewBlogDialogForm = ({
       return [];
     }
   };
-
   return (
     <DialogContent className="max-w-full! py-24 rounded-none max-h-full h-full! w-full!">
       <form

@@ -23,7 +23,11 @@ interface HomeBlogSection {
 
 const ChunkBlogs = async ({ query }: { query: string }) => {
   const headers = new Headers(await NextHeaders());
-  const res = await GetRecommendedBlogs(query, { headers });
+  const res = await GetRecommendedBlogs(query, {
+    headers,
+    next: { revalidate: 60 },
+  });
+  console.log(res);
   return (
     <>
       <GridBlogs blogs={res.data}>

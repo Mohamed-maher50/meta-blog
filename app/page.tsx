@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSections";
 
 import HomeTopicsSwiper from "@/components/topics/TopicsSwiper";
 import HomeBlogSection from "@/components/sections/HomeBlogSection";
+import { prisma } from "@/prisma";
 
 const Home = async () => {
   return (
@@ -19,7 +20,7 @@ const Home = async () => {
           className="relative flex-col flex gap-10  w-full"
         >
           <HomeBlogSection
-            query="sort=-createdAt&&omit=content&"
+            query="sort=createdAt&&omit=content&"
             label={"Latest articles 🚀"}
           />
           <HomeBlogSection

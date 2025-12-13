@@ -79,10 +79,10 @@ export type Topics = $Result.DefaultSelection<Prisma.$TopicsPayload>
  */
 export type FollowTopic = $Result.DefaultSelection<Prisma.$FollowTopicPayload>
 /**
- * Model VerificationTokens
+ * Model OtpCode
  * 
  */
-export type VerificationTokens = $Result.DefaultSelection<Prisma.$VerificationTokensPayload>
+export type OtpCode = $Result.DefaultSelection<Prisma.$OtpCodePayload>
 /**
  * Model Follow
  * 
@@ -103,6 +103,11 @@ export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
  * 
  */
 export type CommentLike = $Result.DefaultSelection<Prisma.$CommentLikePayload>
+/**
+ * Model Subscriptions
+ * 
+ */
+export type Subscriptions = $Result.DefaultSelection<Prisma.$SubscriptionsPayload>
 
 /**
  * Enums
@@ -323,14 +328,14 @@ export class PrismaClient<
   get followTopic(): Prisma.FollowTopicDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.verificationTokens`: Exposes CRUD operations for the **VerificationTokens** model.
+   * `prisma.otpCode`: Exposes CRUD operations for the **OtpCode** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more VerificationTokens
-    * const verificationTokens = await prisma.verificationTokens.findMany()
+    * // Fetch zero or more OtpCodes
+    * const otpCodes = await prisma.otpCode.findMany()
     * ```
     */
-  get verificationTokens(): Prisma.VerificationTokensDelegate<ExtArgs, ClientOptions>;
+  get otpCode(): Prisma.OtpCodeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.follow`: Exposes CRUD operations for the **Follow** model.
@@ -371,6 +376,16 @@ export class PrismaClient<
     * ```
     */
   get commentLike(): Prisma.CommentLikeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subscriptions`: Exposes CRUD operations for the **Subscriptions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Subscriptions
+    * const subscriptions = await prisma.subscriptions.findMany()
+    * ```
+    */
+  get subscriptions(): Prisma.SubscriptionsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -429,8 +444,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.0
-   * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+   * Prisma Client JS version: 6.19.1
+   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
     client: string
@@ -822,11 +837,12 @@ export namespace Prisma {
     BlogTopics: 'BlogTopics',
     Topics: 'Topics',
     FollowTopic: 'FollowTopic',
-    VerificationTokens: 'VerificationTokens',
+    OtpCode: 'OtpCode',
     Follow: 'Follow',
     Notification: 'Notification',
     Comment: 'Comment',
-    CommentLike: 'CommentLike'
+    CommentLike: 'CommentLike',
+    Subscriptions: 'Subscriptions'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -845,7 +861,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "visitors" | "favorites" | "blogLike" | "account" | "userTopic" | "blog" | "blogTopics" | "topics" | "followTopic" | "verificationTokens" | "follow" | "notification" | "comment" | "commentLike"
+      modelProps: "user" | "visitors" | "favorites" | "blogLike" | "account" | "userTopic" | "blog" | "blogTopics" | "topics" | "followTopic" | "otpCode" | "follow" | "notification" | "comment" | "commentLike" | "subscriptions"
       txIsolationLevel: never
     }
     model: {
@@ -1589,77 +1605,77 @@ export namespace Prisma {
           }
         }
       }
-      VerificationTokens: {
-        payload: Prisma.$VerificationTokensPayload<ExtArgs>
-        fields: Prisma.VerificationTokensFieldRefs
+      OtpCode: {
+        payload: Prisma.$OtpCodePayload<ExtArgs>
+        fields: Prisma.OtpCodeFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.VerificationTokensFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload> | null
+            args: Prisma.OtpCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.VerificationTokensFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           findFirst: {
-            args: Prisma.VerificationTokensFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload> | null
+            args: Prisma.OtpCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.VerificationTokensFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           findMany: {
-            args: Prisma.VerificationTokensFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>[]
+            args: Prisma.OtpCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>[]
           }
           create: {
-            args: Prisma.VerificationTokensCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           createMany: {
-            args: Prisma.VerificationTokensCreateManyArgs<ExtArgs>
+            args: Prisma.OtpCodeCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.VerificationTokensDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           update: {
-            args: Prisma.VerificationTokensUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           deleteMany: {
-            args: Prisma.VerificationTokensDeleteManyArgs<ExtArgs>
+            args: Prisma.OtpCodeDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.VerificationTokensUpdateManyArgs<ExtArgs>
+            args: Prisma.OtpCodeUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.VerificationTokensUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$VerificationTokensPayload>
+            args: Prisma.OtpCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtpCodePayload>
           }
           aggregate: {
-            args: Prisma.VerificationTokensAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateVerificationTokens>
+            args: Prisma.OtpCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOtpCode>
           }
           groupBy: {
-            args: Prisma.VerificationTokensGroupByArgs<ExtArgs>
-            result: $Utils.Optional<VerificationTokensGroupByOutputType>[]
+            args: Prisma.OtpCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OtpCodeGroupByOutputType>[]
           }
           findRaw: {
-            args: Prisma.VerificationTokensFindRawArgs<ExtArgs>
+            args: Prisma.OtpCodeFindRawArgs<ExtArgs>
             result: JsonObject
           }
           aggregateRaw: {
-            args: Prisma.VerificationTokensAggregateRawArgs<ExtArgs>
+            args: Prisma.OtpCodeAggregateRawArgs<ExtArgs>
             result: JsonObject
           }
           count: {
-            args: Prisma.VerificationTokensCountArgs<ExtArgs>
-            result: $Utils.Optional<VerificationTokensCountAggregateOutputType> | number
+            args: Prisma.OtpCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<OtpCodeCountAggregateOutputType> | number
           }
         }
       }
@@ -1959,6 +1975,80 @@ export namespace Prisma {
           }
         }
       }
+      Subscriptions: {
+        payload: Prisma.$SubscriptionsPayload<ExtArgs>
+        fields: Prisma.SubscriptionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubscriptionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubscriptionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          findFirst: {
+            args: Prisma.SubscriptionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubscriptionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          findMany: {
+            args: Prisma.SubscriptionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>[]
+          }
+          create: {
+            args: Prisma.SubscriptionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          createMany: {
+            args: Prisma.SubscriptionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SubscriptionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          update: {
+            args: Prisma.SubscriptionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubscriptionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubscriptionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SubscriptionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionsPayload>
+          }
+          aggregate: {
+            args: Prisma.SubscriptionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubscriptions>
+          }
+          groupBy: {
+            args: Prisma.SubscriptionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionsGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.SubscriptionsFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.SubscriptionsAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.SubscriptionsCountArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2048,11 +2138,12 @@ export namespace Prisma {
     blogTopics?: BlogTopicsOmit
     topics?: TopicsOmit
     followTopic?: FollowTopicOmit
-    verificationTokens?: VerificationTokensOmit
+    otpCode?: OtpCodeOmit
     follow?: FollowOmit
     notification?: NotificationOmit
     comment?: CommentOmit
     commentLike?: CommentLikeOmit
+    subscriptions?: SubscriptionsOmit
   }
 
   /* Types for Logging */
@@ -13150,319 +13241,329 @@ export namespace Prisma {
 
 
   /**
-   * Model VerificationTokens
+   * Model OtpCode
    */
 
-  export type AggregateVerificationTokens = {
-    _count: VerificationTokensCountAggregateOutputType | null
-    _min: VerificationTokensMinAggregateOutputType | null
-    _max: VerificationTokensMaxAggregateOutputType | null
+  export type AggregateOtpCode = {
+    _count: OtpCodeCountAggregateOutputType | null
+    _min: OtpCodeMinAggregateOutputType | null
+    _max: OtpCodeMaxAggregateOutputType | null
   }
 
-  export type VerificationTokensMinAggregateOutputType = {
+  export type OtpCodeMinAggregateOutputType = {
     id: string | null
-    token: string | null
-    expires: Date | null
+    code: string | null
+    expiresAt: Date | null
     email: string | null
+    createdAt: Date | null
   }
 
-  export type VerificationTokensMaxAggregateOutputType = {
+  export type OtpCodeMaxAggregateOutputType = {
     id: string | null
-    token: string | null
-    expires: Date | null
+    code: string | null
+    expiresAt: Date | null
     email: string | null
+    createdAt: Date | null
   }
 
-  export type VerificationTokensCountAggregateOutputType = {
+  export type OtpCodeCountAggregateOutputType = {
     id: number
-    token: number
-    expires: number
+    code: number
+    expiresAt: number
     email: number
+    createdAt: number
     _all: number
   }
 
 
-  export type VerificationTokensMinAggregateInputType = {
+  export type OtpCodeMinAggregateInputType = {
     id?: true
-    token?: true
-    expires?: true
+    code?: true
+    expiresAt?: true
     email?: true
+    createdAt?: true
   }
 
-  export type VerificationTokensMaxAggregateInputType = {
+  export type OtpCodeMaxAggregateInputType = {
     id?: true
-    token?: true
-    expires?: true
+    code?: true
+    expiresAt?: true
     email?: true
+    createdAt?: true
   }
 
-  export type VerificationTokensCountAggregateInputType = {
+  export type OtpCodeCountAggregateInputType = {
     id?: true
-    token?: true
-    expires?: true
+    code?: true
+    expiresAt?: true
     email?: true
+    createdAt?: true
     _all?: true
   }
 
-  export type VerificationTokensAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which VerificationTokens to aggregate.
+     * Filter which OtpCode to aggregate.
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of VerificationTokens to fetch.
+     * Determine the order of OtpCodes to fetch.
      */
-    orderBy?: VerificationTokensOrderByWithRelationInput | VerificationTokensOrderByWithRelationInput[]
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: VerificationTokensWhereUniqueInput
+    cursor?: OtpCodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` VerificationTokens from the position of the cursor.
+     * Take `±n` OtpCodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` VerificationTokens.
+     * Skip the first `n` OtpCodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned VerificationTokens
+     * Count returned OtpCodes
     **/
-    _count?: true | VerificationTokensCountAggregateInputType
+    _count?: true | OtpCodeCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: VerificationTokensMinAggregateInputType
+    _min?: OtpCodeMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: VerificationTokensMaxAggregateInputType
+    _max?: OtpCodeMaxAggregateInputType
   }
 
-  export type GetVerificationTokensAggregateType<T extends VerificationTokensAggregateArgs> = {
-        [P in keyof T & keyof AggregateVerificationTokens]: P extends '_count' | 'count'
+  export type GetOtpCodeAggregateType<T extends OtpCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateOtpCode]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateVerificationTokens[P]>
-      : GetScalarType<T[P], AggregateVerificationTokens[P]>
+        : GetScalarType<T[P], AggregateOtpCode[P]>
+      : GetScalarType<T[P], AggregateOtpCode[P]>
   }
 
 
 
 
-  export type VerificationTokensGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VerificationTokensWhereInput
-    orderBy?: VerificationTokensOrderByWithAggregationInput | VerificationTokensOrderByWithAggregationInput[]
-    by: VerificationTokensScalarFieldEnum[] | VerificationTokensScalarFieldEnum
-    having?: VerificationTokensScalarWhereWithAggregatesInput
+  export type OtpCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtpCodeWhereInput
+    orderBy?: OtpCodeOrderByWithAggregationInput | OtpCodeOrderByWithAggregationInput[]
+    by: OtpCodeScalarFieldEnum[] | OtpCodeScalarFieldEnum
+    having?: OtpCodeScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: VerificationTokensCountAggregateInputType | true
-    _min?: VerificationTokensMinAggregateInputType
-    _max?: VerificationTokensMaxAggregateInputType
+    _count?: OtpCodeCountAggregateInputType | true
+    _min?: OtpCodeMinAggregateInputType
+    _max?: OtpCodeMaxAggregateInputType
   }
 
-  export type VerificationTokensGroupByOutputType = {
+  export type OtpCodeGroupByOutputType = {
     id: string
-    token: string
-    expires: Date
+    code: string
+    expiresAt: Date
     email: string
-    _count: VerificationTokensCountAggregateOutputType | null
-    _min: VerificationTokensMinAggregateOutputType | null
-    _max: VerificationTokensMaxAggregateOutputType | null
+    createdAt: Date
+    _count: OtpCodeCountAggregateOutputType | null
+    _min: OtpCodeMinAggregateOutputType | null
+    _max: OtpCodeMaxAggregateOutputType | null
   }
 
-  type GetVerificationTokensGroupByPayload<T extends VerificationTokensGroupByArgs> = Prisma.PrismaPromise<
+  type GetOtpCodeGroupByPayload<T extends OtpCodeGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<VerificationTokensGroupByOutputType, T['by']> &
+      PickEnumerable<OtpCodeGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof VerificationTokensGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof OtpCodeGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], VerificationTokensGroupByOutputType[P]>
-            : GetScalarType<T[P], VerificationTokensGroupByOutputType[P]>
+              : GetScalarType<T[P], OtpCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], OtpCodeGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type VerificationTokensSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type OtpCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    token?: boolean
-    expires?: boolean
+    code?: boolean
+    expiresAt?: boolean
     email?: boolean
-  }, ExtArgs["result"]["verificationTokens"]>
+    createdAt?: boolean
+  }, ExtArgs["result"]["otpCode"]>
 
 
 
-  export type VerificationTokensSelectScalar = {
+  export type OtpCodeSelectScalar = {
     id?: boolean
-    token?: boolean
-    expires?: boolean
+    code?: boolean
+    expiresAt?: boolean
     email?: boolean
+    createdAt?: boolean
   }
 
-  export type VerificationTokensOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "token" | "expires" | "email", ExtArgs["result"]["verificationTokens"]>
+  export type OtpCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "expiresAt" | "email" | "createdAt", ExtArgs["result"]["otpCode"]>
 
-  export type $VerificationTokensPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "VerificationTokens"
+  export type $OtpCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OtpCode"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      token: string
-      expires: Date
+      code: string
+      expiresAt: Date
       email: string
-    }, ExtArgs["result"]["verificationTokens"]>
+      createdAt: Date
+    }, ExtArgs["result"]["otpCode"]>
     composites: {}
   }
 
-  type VerificationTokensGetPayload<S extends boolean | null | undefined | VerificationTokensDefaultArgs> = $Result.GetResult<Prisma.$VerificationTokensPayload, S>
+  type OtpCodeGetPayload<S extends boolean | null | undefined | OtpCodeDefaultArgs> = $Result.GetResult<Prisma.$OtpCodePayload, S>
 
-  type VerificationTokensCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<VerificationTokensFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: VerificationTokensCountAggregateInputType | true
+  type OtpCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OtpCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OtpCodeCountAggregateInputType | true
     }
 
-  export interface VerificationTokensDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VerificationTokens'], meta: { name: 'VerificationTokens' } }
+  export interface OtpCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OtpCode'], meta: { name: 'OtpCode' } }
     /**
-     * Find zero or one VerificationTokens that matches the filter.
-     * @param {VerificationTokensFindUniqueArgs} args - Arguments to find a VerificationTokens
+     * Find zero or one OtpCode that matches the filter.
+     * @param {OtpCodeFindUniqueArgs} args - Arguments to find a OtpCode
      * @example
-     * // Get one VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findUnique({
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends VerificationTokensFindUniqueArgs>(args: SelectSubset<T, VerificationTokensFindUniqueArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends OtpCodeFindUniqueArgs>(args: SelectSubset<T, OtpCodeFindUniqueArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one VerificationTokens that matches the filter or throw an error with `error.code='P2025'`
+     * Find one OtpCode that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {VerificationTokensFindUniqueOrThrowArgs} args - Arguments to find a VerificationTokens
+     * @param {OtpCodeFindUniqueOrThrowArgs} args - Arguments to find a OtpCode
      * @example
-     * // Get one VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findUniqueOrThrow({
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends VerificationTokensFindUniqueOrThrowArgs>(args: SelectSubset<T, VerificationTokensFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends OtpCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, OtpCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first VerificationTokens that matches the filter.
+     * Find the first OtpCode that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensFindFirstArgs} args - Arguments to find a VerificationTokens
+     * @param {OtpCodeFindFirstArgs} args - Arguments to find a OtpCode
      * @example
-     * // Get one VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findFirst({
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends VerificationTokensFindFirstArgs>(args?: SelectSubset<T, VerificationTokensFindFirstArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends OtpCodeFindFirstArgs>(args?: SelectSubset<T, OtpCodeFindFirstArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first VerificationTokens that matches the filter or
+     * Find the first OtpCode that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensFindFirstOrThrowArgs} args - Arguments to find a VerificationTokens
+     * @param {OtpCodeFindFirstOrThrowArgs} args - Arguments to find a OtpCode
      * @example
-     * // Get one VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findFirstOrThrow({
+     * // Get one OtpCode
+     * const otpCode = await prisma.otpCode.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends VerificationTokensFindFirstOrThrowArgs>(args?: SelectSubset<T, VerificationTokensFindFirstOrThrowArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends OtpCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, OtpCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more VerificationTokens that matches the filter.
+     * Find zero or more OtpCodes that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {OtpCodeFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findMany()
+     * // Get all OtpCodes
+     * const otpCodes = await prisma.otpCode.findMany()
      * 
-     * // Get first 10 VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.findMany({ take: 10 })
+     * // Get first 10 OtpCodes
+     * const otpCodes = await prisma.otpCode.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const verificationTokensWithIdOnly = await prisma.verificationTokens.findMany({ select: { id: true } })
+     * const otpCodeWithIdOnly = await prisma.otpCode.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends VerificationTokensFindManyArgs>(args?: SelectSubset<T, VerificationTokensFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends OtpCodeFindManyArgs>(args?: SelectSubset<T, OtpCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a VerificationTokens.
-     * @param {VerificationTokensCreateArgs} args - Arguments to create a VerificationTokens.
+     * Create a OtpCode.
+     * @param {OtpCodeCreateArgs} args - Arguments to create a OtpCode.
      * @example
-     * // Create one VerificationTokens
-     * const VerificationTokens = await prisma.verificationTokens.create({
+     * // Create one OtpCode
+     * const OtpCode = await prisma.otpCode.create({
      *   data: {
-     *     // ... data to create a VerificationTokens
+     *     // ... data to create a OtpCode
      *   }
      * })
      * 
      */
-    create<T extends VerificationTokensCreateArgs>(args: SelectSubset<T, VerificationTokensCreateArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends OtpCodeCreateArgs>(args: SelectSubset<T, OtpCodeCreateArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many VerificationTokens.
-     * @param {VerificationTokensCreateManyArgs} args - Arguments to create many VerificationTokens.
+     * Create many OtpCodes.
+     * @param {OtpCodeCreateManyArgs} args - Arguments to create many OtpCodes.
      * @example
-     * // Create many VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.createMany({
+     * // Create many OtpCodes
+     * const otpCode = await prisma.otpCode.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends VerificationTokensCreateManyArgs>(args?: SelectSubset<T, VerificationTokensCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends OtpCodeCreateManyArgs>(args?: SelectSubset<T, OtpCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a VerificationTokens.
-     * @param {VerificationTokensDeleteArgs} args - Arguments to delete one VerificationTokens.
+     * Delete a OtpCode.
+     * @param {OtpCodeDeleteArgs} args - Arguments to delete one OtpCode.
      * @example
-     * // Delete one VerificationTokens
-     * const VerificationTokens = await prisma.verificationTokens.delete({
+     * // Delete one OtpCode
+     * const OtpCode = await prisma.otpCode.delete({
      *   where: {
-     *     // ... filter to delete one VerificationTokens
+     *     // ... filter to delete one OtpCode
      *   }
      * })
      * 
      */
-    delete<T extends VerificationTokensDeleteArgs>(args: SelectSubset<T, VerificationTokensDeleteArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends OtpCodeDeleteArgs>(args: SelectSubset<T, OtpCodeDeleteArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one VerificationTokens.
-     * @param {VerificationTokensUpdateArgs} args - Arguments to update one VerificationTokens.
+     * Update one OtpCode.
+     * @param {OtpCodeUpdateArgs} args - Arguments to update one OtpCode.
      * @example
-     * // Update one VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.update({
+     * // Update one OtpCode
+     * const otpCode = await prisma.otpCode.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13472,30 +13573,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends VerificationTokensUpdateArgs>(args: SelectSubset<T, VerificationTokensUpdateArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends OtpCodeUpdateArgs>(args: SelectSubset<T, OtpCodeUpdateArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more VerificationTokens.
-     * @param {VerificationTokensDeleteManyArgs} args - Arguments to filter VerificationTokens to delete.
+     * Delete zero or more OtpCodes.
+     * @param {OtpCodeDeleteManyArgs} args - Arguments to filter OtpCodes to delete.
      * @example
-     * // Delete a few VerificationTokens
-     * const { count } = await prisma.verificationTokens.deleteMany({
+     * // Delete a few OtpCodes
+     * const { count } = await prisma.otpCode.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends VerificationTokensDeleteManyArgs>(args?: SelectSubset<T, VerificationTokensDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends OtpCodeDeleteManyArgs>(args?: SelectSubset<T, OtpCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more VerificationTokens.
+     * Update zero or more OtpCodes.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {OtpCodeUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.updateMany({
+     * // Update many OtpCodes
+     * const otpCode = await prisma.otpCode.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13505,79 +13606,79 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends VerificationTokensUpdateManyArgs>(args: SelectSubset<T, VerificationTokensUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends OtpCodeUpdateManyArgs>(args: SelectSubset<T, OtpCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one VerificationTokens.
-     * @param {VerificationTokensUpsertArgs} args - Arguments to update or create a VerificationTokens.
+     * Create or update one OtpCode.
+     * @param {OtpCodeUpsertArgs} args - Arguments to update or create a OtpCode.
      * @example
-     * // Update or create a VerificationTokens
-     * const verificationTokens = await prisma.verificationTokens.upsert({
+     * // Update or create a OtpCode
+     * const otpCode = await prisma.otpCode.upsert({
      *   create: {
-     *     // ... data to create a VerificationTokens
+     *     // ... data to create a OtpCode
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the VerificationTokens we want to update
+     *     // ... the filter for the OtpCode we want to update
      *   }
      * })
      */
-    upsert<T extends VerificationTokensUpsertArgs>(args: SelectSubset<T, VerificationTokensUpsertArgs<ExtArgs>>): Prisma__VerificationTokensClient<$Result.GetResult<Prisma.$VerificationTokensPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends OtpCodeUpsertArgs>(args: SelectSubset<T, OtpCodeUpsertArgs<ExtArgs>>): Prisma__OtpCodeClient<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more VerificationTokens that matches the filter.
-     * @param {VerificationTokensFindRawArgs} args - Select which filters you would like to apply.
+     * Find zero or more OtpCodes that matches the filter.
+     * @param {OtpCodeFindRawArgs} args - Select which filters you would like to apply.
      * @example
-     * const verificationTokens = await prisma.verificationTokens.findRaw({
+     * const otpCode = await prisma.otpCode.findRaw({
      *   filter: { age: { $gt: 25 } }
      * })
      */
-    findRaw(args?: VerificationTokensFindRawArgs): Prisma.PrismaPromise<JsonObject>
+    findRaw(args?: OtpCodeFindRawArgs): Prisma.PrismaPromise<JsonObject>
 
     /**
-     * Perform aggregation operations on a VerificationTokens.
-     * @param {VerificationTokensAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * Perform aggregation operations on a OtpCode.
+     * @param {OtpCodeAggregateRawArgs} args - Select which aggregations you would like to apply.
      * @example
-     * const verificationTokens = await prisma.verificationTokens.aggregateRaw({
+     * const otpCode = await prisma.otpCode.aggregateRaw({
      *   pipeline: [
      *     { $match: { status: "registered" } },
      *     { $group: { _id: "$country", total: { $sum: 1 } } }
      *   ]
      * })
      */
-    aggregateRaw(args?: VerificationTokensAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+    aggregateRaw(args?: OtpCodeAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
 
 
     /**
-     * Count the number of VerificationTokens.
+     * Count the number of OtpCodes.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensCountArgs} args - Arguments to filter VerificationTokens to count.
+     * @param {OtpCodeCountArgs} args - Arguments to filter OtpCodes to count.
      * @example
-     * // Count the number of VerificationTokens
-     * const count = await prisma.verificationTokens.count({
+     * // Count the number of OtpCodes
+     * const count = await prisma.otpCode.count({
      *   where: {
-     *     // ... the filter for the VerificationTokens we want to count
+     *     // ... the filter for the OtpCodes we want to count
      *   }
      * })
     **/
-    count<T extends VerificationTokensCountArgs>(
-      args?: Subset<T, VerificationTokensCountArgs>,
+    count<T extends OtpCodeCountArgs>(
+      args?: Subset<T, OtpCodeCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], VerificationTokensCountAggregateOutputType>
+          : GetScalarType<T['select'], OtpCodeCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a VerificationTokens.
+     * Allows you to perform aggregations operations on a OtpCode.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {OtpCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -13597,13 +13698,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends VerificationTokensAggregateArgs>(args: Subset<T, VerificationTokensAggregateArgs>): Prisma.PrismaPromise<GetVerificationTokensAggregateType<T>>
+    aggregate<T extends OtpCodeAggregateArgs>(args: Subset<T, OtpCodeAggregateArgs>): Prisma.PrismaPromise<GetOtpCodeAggregateType<T>>
 
     /**
-     * Group by VerificationTokens.
+     * Group by OtpCode.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokensGroupByArgs} args - Group by arguments.
+     * @param {OtpCodeGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -13618,14 +13719,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends VerificationTokensGroupByArgs,
+      T extends OtpCodeGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: VerificationTokensGroupByArgs['orderBy'] }
-        : { orderBy?: VerificationTokensGroupByArgs['orderBy'] },
+        ? { orderBy: OtpCodeGroupByArgs['orderBy'] }
+        : { orderBy?: OtpCodeGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -13674,20 +13775,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, VerificationTokensGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationTokensGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, OtpCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOtpCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the VerificationTokens model
+   * Fields of the OtpCode model
    */
-  readonly fields: VerificationTokensFieldRefs;
+  readonly fields: OtpCodeFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for VerificationTokens.
+   * The delegate class that acts as a "Promise-like" for OtpCode.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__VerificationTokensClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__OtpCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13715,322 +13816,323 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the VerificationTokens model
+   * Fields of the OtpCode model
    */
-  interface VerificationTokensFieldRefs {
-    readonly id: FieldRef<"VerificationTokens", 'String'>
-    readonly token: FieldRef<"VerificationTokens", 'String'>
-    readonly expires: FieldRef<"VerificationTokens", 'DateTime'>
-    readonly email: FieldRef<"VerificationTokens", 'String'>
+  interface OtpCodeFieldRefs {
+    readonly id: FieldRef<"OtpCode", 'String'>
+    readonly code: FieldRef<"OtpCode", 'String'>
+    readonly expiresAt: FieldRef<"OtpCode", 'DateTime'>
+    readonly email: FieldRef<"OtpCode", 'String'>
+    readonly createdAt: FieldRef<"OtpCode", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * VerificationTokens findUnique
+   * OtpCode findUnique
    */
-  export type VerificationTokensFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter, which VerificationTokens to fetch.
+     * Filter, which OtpCode to fetch.
      */
-    where: VerificationTokensWhereUniqueInput
+    where: OtpCodeWhereUniqueInput
   }
 
   /**
-   * VerificationTokens findUniqueOrThrow
+   * OtpCode findUniqueOrThrow
    */
-  export type VerificationTokensFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter, which VerificationTokens to fetch.
+     * Filter, which OtpCode to fetch.
      */
-    where: VerificationTokensWhereUniqueInput
+    where: OtpCodeWhereUniqueInput
   }
 
   /**
-   * VerificationTokens findFirst
+   * OtpCode findFirst
    */
-  export type VerificationTokensFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter, which VerificationTokens to fetch.
+     * Filter, which OtpCode to fetch.
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of VerificationTokens to fetch.
+     * Determine the order of OtpCodes to fetch.
      */
-    orderBy?: VerificationTokensOrderByWithRelationInput | VerificationTokensOrderByWithRelationInput[]
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for VerificationTokens.
+     * Sets the position for searching for OtpCodes.
      */
-    cursor?: VerificationTokensWhereUniqueInput
+    cursor?: OtpCodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` VerificationTokens from the position of the cursor.
+     * Take `±n` OtpCodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` VerificationTokens.
+     * Skip the first `n` OtpCodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of VerificationTokens.
+     * Filter by unique combinations of OtpCodes.
      */
-    distinct?: VerificationTokensScalarFieldEnum | VerificationTokensScalarFieldEnum[]
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
   }
 
   /**
-   * VerificationTokens findFirstOrThrow
+   * OtpCode findFirstOrThrow
    */
-  export type VerificationTokensFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter, which VerificationTokens to fetch.
+     * Filter, which OtpCode to fetch.
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of VerificationTokens to fetch.
+     * Determine the order of OtpCodes to fetch.
      */
-    orderBy?: VerificationTokensOrderByWithRelationInput | VerificationTokensOrderByWithRelationInput[]
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for VerificationTokens.
+     * Sets the position for searching for OtpCodes.
      */
-    cursor?: VerificationTokensWhereUniqueInput
+    cursor?: OtpCodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` VerificationTokens from the position of the cursor.
+     * Take `±n` OtpCodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` VerificationTokens.
+     * Skip the first `n` OtpCodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of VerificationTokens.
+     * Filter by unique combinations of OtpCodes.
      */
-    distinct?: VerificationTokensScalarFieldEnum | VerificationTokensScalarFieldEnum[]
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
   }
 
   /**
-   * VerificationTokens findMany
+   * OtpCode findMany
    */
-  export type VerificationTokensFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter, which VerificationTokens to fetch.
+     * Filter, which OtpCodes to fetch.
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of VerificationTokens to fetch.
+     * Determine the order of OtpCodes to fetch.
      */
-    orderBy?: VerificationTokensOrderByWithRelationInput | VerificationTokensOrderByWithRelationInput[]
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing VerificationTokens.
+     * Sets the position for listing OtpCodes.
      */
-    cursor?: VerificationTokensWhereUniqueInput
+    cursor?: OtpCodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` VerificationTokens from the position of the cursor.
+     * Take `±n` OtpCodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` VerificationTokens.
+     * Skip the first `n` OtpCodes.
      */
     skip?: number
-    distinct?: VerificationTokensScalarFieldEnum | VerificationTokensScalarFieldEnum[]
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
   }
 
   /**
-   * VerificationTokens create
+   * OtpCode create
    */
-  export type VerificationTokensCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * The data needed to create a VerificationTokens.
+     * The data needed to create a OtpCode.
      */
-    data: XOR<VerificationTokensCreateInput, VerificationTokensUncheckedCreateInput>
+    data: XOR<OtpCodeCreateInput, OtpCodeUncheckedCreateInput>
   }
 
   /**
-   * VerificationTokens createMany
+   * OtpCode createMany
    */
-  export type VerificationTokensCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many VerificationTokens.
+     * The data used to create many OtpCodes.
      */
-    data: VerificationTokensCreateManyInput | VerificationTokensCreateManyInput[]
+    data: OtpCodeCreateManyInput | OtpCodeCreateManyInput[]
   }
 
   /**
-   * VerificationTokens update
+   * OtpCode update
    */
-  export type VerificationTokensUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * The data needed to update a VerificationTokens.
+     * The data needed to update a OtpCode.
      */
-    data: XOR<VerificationTokensUpdateInput, VerificationTokensUncheckedUpdateInput>
+    data: XOR<OtpCodeUpdateInput, OtpCodeUncheckedUpdateInput>
     /**
-     * Choose, which VerificationTokens to update.
+     * Choose, which OtpCode to update.
      */
-    where: VerificationTokensWhereUniqueInput
+    where: OtpCodeWhereUniqueInput
   }
 
   /**
-   * VerificationTokens updateMany
+   * OtpCode updateMany
    */
-  export type VerificationTokensUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update VerificationTokens.
+     * The data used to update OtpCodes.
      */
-    data: XOR<VerificationTokensUpdateManyMutationInput, VerificationTokensUncheckedUpdateManyInput>
+    data: XOR<OtpCodeUpdateManyMutationInput, OtpCodeUncheckedUpdateManyInput>
     /**
-     * Filter which VerificationTokens to update
+     * Filter which OtpCodes to update
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
-     * Limit how many VerificationTokens to update.
+     * Limit how many OtpCodes to update.
      */
     limit?: number
   }
 
   /**
-   * VerificationTokens upsert
+   * OtpCode upsert
    */
-  export type VerificationTokensUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * The filter to search for the VerificationTokens to update in case it exists.
+     * The filter to search for the OtpCode to update in case it exists.
      */
-    where: VerificationTokensWhereUniqueInput
+    where: OtpCodeWhereUniqueInput
     /**
-     * In case the VerificationTokens found by the `where` argument doesn't exist, create a new VerificationTokens with this data.
+     * In case the OtpCode found by the `where` argument doesn't exist, create a new OtpCode with this data.
      */
-    create: XOR<VerificationTokensCreateInput, VerificationTokensUncheckedCreateInput>
+    create: XOR<OtpCodeCreateInput, OtpCodeUncheckedCreateInput>
     /**
-     * In case the VerificationTokens was found with the provided `where` argument, update it with this data.
+     * In case the OtpCode was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<VerificationTokensUpdateInput, VerificationTokensUncheckedUpdateInput>
+    update: XOR<OtpCodeUpdateInput, OtpCodeUncheckedUpdateInput>
   }
 
   /**
-   * VerificationTokens delete
+   * OtpCode delete
    */
-  export type VerificationTokensDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
     /**
-     * Filter which VerificationTokens to delete.
+     * Filter which OtpCode to delete.
      */
-    where: VerificationTokensWhereUniqueInput
+    where: OtpCodeWhereUniqueInput
   }
 
   /**
-   * VerificationTokens deleteMany
+   * OtpCode deleteMany
    */
-  export type VerificationTokensDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which VerificationTokens to delete
+     * Filter which OtpCodes to delete
      */
-    where?: VerificationTokensWhereInput
+    where?: OtpCodeWhereInput
     /**
-     * Limit how many VerificationTokens to delete.
+     * Limit how many OtpCodes to delete.
      */
     limit?: number
   }
 
   /**
-   * VerificationTokens findRaw
+   * OtpCode findRaw
    */
-  export type VerificationTokensFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
      */
@@ -14042,9 +14144,9 @@ export namespace Prisma {
   }
 
   /**
-   * VerificationTokens aggregateRaw
+   * OtpCode aggregateRaw
    */
-  export type VerificationTokensAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
      */
@@ -14056,17 +14158,17 @@ export namespace Prisma {
   }
 
   /**
-   * VerificationTokens without action
+   * OtpCode without action
    */
-  export type VerificationTokensDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type OtpCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the VerificationTokens
+     * Select specific fields to fetch from the OtpCode
      */
-    select?: VerificationTokensSelect<ExtArgs> | null
+    select?: OtpCodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the VerificationTokens
+     * Omit specific fields from the OtpCode
      */
-    omit?: VerificationTokensOmit<ExtArgs> | null
+    omit?: OtpCodeOmit<ExtArgs> | null
   }
 
 
@@ -18044,6 +18146,938 @@ export namespace Prisma {
 
 
   /**
+   * Model Subscriptions
+   */
+
+  export type AggregateSubscriptions = {
+    _count: SubscriptionsCountAggregateOutputType | null
+    _min: SubscriptionsMinAggregateOutputType | null
+    _max: SubscriptionsMaxAggregateOutputType | null
+  }
+
+  export type SubscriptionsMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    subscribedAt: Date | null
+    createdAt: Date | null
+    isActive: boolean | null
+  }
+
+  export type SubscriptionsMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    subscribedAt: Date | null
+    createdAt: Date | null
+    isActive: boolean | null
+  }
+
+  export type SubscriptionsCountAggregateOutputType = {
+    id: number
+    email: number
+    subscribedAt: number
+    createdAt: number
+    isActive: number
+    _all: number
+  }
+
+
+  export type SubscriptionsMinAggregateInputType = {
+    id?: true
+    email?: true
+    subscribedAt?: true
+    createdAt?: true
+    isActive?: true
+  }
+
+  export type SubscriptionsMaxAggregateInputType = {
+    id?: true
+    email?: true
+    subscribedAt?: true
+    createdAt?: true
+    isActive?: true
+  }
+
+  export type SubscriptionsCountAggregateInputType = {
+    id?: true
+    email?: true
+    subscribedAt?: true
+    createdAt?: true
+    isActive?: true
+    _all?: true
+  }
+
+  export type SubscriptionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscriptions to aggregate.
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionsOrderByWithRelationInput | SubscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Subscriptions
+    **/
+    _count?: true | SubscriptionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubscriptionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubscriptionsMaxAggregateInputType
+  }
+
+  export type GetSubscriptionsAggregateType<T extends SubscriptionsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubscriptions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubscriptions[P]>
+      : GetScalarType<T[P], AggregateSubscriptions[P]>
+  }
+
+
+
+
+  export type SubscriptionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionsWhereInput
+    orderBy?: SubscriptionsOrderByWithAggregationInput | SubscriptionsOrderByWithAggregationInput[]
+    by: SubscriptionsScalarFieldEnum[] | SubscriptionsScalarFieldEnum
+    having?: SubscriptionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubscriptionsCountAggregateInputType | true
+    _min?: SubscriptionsMinAggregateInputType
+    _max?: SubscriptionsMaxAggregateInputType
+  }
+
+  export type SubscriptionsGroupByOutputType = {
+    id: string
+    email: string
+    subscribedAt: Date
+    createdAt: Date
+    isActive: boolean | null
+    _count: SubscriptionsCountAggregateOutputType | null
+    _min: SubscriptionsMinAggregateOutputType | null
+    _max: SubscriptionsMaxAggregateOutputType | null
+  }
+
+  type GetSubscriptionsGroupByPayload<T extends SubscriptionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubscriptionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubscriptionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubscriptionsGroupByOutputType[P]>
+            : GetScalarType<T[P], SubscriptionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubscriptionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    subscribedAt?: boolean
+    createdAt?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["subscriptions"]>
+
+
+
+  export type SubscriptionsSelectScalar = {
+    id?: boolean
+    email?: boolean
+    subscribedAt?: boolean
+    createdAt?: boolean
+    isActive?: boolean
+  }
+
+  export type SubscriptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "subscribedAt" | "createdAt" | "isActive", ExtArgs["result"]["subscriptions"]>
+
+  export type $SubscriptionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Subscriptions"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      subscribedAt: Date
+      createdAt: Date
+      isActive: boolean | null
+    }, ExtArgs["result"]["subscriptions"]>
+    composites: {}
+  }
+
+  type SubscriptionsGetPayload<S extends boolean | null | undefined | SubscriptionsDefaultArgs> = $Result.GetResult<Prisma.$SubscriptionsPayload, S>
+
+  type SubscriptionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubscriptionsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubscriptionsCountAggregateInputType | true
+    }
+
+  export interface SubscriptionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Subscriptions'], meta: { name: 'Subscriptions' } }
+    /**
+     * Find zero or one Subscriptions that matches the filter.
+     * @param {SubscriptionsFindUniqueArgs} args - Arguments to find a Subscriptions
+     * @example
+     * // Get one Subscriptions
+     * const subscriptions = await prisma.subscriptions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubscriptionsFindUniqueArgs>(args: SelectSubset<T, SubscriptionsFindUniqueArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Subscriptions that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubscriptionsFindUniqueOrThrowArgs} args - Arguments to find a Subscriptions
+     * @example
+     * // Get one Subscriptions
+     * const subscriptions = await prisma.subscriptions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubscriptionsFindUniqueOrThrowArgs>(args: SelectSubset<T, SubscriptionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsFindFirstArgs} args - Arguments to find a Subscriptions
+     * @example
+     * // Get one Subscriptions
+     * const subscriptions = await prisma.subscriptions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubscriptionsFindFirstArgs>(args?: SelectSubset<T, SubscriptionsFindFirstArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscriptions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsFindFirstOrThrowArgs} args - Arguments to find a Subscriptions
+     * @example
+     * // Get one Subscriptions
+     * const subscriptions = await prisma.subscriptions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubscriptionsFindFirstOrThrowArgs>(args?: SelectSubset<T, SubscriptionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Subscriptions
+     * const subscriptions = await prisma.subscriptions.findMany()
+     * 
+     * // Get first 10 Subscriptions
+     * const subscriptions = await prisma.subscriptions.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const subscriptionsWithIdOnly = await prisma.subscriptions.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubscriptionsFindManyArgs>(args?: SelectSubset<T, SubscriptionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Subscriptions.
+     * @param {SubscriptionsCreateArgs} args - Arguments to create a Subscriptions.
+     * @example
+     * // Create one Subscriptions
+     * const Subscriptions = await prisma.subscriptions.create({
+     *   data: {
+     *     // ... data to create a Subscriptions
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubscriptionsCreateArgs>(args: SelectSubset<T, SubscriptionsCreateArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Subscriptions.
+     * @param {SubscriptionsCreateManyArgs} args - Arguments to create many Subscriptions.
+     * @example
+     * // Create many Subscriptions
+     * const subscriptions = await prisma.subscriptions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubscriptionsCreateManyArgs>(args?: SelectSubset<T, SubscriptionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Subscriptions.
+     * @param {SubscriptionsDeleteArgs} args - Arguments to delete one Subscriptions.
+     * @example
+     * // Delete one Subscriptions
+     * const Subscriptions = await prisma.subscriptions.delete({
+     *   where: {
+     *     // ... filter to delete one Subscriptions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubscriptionsDeleteArgs>(args: SelectSubset<T, SubscriptionsDeleteArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Subscriptions.
+     * @param {SubscriptionsUpdateArgs} args - Arguments to update one Subscriptions.
+     * @example
+     * // Update one Subscriptions
+     * const subscriptions = await prisma.subscriptions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubscriptionsUpdateArgs>(args: SelectSubset<T, SubscriptionsUpdateArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Subscriptions.
+     * @param {SubscriptionsDeleteManyArgs} args - Arguments to filter Subscriptions to delete.
+     * @example
+     * // Delete a few Subscriptions
+     * const { count } = await prisma.subscriptions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubscriptionsDeleteManyArgs>(args?: SelectSubset<T, SubscriptionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Subscriptions
+     * const subscriptions = await prisma.subscriptions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubscriptionsUpdateManyArgs>(args: SelectSubset<T, SubscriptionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Subscriptions.
+     * @param {SubscriptionsUpsertArgs} args - Arguments to update or create a Subscriptions.
+     * @example
+     * // Update or create a Subscriptions
+     * const subscriptions = await prisma.subscriptions.upsert({
+     *   create: {
+     *     // ... data to create a Subscriptions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Subscriptions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubscriptionsUpsertArgs>(args: SelectSubset<T, SubscriptionsUpsertArgs<ExtArgs>>): Prisma__SubscriptionsClient<$Result.GetResult<Prisma.$SubscriptionsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Subscriptions that matches the filter.
+     * @param {SubscriptionsFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const subscriptions = await prisma.subscriptions.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: SubscriptionsFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Subscriptions.
+     * @param {SubscriptionsAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const subscriptions = await prisma.subscriptions.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: SubscriptionsAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsCountArgs} args - Arguments to filter Subscriptions to count.
+     * @example
+     * // Count the number of Subscriptions
+     * const count = await prisma.subscriptions.count({
+     *   where: {
+     *     // ... the filter for the Subscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubscriptionsCountArgs>(
+      args?: Subset<T, SubscriptionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubscriptionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubscriptionsAggregateArgs>(args: Subset<T, SubscriptionsAggregateArgs>): Prisma.PrismaPromise<GetSubscriptionsAggregateType<T>>
+
+    /**
+     * Group by Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubscriptionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubscriptionsGroupByArgs['orderBy'] }
+        : { orderBy?: SubscriptionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubscriptionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubscriptionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Subscriptions model
+   */
+  readonly fields: SubscriptionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Subscriptions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubscriptionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Subscriptions model
+   */
+  interface SubscriptionsFieldRefs {
+    readonly id: FieldRef<"Subscriptions", 'String'>
+    readonly email: FieldRef<"Subscriptions", 'String'>
+    readonly subscribedAt: FieldRef<"Subscriptions", 'DateTime'>
+    readonly createdAt: FieldRef<"Subscriptions", 'DateTime'>
+    readonly isActive: FieldRef<"Subscriptions", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Subscriptions findUnique
+   */
+  export type SubscriptionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where: SubscriptionsWhereUniqueInput
+  }
+
+  /**
+   * Subscriptions findUniqueOrThrow
+   */
+  export type SubscriptionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where: SubscriptionsWhereUniqueInput
+  }
+
+  /**
+   * Subscriptions findFirst
+   */
+  export type SubscriptionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionsOrderByWithRelationInput | SubscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionsScalarFieldEnum | SubscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * Subscriptions findFirstOrThrow
+   */
+  export type SubscriptionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionsOrderByWithRelationInput | SubscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionsScalarFieldEnum | SubscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * Subscriptions findMany
+   */
+  export type SubscriptionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionsOrderByWithRelationInput | SubscriptionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Subscriptions.
+     */
+    cursor?: SubscriptionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    distinct?: SubscriptionsScalarFieldEnum | SubscriptionsScalarFieldEnum[]
+  }
+
+  /**
+   * Subscriptions create
+   */
+  export type SubscriptionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Subscriptions.
+     */
+    data: XOR<SubscriptionsCreateInput, SubscriptionsUncheckedCreateInput>
+  }
+
+  /**
+   * Subscriptions createMany
+   */
+  export type SubscriptionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Subscriptions.
+     */
+    data: SubscriptionsCreateManyInput | SubscriptionsCreateManyInput[]
+  }
+
+  /**
+   * Subscriptions update
+   */
+  export type SubscriptionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Subscriptions.
+     */
+    data: XOR<SubscriptionsUpdateInput, SubscriptionsUncheckedUpdateInput>
+    /**
+     * Choose, which Subscriptions to update.
+     */
+    where: SubscriptionsWhereUniqueInput
+  }
+
+  /**
+   * Subscriptions updateMany
+   */
+  export type SubscriptionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Subscriptions.
+     */
+    data: XOR<SubscriptionsUpdateManyMutationInput, SubscriptionsUncheckedUpdateManyInput>
+    /**
+     * Filter which Subscriptions to update
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * Limit how many Subscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscriptions upsert
+   */
+  export type SubscriptionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Subscriptions to update in case it exists.
+     */
+    where: SubscriptionsWhereUniqueInput
+    /**
+     * In case the Subscriptions found by the `where` argument doesn't exist, create a new Subscriptions with this data.
+     */
+    create: XOR<SubscriptionsCreateInput, SubscriptionsUncheckedCreateInput>
+    /**
+     * In case the Subscriptions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubscriptionsUpdateInput, SubscriptionsUncheckedUpdateInput>
+  }
+
+  /**
+   * Subscriptions delete
+   */
+  export type SubscriptionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+    /**
+     * Filter which Subscriptions to delete.
+     */
+    where: SubscriptionsWhereUniqueInput
+  }
+
+  /**
+   * Subscriptions deleteMany
+   */
+  export type SubscriptionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscriptions to delete
+     */
+    where?: SubscriptionsWhereInput
+    /**
+     * Limit how many Subscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscriptions findRaw
+   */
+  export type SubscriptionsFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Subscriptions aggregateRaw
+   */
+  export type SubscriptionsAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Subscriptions without action
+   */
+  export type SubscriptionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscriptions
+     */
+    select?: SubscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscriptions
+     */
+    omit?: SubscriptionsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18168,14 +19202,15 @@ export namespace Prisma {
   export type FollowTopicScalarFieldEnum = (typeof FollowTopicScalarFieldEnum)[keyof typeof FollowTopicScalarFieldEnum]
 
 
-  export const VerificationTokensScalarFieldEnum: {
+  export const OtpCodeScalarFieldEnum: {
     id: 'id',
-    token: 'token',
-    expires: 'expires',
-    email: 'email'
+    code: 'code',
+    expiresAt: 'expiresAt',
+    email: 'email',
+    createdAt: 'createdAt'
   };
 
-  export type VerificationTokensScalarFieldEnum = (typeof VerificationTokensScalarFieldEnum)[keyof typeof VerificationTokensScalarFieldEnum]
+  export type OtpCodeScalarFieldEnum = (typeof OtpCodeScalarFieldEnum)[keyof typeof OtpCodeScalarFieldEnum]
 
 
   export const FollowScalarFieldEnum: {
@@ -18221,6 +19256,17 @@ export namespace Prisma {
   };
 
   export type CommentLikeScalarFieldEnum = (typeof CommentLikeScalarFieldEnum)[keyof typeof CommentLikeScalarFieldEnum]
+
+
+  export const SubscriptionsScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    subscribedAt: 'subscribedAt',
+    createdAt: 'createdAt',
+    isActive: 'isActive'
+  };
+
+  export type SubscriptionsScalarFieldEnum = (typeof SubscriptionsScalarFieldEnum)[keyof typeof SubscriptionsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -18492,14 +19538,16 @@ export namespace Prisma {
 
   export type VisitorsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    visitorId?: string
+    blogId_userId?: VisitorsBlogIdUserIdCompoundUniqueInput
+    blogId_visitorId?: VisitorsBlogIdVisitorIdCompoundUniqueInput
     AND?: VisitorsWhereInput | VisitorsWhereInput[]
     OR?: VisitorsWhereInput[]
     NOT?: VisitorsWhereInput | VisitorsWhereInput[]
+    visitorId?: StringFilter<"Visitors"> | string
     userId?: StringNullableFilter<"Visitors"> | string | null
     createdAt?: DateTimeFilter<"Visitors"> | Date | string
     blogId?: StringFilter<"Visitors"> | string
-  }, "id" | "visitorId">
+  }, "id" | "blogId_userId" | "blogId_visitorId">
 
   export type VisitorsOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19032,51 +20080,56 @@ export namespace Prisma {
     topicId?: StringWithAggregatesFilter<"FollowTopic"> | string
   }
 
-  export type VerificationTokensWhereInput = {
-    AND?: VerificationTokensWhereInput | VerificationTokensWhereInput[]
-    OR?: VerificationTokensWhereInput[]
-    NOT?: VerificationTokensWhereInput | VerificationTokensWhereInput[]
-    id?: StringFilter<"VerificationTokens"> | string
-    token?: StringFilter<"VerificationTokens"> | string
-    expires?: DateTimeFilter<"VerificationTokens"> | Date | string
-    email?: StringFilter<"VerificationTokens"> | string
+  export type OtpCodeWhereInput = {
+    AND?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    OR?: OtpCodeWhereInput[]
+    NOT?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    id?: StringFilter<"OtpCode"> | string
+    code?: StringFilter<"OtpCode"> | string
+    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    email?: StringFilter<"OtpCode"> | string
+    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
   }
 
-  export type VerificationTokensOrderByWithRelationInput = {
+  export type OtpCodeOrderByWithRelationInput = {
     id?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
     email?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type VerificationTokensWhereUniqueInput = Prisma.AtLeast<{
+  export type OtpCodeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
-    AND?: VerificationTokensWhereInput | VerificationTokensWhereInput[]
-    OR?: VerificationTokensWhereInput[]
-    NOT?: VerificationTokensWhereInput | VerificationTokensWhereInput[]
-    token?: StringFilter<"VerificationTokens"> | string
-    expires?: DateTimeFilter<"VerificationTokens"> | Date | string
+    AND?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    OR?: OtpCodeWhereInput[]
+    NOT?: OtpCodeWhereInput | OtpCodeWhereInput[]
+    code?: StringFilter<"OtpCode"> | string
+    expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
+    createdAt?: DateTimeFilter<"OtpCode"> | Date | string
   }, "id" | "email">
 
-  export type VerificationTokensOrderByWithAggregationInput = {
+  export type OtpCodeOrderByWithAggregationInput = {
     id?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
     email?: SortOrder
-    _count?: VerificationTokensCountOrderByAggregateInput
-    _max?: VerificationTokensMaxOrderByAggregateInput
-    _min?: VerificationTokensMinOrderByAggregateInput
+    createdAt?: SortOrder
+    _count?: OtpCodeCountOrderByAggregateInput
+    _max?: OtpCodeMaxOrderByAggregateInput
+    _min?: OtpCodeMinOrderByAggregateInput
   }
 
-  export type VerificationTokensScalarWhereWithAggregatesInput = {
-    AND?: VerificationTokensScalarWhereWithAggregatesInput | VerificationTokensScalarWhereWithAggregatesInput[]
-    OR?: VerificationTokensScalarWhereWithAggregatesInput[]
-    NOT?: VerificationTokensScalarWhereWithAggregatesInput | VerificationTokensScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"VerificationTokens"> | string
-    token?: StringWithAggregatesFilter<"VerificationTokens"> | string
-    expires?: DateTimeWithAggregatesFilter<"VerificationTokens"> | Date | string
-    email?: StringWithAggregatesFilter<"VerificationTokens"> | string
+  export type OtpCodeScalarWhereWithAggregatesInput = {
+    AND?: OtpCodeScalarWhereWithAggregatesInput | OtpCodeScalarWhereWithAggregatesInput[]
+    OR?: OtpCodeScalarWhereWithAggregatesInput[]
+    NOT?: OtpCodeScalarWhereWithAggregatesInput | OtpCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OtpCode"> | string
+    code?: StringWithAggregatesFilter<"OtpCode"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
+    email?: StringWithAggregatesFilter<"OtpCode"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"OtpCode"> | Date | string
   }
 
   export type FollowWhereInput = {
@@ -19319,6 +20372,58 @@ export namespace Prisma {
     commentId?: StringWithAggregatesFilter<"CommentLike"> | string
     userId?: StringWithAggregatesFilter<"CommentLike"> | string
     createdAt?: DateTimeWithAggregatesFilter<"CommentLike"> | Date | string
+  }
+
+  export type SubscriptionsWhereInput = {
+    AND?: SubscriptionsWhereInput | SubscriptionsWhereInput[]
+    OR?: SubscriptionsWhereInput[]
+    NOT?: SubscriptionsWhereInput | SubscriptionsWhereInput[]
+    id?: StringFilter<"Subscriptions"> | string
+    email?: StringFilter<"Subscriptions"> | string
+    subscribedAt?: DateTimeFilter<"Subscriptions"> | Date | string
+    createdAt?: DateTimeFilter<"Subscriptions"> | Date | string
+    isActive?: BoolNullableFilter<"Subscriptions"> | boolean | null
+  }
+
+  export type SubscriptionsOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribedAt?: SortOrder
+    createdAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type SubscriptionsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: SubscriptionsWhereInput | SubscriptionsWhereInput[]
+    OR?: SubscriptionsWhereInput[]
+    NOT?: SubscriptionsWhereInput | SubscriptionsWhereInput[]
+    subscribedAt?: DateTimeFilter<"Subscriptions"> | Date | string
+    createdAt?: DateTimeFilter<"Subscriptions"> | Date | string
+    isActive?: BoolNullableFilter<"Subscriptions"> | boolean | null
+  }, "id" | "email">
+
+  export type SubscriptionsOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribedAt?: SortOrder
+    createdAt?: SortOrder
+    isActive?: SortOrder
+    _count?: SubscriptionsCountOrderByAggregateInput
+    _max?: SubscriptionsMaxOrderByAggregateInput
+    _min?: SubscriptionsMinOrderByAggregateInput
+  }
+
+  export type SubscriptionsScalarWhereWithAggregatesInput = {
+    AND?: SubscriptionsScalarWhereWithAggregatesInput | SubscriptionsScalarWhereWithAggregatesInput[]
+    OR?: SubscriptionsScalarWhereWithAggregatesInput[]
+    NOT?: SubscriptionsScalarWhereWithAggregatesInput | SubscriptionsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Subscriptions"> | string
+    email?: StringWithAggregatesFilter<"Subscriptions"> | string
+    subscribedAt?: DateTimeWithAggregatesFilter<"Subscriptions"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Subscriptions"> | Date | string
+    isActive?: BoolNullableWithAggregatesFilter<"Subscriptions"> | boolean | null
   }
 
   export type UserCreateInput = {
@@ -20006,49 +21111,56 @@ export namespace Prisma {
     topicId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type VerificationTokensCreateInput = {
+  export type OtpCodeCreateInput = {
     id?: string
-    token: string
-    expires: Date | string
+    code: string
+    expiresAt: Date | string
     email: string
+    createdAt?: Date | string
   }
 
-  export type VerificationTokensUncheckedCreateInput = {
+  export type OtpCodeUncheckedCreateInput = {
     id?: string
-    token: string
-    expires: Date | string
+    code: string
+    expiresAt: Date | string
     email: string
+    createdAt?: Date | string
   }
 
-  export type VerificationTokensUpdateInput = {
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OtpCodeUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VerificationTokensUncheckedUpdateInput = {
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OtpCodeUncheckedUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VerificationTokensCreateManyInput = {
+  export type OtpCodeCreateManyInput = {
     id?: string
-    token: string
-    expires: Date | string
+    code: string
+    expiresAt: Date | string
     email: string
+    createdAt?: Date | string
   }
 
-  export type VerificationTokensUpdateManyMutationInput = {
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OtpCodeUpdateManyMutationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VerificationTokensUncheckedUpdateManyInput = {
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OtpCodeUncheckedUpdateManyInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FollowCreateInput = {
@@ -20260,6 +21372,58 @@ export namespace Prisma {
     commentId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionsCreateInput = {
+    id?: string
+    email: string
+    subscribedAt?: Date | string
+    createdAt?: Date | string
+    isActive?: boolean | null
+  }
+
+  export type SubscriptionsUncheckedCreateInput = {
+    id?: string
+    email: string
+    subscribedAt?: Date | string
+    createdAt?: Date | string
+    isActive?: boolean | null
+  }
+
+  export type SubscriptionsUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    subscribedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type SubscriptionsUncheckedUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    subscribedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type SubscriptionsCreateManyInput = {
+    id?: string
+    email: string
+    subscribedAt?: Date | string
+    createdAt?: Date | string
+    isActive?: boolean | null
+  }
+
+  export type SubscriptionsUpdateManyMutationInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    subscribedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type SubscriptionsUncheckedUpdateManyInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    subscribedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -20581,6 +21745,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedJsonFilter<$PrismaModel>
     _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type VisitorsBlogIdUserIdCompoundUniqueInput = {
+    blogId: string
+    userId: string
+  }
+
+  export type VisitorsBlogIdVisitorIdCompoundUniqueInput = {
+    blogId: string
+    visitorId: string
   }
 
   export type VisitorsCountOrderByAggregateInput = {
@@ -20984,25 +22158,28 @@ export namespace Prisma {
     topicId?: SortOrder
   }
 
-  export type VerificationTokensCountOrderByAggregateInput = {
+  export type OtpCodeCountOrderByAggregateInput = {
     id?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
     email?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type VerificationTokensMaxOrderByAggregateInput = {
+  export type OtpCodeMaxOrderByAggregateInput = {
     id?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
     email?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type VerificationTokensMinOrderByAggregateInput = {
+  export type OtpCodeMinOrderByAggregateInput = {
     id?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
+    code?: SortOrder
+    expiresAt?: SortOrder
     email?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type FollowFollowerIdFolloweeIdCompoundUniqueInput = {
@@ -21134,6 +22311,45 @@ export namespace Prisma {
     commentId?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+    isSet?: boolean
+  }
+
+  export type SubscriptionsCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribedAt?: SortOrder
+    createdAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type SubscriptionsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribedAt?: SortOrder
+    createdAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type SubscriptionsMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribedAt?: SortOrder
+    createdAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type SocialCreateEnvelopeInput = {
@@ -22351,6 +23567,11 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommentLikeInput, UserUpdateWithoutCommentLikeInput>, UserUncheckedUpdateWithoutCommentLikeInput>
   }
 
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+    unset?: boolean
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -22617,6 +23838,21 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+    isSet?: boolean
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type BlogCreateWithoutAuthorInput = {

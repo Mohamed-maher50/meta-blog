@@ -20,17 +20,21 @@ import {
   createCommentSchema,
   createCommentsSchemaTypes,
 } from "@/schema/Comments";
-import { CommentWithAuthor } from "@/types";
-import { Blog, NotificationType } from "@prisma/client";
+import { BlogCardProps, CommentWithAuthor } from "@/types";
+import { NotificationType } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import axiosClient from "@/lib/axios.client";
+import { memo } from "react";
 
 interface NewCommentFormProps {
   blogId: string;
-  blog: Blog;
+  blog: BlogCardProps;
 }
 
-export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
+export default memo(function NewCommentForm({
+  blogId,
+  blog,
+}: NewCommentFormProps) {
   const form = useForm<createCommentsSchemaTypes>({
     resolver: zodResolver(createCommentSchema),
     defaultValues: {
@@ -52,7 +56,7 @@ export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
       if (!data) throw new Error("No comment data returned");
       await axiosClient.post("/api/notifications", {
         type: NotificationType.COMMENT,
-        userId: blog.authorId,
+        userId: blog.author.id,
         entityId: blogId,
       });
       queryClient.invalidateQueries({
@@ -106,4 +110,4 @@ export default function NewCommentForm({ blogId, blog }: NewCommentFormProps) {
       </Form>
     </div>
   );
-}
+});

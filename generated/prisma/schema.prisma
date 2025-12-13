@@ -45,10 +45,13 @@ model User {
 
 model Visitors {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  visitorId String   @unique
+  visitorId String
   userId    String?
   createdAt DateTime @default(now())
   blogId    String
+
+  @@unique([blogId, userId])
+  @@unique([blogId, visitorId])
 }
 
 model Favorites {
@@ -158,11 +161,14 @@ model FollowTopic {
   @@unique([userId, topicId])
 }
 
-model VerificationTokens {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  token   String
-  expires DateTime
-  email   String   @unique
+model OtpCode {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  code      String
+  expiresAt DateTime
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("UsersOtpVerifications")
 }
 
 type Cover {
@@ -241,4 +247,12 @@ model CommentLike {
   createdAt DateTime @default(now())
 
   @@unique([commentId, userId])
+}
+
+model Subscriptions {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+  isActive     Boolean? @default(true)
 }

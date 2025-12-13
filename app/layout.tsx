@@ -46,7 +46,7 @@ export default async function RootLayout({
               >
                 <div className="flex flex-col">
                   <Navbar />
-                  {children}
+                  <main>{children}</main>
                   <Footer />
                 </div>
               </ThemeProvider>

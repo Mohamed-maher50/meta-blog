@@ -48,6 +48,7 @@ export const GET = async (req: NextRequest) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
+    console.log(error);
     return Response.json(...ErrorHandler(error, false));
   }
 };

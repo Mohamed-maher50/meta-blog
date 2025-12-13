@@ -1,6 +1,5 @@
 "use client";
 import NotFoundMessage from "@/components/NotFoundMessage";
-import React from "react";
 
 const notFound = () => {
   return (

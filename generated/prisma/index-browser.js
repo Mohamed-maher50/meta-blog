@@ -21,12 +21,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.0
- * Query Engine version: 2ba551f319ab1df4bc874a89965d8b3641056773
+ * Prisma Client JS version: 6.19.1
+ * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.0",
-  engine: "2ba551f319ab1df4bc874a89965d8b3641056773"
+  client: "6.19.1",
+  engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -205,11 +205,12 @@ exports.Prisma.FollowTopicScalarFieldEnum = {
   topicId: 'topicId'
 };
 
-exports.Prisma.VerificationTokensScalarFieldEnum = {
+exports.Prisma.OtpCodeScalarFieldEnum = {
   id: 'id',
-  token: 'token',
-  expires: 'expires',
-  email: 'email'
+  code: 'code',
+  expiresAt: 'expiresAt',
+  email: 'email',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.FollowScalarFieldEnum = {
@@ -243,6 +244,14 @@ exports.Prisma.CommentLikeScalarFieldEnum = {
   commentId: 'commentId',
   userId: 'userId',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.SubscriptionsScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  subscribedAt: 'subscribedAt',
+  createdAt: 'createdAt',
+  isActive: 'isActive'
 };
 
 exports.Prisma.SortOrder = {
@@ -279,11 +288,12 @@ exports.Prisma.ModelName = {
   BlogTopics: 'BlogTopics',
   Topics: 'Topics',
   FollowTopic: 'FollowTopic',
-  VerificationTokens: 'VerificationTokens',
+  OtpCode: 'OtpCode',
   Follow: 'Follow',
   Notification: 'Notification',
   Comment: 'Comment',
-  CommentLike: 'CommentLike'
+  CommentLike: 'CommentLike',
+  Subscriptions: 'Subscriptions'
 };
 
 /**

@@ -6,9 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NewCommentForm from "@/components/comments/NewCommentForm";
-import { ResponseComment, ResponseSuccess } from "@/types";
+import { BlogCardProps, ResponseComment, ResponseSuccess } from "@/types";
 import InfiniteScroll from "@/components/ui/InfiniteScroll";
-import { Blog } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import NoComments from "@/components/comments/NoComments";
 import CommentCard from "./CommentCard";
@@ -17,7 +16,7 @@ import { formatCompactNumber } from "@/lib/utils";
 
 interface BlogCommentsProps {
   blogId: string;
-  blog: Blog;
+  blog: BlogCardProps;
 }
 const BlogComments: React.FC<BlogCommentsProps> = ({ blogId, blog }) => {
   const {
@@ -31,6 +30,11 @@ const BlogComments: React.FC<BlogCommentsProps> = ({ blogId, blog }) => {
       const res = await GetComments<ResponseComment>({
         id: blogId,
         query: `?limit=10&page=${pageParam}&sort=-createdAt`,
+        init: {
+          next: {
+            revalidate: 60,
+          },
+        },
       });
       return res;
     },
@@ -39,6 +43,7 @@ const BlogComments: React.FC<BlogCommentsProps> = ({ blogId, blog }) => {
       if (!lastPage.pagination.hasNextPage) return undefined;
       return lastPage.pagination.hasNextPage;
     },
+    staleTime: 1000 * 60 * 60,
   });
   const commentsCount = useMemo(() => {
     const totalComments = blog_comments?.pages[0]

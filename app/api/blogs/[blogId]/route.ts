@@ -14,7 +14,7 @@ export const GET = async (
     const session = await auth();
 
     const { blogId } = await params;
-    const ApiFutures = new ApiFuturesQuery(req).omit([])
+    const ApiFutures = new ApiFuturesQuery(req).omit([]);
 
     const blog = await prisma.blog.findUnique({
       where: {
@@ -49,13 +49,14 @@ export const GET = async (
       },
       omit: ApiFutures.Query.omit,
     });
+
     if (!blog)
       throw new AppError(
         `No blog found with id "${blogId}". It seems this post took a detour into the void — check the id or craft a new story.`,
         404
       );
-
-    return Response.json(blog, { status: 200 });
+    const BlogTopics = [...blog.BlogTopics.map((b) => b.topic)];
+    return Response.json({ ...blog, BlogTopics }, { status: 200 });
   } catch (error) {
     return Response.json(...ErrorHandler(error, false));
   }
@@ -94,7 +95,6 @@ export const DELETE = async (
 
     return Response.json(result, { status: 200 });
   } catch (error) {
-
     return Response.json(...ErrorHandler(error, false));
   }
 };

@@ -147,7 +147,7 @@ const mathematics = Mathematics.configure({
 });
 
 const characterCount = CharacterCount.configure();
-import { Extension } from "@tiptap/core";
+import { Extension, Extensions } from "@tiptap/core";
 import { Plugin } from "prosemirror-state";
 import { Decoration, DecorationSet } from "prosemirror-view";
 import type { EditorView } from "prosemirror-view";
@@ -239,16 +239,21 @@ export const defaultExtensions = [
   Heading.configure({
     levels: [1, 2, 3],
   }),
-  starterKit,
+  starterKit.configure({
+    heading: false,
+    codeBlock: false,
+    horizontalRule: false,
+    // listItem: false,
+  }),
   placeholder,
-  tiptapLink,
-  tiptapImage,
+  tiptapLink, //done
+  // tiptapImage,
   updatedImage,
-  taskList,
-  taskItem,
-  horizontalRule,
+  taskList, //done
+  taskItem, //done
+  horizontalRule, //done
   aiHighlight,
-  codeBlockLowlight,
+  codeBlockLowlight, //done
   youtube,
   twitter,
   mathematics,
@@ -263,4 +268,20 @@ export const defaultExtensions = [
     dragHandleWidth: 20,
     scrollTreshold: 100,
   }),
+];
+export const renderExtensions: Extensions = [
+  StarterKit,
+  HighlightExtension,
+  Heading.configure({
+    levels: [1, 2, 3],
+  }),
+
+  HorizontalRule,
+  tiptapImage,
+  TaskList,
+  TaskItem,
+
+  // codeBlockLowlight,
+  Color,
+  TextStyle,
 ];
