@@ -54,7 +54,10 @@ const Filtration_bar = () => {
             router.push(`/favorites/?${url.toString()}`);
           }}
         >
-          <SelectTrigger className="w-45">
+          <SelectTrigger
+            className="w-45"
+            aria-label="Filtration favorites by newest and oldest"
+          >
             <SlidersHorizontal size={16} className="mr-2" />
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>

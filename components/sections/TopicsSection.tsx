@@ -45,11 +45,11 @@ const ChunkTopics = async ({ query }: { query: string }) => {
   const res = await getTopics(query);
   return (
     <>
-      <GridTopics topics={res.data}>
+      {/* <GridTopics topics={res.data}>
         {res.pagination.hasNextPage && (
           <InfinityBlogsCardsSection query={query} />
         )}
-      </GridTopics>
+      </GridTopics> */}
     </>
   );
 };

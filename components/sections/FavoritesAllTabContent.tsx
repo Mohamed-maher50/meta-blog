@@ -19,6 +19,9 @@ export const ChunkBlogs = async ({ query }: { query: string }) => {
     `${baseUrl}/api/blogs/favorites?omit=content&${query}`,
     {
       headers: new Headers(headers),
+      next: {
+        revalidate: 60,
+      },
     }
   );
   const {

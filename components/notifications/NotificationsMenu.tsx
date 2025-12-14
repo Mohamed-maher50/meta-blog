@@ -115,6 +115,7 @@ const NotificationsDropDownMenu = () => {
           <Button
             variant="ghost"
             size="icon"
+            aria-label="notification button"
             className="relative rounded-full bg-secondary text-secondary-foreground hover:bg-secondary-100 transition"
           >
             <Bell className="h-5 w-5" />

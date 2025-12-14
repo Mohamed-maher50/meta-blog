@@ -117,7 +117,7 @@ const RichBlogCard = ({
             <Badge
               key={bt.topic.id}
               variant="secondary"
-              className="flex items-center gap-1"
+              className="flex items-center dark:text-muted-foreground gap-1"
             >
               <Tag size={12} />
               {bt.topic.label}
