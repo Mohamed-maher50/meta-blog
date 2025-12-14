@@ -1,5 +1,5 @@
 "use client";
-import { ApiGetFavoritesSuccess } from "@/app/api/favorites/route";
+import { ApiGetFavoritesSuccess } from "@/app/api/blogs/favorites/route";
 
 import { Bookmark } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,9 @@ const SavedButton = ({ isSaved = false, blogId }: SavedButtonProps) => {
     const prevState = defaultValue;
     setDefaultValue(!prevState);
     toast.promise(
-      axiosClient.post<ApiGetFavoritesSuccess>("/api/favorites", { blogId }),
+      axiosClient.post<ApiGetFavoritesSuccess>("/api/blogs/favorites", {
+        blogId,
+      }),
       {
         loading: "Saving...",
         success: ({ status }: { status: number }) => {

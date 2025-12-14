@@ -5,16 +5,21 @@ import { ErrorHandler } from "@/lib/GlobalErrorHandler";
 import { prisma } from "@/prisma";
 import { auth } from "@/auth";
 const blogLikeCondition = (searchParams: URLSearchParams) => {
-  const blogLikeKey = searchParams.get("sort")?.split(',');
-  return [{
-    BlogLike: {
-      _count: blogLikeKey?.includes("-BlogLike") ? "desc" : "asc",
-    },
-  }, {
-    views_count: "desc"
-
-  }]
-}
+  const blogLikeKey = searchParams.get("sort")?.split(",");
+  const filtration = [];
+  if (blogLikeKey?.includes("-BlogLike")) {
+    filtration.unshift({
+      BlogLike: {
+        _count: "desc",
+      },
+    });
+  }
+  if (blogLikeKey?.includes("-views_count"))
+    filtration.unshift({
+      views_count: "desc",
+    });
+  return filtration;
+};
 export const GET = async (req: NextRequest) => {
   const ApiFuture = new ApiFuturesQuery(req)
     .search()
@@ -23,16 +28,17 @@ export const GET = async (req: NextRequest) => {
       return {
         ...(userTopicIds.length > 0
           ? {
-            BlogTopics: {
-              some: {
-                topicId: { in: userTopicIds },
+              BlogTopics: {
+                some: {
+                  topicId: { in: userTopicIds },
+                },
               },
-            },
-          }
+            }
           : {}),
       };
     })
-    .omit().sortAppend(blogLikeCondition)
+    .omit()
+    .sortAppend(blogLikeCondition)
     .sort(BLOGS_SORT_FIELDS)
     .paginateQuery();
 

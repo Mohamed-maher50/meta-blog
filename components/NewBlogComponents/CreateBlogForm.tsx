@@ -193,7 +193,6 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
               }}
               onUpdate={({ editor }) => {
                 if (!editor || !editor.state.doc.content.childCount) return "";
-                console.log(editor.getHTML());
                 debouncedUpdates(editor);
               }}
               slotBefore={

@@ -163,7 +163,7 @@ export class ApiFuturesQuery {
     include: Record<string, unknown>;
   } = {
     where: {},
-    orderBy: [{ id: "asc" }],
+    orderBy: [],
     omit: {},
     skip: 0,
     take: 0,
@@ -202,6 +202,7 @@ export class ApiFuturesQuery {
       ...this.Query.orderBy,
       ...Object.entries(sortedFields).map(([key, value]) => ({ [key]: value })),
     ];
+    this.Query.orderBy.push({ id: "asc" });
     return this;
   }
   paginateQuery() {

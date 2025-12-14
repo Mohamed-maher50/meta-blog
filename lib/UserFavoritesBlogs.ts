@@ -6,7 +6,10 @@ export const GET_USER_FAVORITES = async <T>(
   options?: RequestInit
 ): Promise<ResponseSuccess<T>> => {
   const queryTrimmed = query ? `?${query}` : "";
-  const res = await fetch(`${baseUrl}/api/favorites${queryTrimmed}`, options);
+  const res = await fetch(
+    `${baseUrl}/api/blogs/favorites${queryTrimmed}`,
+    options
+  );
   const data = await res.json();
   return data;
 };

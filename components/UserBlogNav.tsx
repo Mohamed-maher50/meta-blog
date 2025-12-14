@@ -58,7 +58,7 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
     queryFn: async () => {
       try {
         const { data } = await axiosClient.get(
-          `/api/favorites?blogId=${blogId}`
+          `/api/blogs/favorites?blogId=${blogId}`
         );
         return data;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -71,7 +71,7 @@ const UserBlogNav: React.FC<UserBlogNavProps> = ({
   const mutation = useMutation({
     mutationFn: async ({ blogId, signal }: AddFavoriteArgs) => {
       const res = await axiosClient.post(
-        `/api/favorites?blogId=${blogId}`,
+        `/api/blogs/favorites?blogId=${blogId}`,
         { blogId },
         { signal }
       );

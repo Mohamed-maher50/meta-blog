@@ -167,7 +167,6 @@ export const ForceTitleExtension = Extension.create({
               // إذا كان المؤشر في بداية المستند تماماً قبل العنوان
               if (selection.empty && selection.anchor === 0) {
                 // anchor === 0 هو بداية المستند
-                console.log("Prevented deletion of the main title area.");
                 return true; // منع الحدث الافتراضي (الحذف)
               }
             }

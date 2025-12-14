@@ -20,7 +20,7 @@ const Home = async () => {
           className="relative flex-col flex gap-10  w-full"
         >
           <HomeBlogSection
-            query="sort=createdAt&&omit=content&"
+            query="sort=-createdAt&omit=content&"
             label={"Latest articles 🚀"}
           />
           <UsersSmallCardsSwiper

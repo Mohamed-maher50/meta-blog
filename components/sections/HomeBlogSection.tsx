@@ -7,7 +7,7 @@ import InfinityBlogsCardsSection from "../../app/_components/InfinityBlogsSectio
 import { ErrorBoundary } from "react-error-boundary";
 import { GetRecommendedBlogs } from "@/lib/blogs";
 import { ErrorMessage } from "../topics/TopicsSwiper";
-const SectionsCardsLoadingSkeletons = () => (
+export const SectionsCardsLoadingSkeletons = () => (
   <>
     <div className="grid gap-5 my-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3">
       {Array.from({ length: 4 }).map((_, i) => (
@@ -20,8 +20,7 @@ interface HomeBlogSection {
   label: string;
   query: string;
 }
-
-const ChunkBlogs = async ({ query }: { query: string }) => {
+export const ChunkBlogs = async ({ query }: { query: string }) => {
   const headers = new Headers(await NextHeaders());
   const res = await GetRecommendedBlogs(query, {
     headers,

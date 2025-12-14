@@ -95,8 +95,6 @@ export default async function ProfilePage({
                 return (
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {d.map((e) => {
-                      console.log(e.author.id, "+", session?.user.userId);
-                      console.log(e.author.id === session?.user.userId);
                       return (
                         <RichBlogCard
                           {...e}

@@ -8,14 +8,13 @@ import GoogleProvider from "next-auth/providers/google"; // optional
 import CredentialsProvider from "next-auth/providers/credentials"; // optional
 import { loginSchema } from "@/schema/authSchema";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/prisma";
-import type { Adapter } from "next-auth/adapters";
 import { verifyHashed } from "./lib/utils";
+import { prisma } from "./prisma";
 class InvalidLoginError extends CredentialsSignin {
   code = "Email or Password not correct";
 }
 export const authOptions: NextAuthConfig = {
-  adapter: PrismaAdapter(prisma) as Adapter,
+  adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
@@ -90,17 +89,18 @@ export const authOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    jwt({ token, user, trigger, session }) {
+    jwt({ token, user, trigger, session, profile, account }) {
       // after signin will go to jwt and return token data
       if (trigger === "update" && session.image) token.image = session.image;
       if (trigger === "update" && session.topicsSelected)
         token.isFirstVisit = !session.topicsSelected;
+
       if (user)
         return {
           ...token,
-          userId: user.id,
+          userId: user.id || "",
           image: user.image,
-          isFirstVisit: user.isFirstVisit,
+          isFirstVisit: token.isFirstVisit,
         };
       return token;
     },
