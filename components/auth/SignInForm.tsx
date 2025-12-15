@@ -15,6 +15,11 @@ import ProvidersFooter from "./ProvidersFooter";
 import { LoginAction } from "@/actions/LoginAction";
 import { useSession } from "next-auth/react";
 
+import TryDemoAlert, {
+  DemoEmail,
+  DemoPassword,
+} from "../miscellaneous/TryDemoAlert";
+
 const FormHeader = () => {
   return (
     <>
@@ -59,11 +64,12 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
   return (
     <Form {...form}>
       <form
-        className={cn("flex max-w-3xl mt-10 mx-auto flex-col gap-6", className)}
+        className={cn("flex max-w-lg mt-10 mx-auto flex-col gap-6", className)}
         {...props}
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <FormHeader />
+        <TryDemoAlert />
         <div className="grid gap-2">
           <div className="grid gap-3">
             <FormField
@@ -81,6 +87,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
                         {...field}
                       />
                     </FormControl>
+                    <DemoEmail />
                   </FormItem>
                 );
               }}
@@ -101,6 +108,8 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<"form">) => {
                         {...field}
                       />
                     </FormControl>
+                    <DemoPassword />
+
                     <Link
                       href="#"
                       className="ml-auto text-sm underline-offset-4 hover:underline"

@@ -154,22 +154,6 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
     <div className="relative  w-full ">
       <Form {...form}>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <div className="flex items-center w-full justify-between ">
-            <DialogTrigger asChild>
-              <Button
-                className="w-fit "
-                type="button"
-                size={"sm"}
-                disabled={
-                  form.formState.isSubmitting ||
-                  !form.formState.dirtyFields.title
-                }
-              >
-                Publish
-              </Button>
-            </DialogTrigger>
-          </div>
-
           <EditorRoot>
             <EditorContent
               editable={editable}
@@ -177,7 +161,7 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
               initialContent={form.getValues("content")}
               autofocus
               extensions={extensions}
-              className="relative min-h-[500px] w-full border-muted  sm:mb-[calc(20vh)]   "
+              className="relative min-h-125 w-full border-muted  sm:mb-[calc(20vh)]   "
               editorProps={{
                 handleDOMEvents: {
                   keydown: (_view, event) => handleCommandNavigation(event),
@@ -196,10 +180,25 @@ const CreateBlogForm = ({ editable = true }: TailwindAdvancedEditorProps) => {
                 debouncedUpdates(editor);
               }}
               slotBefore={
-                <ReadingInfo
-                  className="w-fit bg-background flex gap-1.5"
-                  wpm={time}
-                />
+                <div className="flex items-center w-full justify-between ">
+                  <DialogTrigger asChild>
+                    <Button
+                      className="w-fit "
+                      type="button"
+                      size={"sm"}
+                      disabled={
+                        form.formState.isSubmitting ||
+                        !form.formState.dirtyFields.title
+                      }
+                    >
+                      Publish
+                    </Button>
+                  </DialogTrigger>
+                  <ReadingInfo
+                    className="w-fit bg-background flex gap-1.5"
+                    wpm={time}
+                  />
+                </div>
               }
               slotAfter={<ImageResizer />}
             >

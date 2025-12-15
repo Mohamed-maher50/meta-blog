@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Container from "../utils/Container";
 import Logo from "../miscellaneous/Logo";
 
@@ -23,7 +23,13 @@ import NotificationsDropDownMenu from "../notifications/NotificationsMenu";
 import WithAuth from "../auth/WithAuth";
 import { Button } from "../ui/button";
 import InputSearchLoader from "../InputSearchLoader";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import { Switch } from "../ui/switch";
 
 const Navbar = () => {
@@ -35,6 +41,7 @@ const Navbar = () => {
   const [isSearching, setIsSearching] = useState(false);
   const searchInput = useRef<HTMLInputElement | null>(null);
   const isDark = theme === "dark";
+  const [mounted, setMounted] = useState(false);
   const handleSearchInput = () => {
     if (!isSearching) setIsSearching(true);
     if (!searchInput.current) return;
@@ -53,6 +60,10 @@ const Navbar = () => {
     }, 1000),
     []
   );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <nav className="py-4 border-b border-b-secondary overflow-hidden">
       <Container>
@@ -96,14 +107,16 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <div className="flex min-w-40  justify-between items-center">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <Switch
-                      className="max-md:hidden"
-                      checked={isDark}
-                      onCheckedChange={(status) => {
-                        setTheme(status ? "dark" : "light");
-                      }}
-                      aria-label="Toggle dark mode"
-                    />
+                    {mounted && (
+                      <Switch
+                        checked={!isDark}
+                        className="md:hidden"
+                        onCheckedChange={(status) => {
+                          setTheme(status ? "light" : "dark");
+                        }}
+                        aria-label={`Toggle ${theme} mode`}
+                      />
+                    )}
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -149,15 +162,52 @@ const Navbar = () => {
                 <Link href={"/auth/signUp"}>sign up</Link>
               </Button>
             </div>
+            {mounted ||
+              (status == "authenticated" && (
+                <Switch
+                  checked={!isDark}
+                  className="md:hidden"
+                  onCheckedChange={(status) => {
+                    setTheme(status ? "light" : "dark");
+                  }}
+                  aria-label={`Toggle ${theme} mode`}
+                />
+              ))}
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" className="md:hidden" size="icon">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="px-4">
+              <SheetContent side="right" className="pt-2 px-4">
+                <SheetTitle>
+                  <Logo />
+                </SheetTitle>
                 <div className="space-y-4 mt-8">
                   {/* Mobile Search */}
+
+                  <WithAuth>
+                    <div className="flex items-center gap-3 rounded-lg p-2 border border-border">
+                      <Avatar>
+                        <AvatarImage
+                          src={data?.user.image as string}
+                          className=" rounded-full"
+                          aria-label={`${data?.user.name} image`}
+                        />
+                        <AvatarFallback className="w-10 font-semibold capitalize  h-10 rounded-full">
+                          {data?.user.name?.split("")[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-foreground truncate">
+                          {data?.user.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {data?.user.email}
+                        </p>
+                      </div>
+                    </div>
+                  </WithAuth>
                   <InputSearchLoader
                     ref={searchInput}
                     isLoading={isSearching}
@@ -165,47 +215,46 @@ const Navbar = () => {
                     onChange={handleSearchInput}
                     defaultValue={searchParams.get("q") as string}
                   />
-
                   <div className="space-y-2">
                     {status == "authenticated" ? (
                       <>
-                        <div className="flex items-center gap-3 rounded-lg p-2 border border-border">
-                          <Avatar>
-                            <AvatarImage
-                              src={data.user.image as string}
-                              className=" rounded-full"
-                              aria-label={`${data.user.name} image`}
-                            />
-                            <AvatarFallback className="w-10 font-semibold capitalize  h-10 rounded-full">
-                              {data.user.name?.split("")[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-foreground truncate">
-                              {data.user.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {data.user.email}
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          asChild
-                          className="w-full justify-start"
-                        >
-                          <Link href={`/author/${data.user.userId}`}>
-                            My Profile
-                          </Link>
-                        </Button>
-                        <Link href="/settings">
+                        <SheetClose asChild>
                           <Button
                             variant="ghost"
+                            asChild
                             className="w-full justify-start"
                           >
-                            Settings
+                            <Link href={`/author/${data.user.userId}`}>
+                              <User className="text-muted-foreground duration-500 dark:hover:text-white" />
+                              My Profile
+                            </Link>
                           </Button>
-                        </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Button
+                            variant="ghost"
+                            asChild
+                            className="w-full justify-start"
+                          >
+                            <Link href={`/favorites`}>
+                              <Bookmark className="text-muted-foreground duration-500 dark:hover:text-white" />
+                              My Favorites
+                            </Link>
+                          </Button>
+                        </SheetClose>
+                        <SheetClose>
+                          <Button
+                            variant="ghost"
+                            asChild
+                            className="w-full justify-start"
+                          >
+                            <Link href={`/author/${data.user.userId}`}>
+                              <PenBoxIcon className="text-muted-foreground  capitalize duration-500 dark:hover:text-white" />
+                              Write Story
+                            </Link>
+                          </Button>
+                        </SheetClose>
+
                         <Button
                           onClick={() =>
                             signOut({
@@ -220,7 +269,7 @@ const Navbar = () => {
                       </>
                     ) : (
                       <>
-                        <Link href="/login" className="block">
+                        <Link href="/auth/signin" className="block">
                           <Button
                             variant="outline"
                             className="w-full bg-transparent"
@@ -228,7 +277,7 @@ const Navbar = () => {
                             Login
                           </Button>
                         </Link>
-                        <Link href="/signup" className="block">
+                        <Link href="/auth/signUp" className="block">
                           <Button className="w-full">Sign Up</Button>
                         </Link>
                       </>

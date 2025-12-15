@@ -98,7 +98,7 @@ export function EditProfileDialog({ user }: EditProfileDialogProps) {
             Edit Profile
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-sm:max-w-11/12 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
             <DialogDescription>
@@ -211,7 +211,7 @@ export function EditProfileDialog({ user }: EditProfileDialogProps) {
 
             <div className="space-y-4">
               <h3 className="text-sm font-semibold">Social Media Links</h3>
-              <div className=" w-full grid grid-cols-2 gap-2">
+              <div className=" w-full max-sm:grid-cols-1 grid grid-cols-2 gap-2">
                 {(
                   Object.entries(user.Social) as [
                     keyof Social,

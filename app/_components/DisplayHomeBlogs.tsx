@@ -30,7 +30,7 @@ export function GridBlogs({
   children?: ReactNode;
 }) {
   return (
-    <div className="grid gap-2 max-sm:place-items-center place-content-center my-2 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-2 max-sm:place-items-center place-content-center my-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
       {blogs.map((b) => {
         return <RichBlogCard {...b} key={b.id} />;
       })}

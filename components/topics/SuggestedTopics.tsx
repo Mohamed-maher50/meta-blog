@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { Badge } from "../ui/badge";
 import { EmptyStateAlert } from "../EmptyStateAlert";
+import { Button } from "../ui/button";
 
 const SuggestedTopics = async ({
   query,
@@ -32,13 +33,15 @@ const SuggestedTopics = async ({
           </Link>
         );
       })}
-      <Link
-        hidden={pagination.totalItems <= limit}
-        href={`/search/topics?q=${query}`}
-        className="flex-1 basis-full flex w-full  capitalize text-sm font-work-sans hover:underline text-secondary-foreground grow"
-      >
-        see all
-      </Link>
+      <Button asChild variant={"secondary"} size={"sm"}>
+        <Link
+          hidden={pagination.totalItems <= limit}
+          href={`/search/topics?q=${query}`}
+          className="flex-1 basis-full mx-auto w-fit  text-center  text-secondary-foreground-300 block capitalize text-sm font-work-sans hover:underline grow"
+        >
+          see all
+        </Link>
+      </Button>
     </div>
   );
 };

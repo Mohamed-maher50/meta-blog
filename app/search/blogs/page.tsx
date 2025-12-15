@@ -15,7 +15,7 @@ const page = async ({
   if (!initialBlogs.pagination.totalItems)
     return <EmptyStateAlert type="blogs" searchQuery={q} />;
   return (
-    <div className=" gap-2 flex flex-col ">
+    <div className=" gap-2 grid md:grid-cols-2">
       {initialBlogs.data.map((b) => {
         return <BlogCardHorizontal {...b} key={b.id} />;
       })}

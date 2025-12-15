@@ -75,17 +75,19 @@ const page = async ({ params }: { params: Promise<{ topicId: string }> }) => {
           }}
           render={(d) => {
             return (
-              <div
-                hidden={!d.length}
-                className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr"
-              >
+              <>
                 <h1 className="text-3xl leading-12 font-bold font-work-sans">
                   ✨Recommended Stories
                 </h1>
-                {d.map((e) => {
-                  return <RichBlogCard {...e} key={e.id} />;
-                })}
-              </div>
+                <div
+                  hidden={!d.length}
+                  className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr"
+                >
+                  {d.map((e) => {
+                    return <RichBlogCard {...e} key={e.id} />;
+                  })}
+                </div>
+              </>
             );
           }}
         />
@@ -117,15 +119,16 @@ const page = async ({ params }: { params: Promise<{ topicId: string }> }) => {
           }}
           render={(d) => {
             return (
-              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+              <>
                 <SectionLabel hidden={!d.length}>
                   📰 Latest Stories
                 </SectionLabel>
-
-                {d.map((e) => {
-                  return <RichBlogCard {...e} key={e.id} />;
-                })}
-              </div>
+                <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+                  {d.map((e) => {
+                    return <RichBlogCard {...e} key={e.id} />;
+                  })}
+                </div>
+              </>
             );
           }}
         />

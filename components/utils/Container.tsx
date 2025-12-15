@@ -5,7 +5,7 @@ const Container = ({ children, className, ...attr }: ContainerProps) => {
   return (
     <div
       className={cn(
-        " max-md:px-2 px-5 w-full 2xl:w-[80rem] 2xl:min-w-[72rem] mx-auto",
+        " max-md:px-2 px-5 max-sm:w-11/12 w-full 2xl:w-7xl 2xl:min-w-6xl mx-auto",
         className
       )}
       {...attr}

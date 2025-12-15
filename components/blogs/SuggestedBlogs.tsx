@@ -3,6 +3,7 @@ import React from "react";
 import { GetBlogs } from "@/lib/blogs";
 import { BlogCardCompact } from "./BlogCompactCard";
 import { BlogCardProps } from "@/types";
+import { EmptyStateAlert } from "../EmptyStateAlert";
 
 const SuggestedBlogs = async ({
   query,
@@ -16,6 +17,9 @@ const SuggestedBlogs = async ({
   const { data, pagination } = await GetBlogs<BlogCardProps>(fetchQuery);
   return (
     <div className="flex py-2  gap-1 flex-wrap">
+      {pagination.totalItems == 0 && (
+        <EmptyStateAlert type="blogs" searchQuery={query} />
+      )}
       {data.map((t) => {
         return (
           <Link key={t.id} className="w-full" href={`/blogs/${t.id}`}>

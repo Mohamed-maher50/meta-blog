@@ -18,7 +18,7 @@ const Layout = async ({
             {children}
           </div>
         </div>
-        <div className="md:sticky duration-1000  transform transition-all  min-w-72 max-lg:hidden flex-2 md:top-0 h-full">
+        <div className="md:sticky duration-1000 overflow-auto max-h-screen transform transition-all  min-w-72 max-lg:hidden flex-2 md:top-10 h-full">
           {S}
         </div>
       </div>

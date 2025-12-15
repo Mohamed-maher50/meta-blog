@@ -33,8 +33,8 @@ async function BlogTopics({ blogId }: { blogId: string }) {
   return (
     <div className=" items-center  flex-wrap">
       <SectionLabel> Blog Topics</SectionLabel>
-      <div className="flex gap-2">
-        {blogTopics.data?.map((t) => {
+      <div className="flex flex-wrap gap-2">
+        {blogTopics.data?.slice(0, 5)?.map((t) => {
           return <TopicRectangleCard topic={t.topic} key={t.id} />;
         })}
       </div>

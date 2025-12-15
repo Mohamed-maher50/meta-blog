@@ -3,7 +3,6 @@ import { Geist_Mono, Work_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { ThemeProvider } from "next-themes";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/Footer";
@@ -38,19 +37,13 @@ export default async function RootLayout({
           <body
             className={`${Wark_sans.variable} ${geistMono.variable} min-h-dvh antialiased`}
           >
-            <SidebarProvider defaultOpen={false} className="flex flex-col">
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                enableSystem
-              >
-                <div className="flex flex-col">
-                  <Navbar />
-                  <main>{children}</main>
-                  <Footer />
-                </div>
-              </ThemeProvider>
-            </SidebarProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+              <div className="flex flex-col">
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </ThemeProvider>
             <Toaster richColors expand />
           </body>
         </html>

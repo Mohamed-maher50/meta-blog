@@ -28,7 +28,7 @@ export function UserSuggestionCard({ user }: UserSuggestionCardProps) {
 
   return (
     <div className="flex items-center gap-3 p-3  rounded-lg bg-background hover:bg-accent/50 transition-colors">
-      <Avatar className="h-10 w-10 flex-shrink-0">
+      <Avatar className="h-10 w-10 shrink-0">
         <AvatarImage src={user.image || undefined} alt={user.name} />
         <AvatarFallback className="bg-muted text-muted-foreground">
           {getInitials(user.name)}

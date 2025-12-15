@@ -114,17 +114,17 @@ const UsersSmallCardsSwiper = ({
         <Carousel
           setApi={setApi}
           id="container"
-          className="w-full  px-4 sm:px-8"
+          className="w-full  sm:px-8"
           opts={{
-            align: "start",
+            align: "center",
           }}
         >
-          <CarouselContent className="-mr-14! box-content py-2">
+          <CarouselContent className=" box-content py-2">
             {users?.pages.map((page, idx) => {
               return (
                 <Fragment key={idx}>
                   {page.data?.map((user) => (
-                    <CarouselItem key={user.id} className="pl-4 basis-auto">
+                    <CarouselItem key={user.id} className=" basis-auto">
                       <Link href={`/author/${user.id}/`} key={user.id}>
                         <UserSmallCard user={user} />
                       </Link>
@@ -136,7 +136,7 @@ const UsersSmallCardsSwiper = ({
             {isFetchingNextPage && (
               <CarouselItem
                 key={"lastCard"}
-                className="w-fit! mr-10! overflow-hidden box-content block max-w-fit!"
+                className="w-fit!  box-content block max-w-fit!"
               >
                 <UserSmallCardSkeleton />
               </CarouselItem>

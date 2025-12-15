@@ -15,6 +15,7 @@ import SavedButton from "./SavedButton";
 import Link from "next/link";
 import { memo } from "react";
 import axiosClient from "@/lib/axios.client";
+import { formatCompactNumber } from "@/lib/utils";
 
 const BlogCardHorizontal = ({
   BlogTopics,
@@ -47,11 +48,11 @@ const BlogCardHorizontal = ({
   };
 
   return (
-    <Card className="group relative w-full overflow-hidden transition-all duration-300 hover:shadow-lg">
-      <CardContent className="p-0">
-        <div className="flex gap-4 p-4">
+    <Card className="group relative @container w-full overflow-hidden transition-all duration-300 hover:shadow-lg">
+      <CardContent className="p-0 ">
+        <div className="flex @max-md:flex-col gap-4 p-4">
           {/* Cover Image - Left Side */}
-          <div className="relative h-32 w-40 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+          <div className="relative  h-40 sm:h-48 w-full @md:h-32 @md:w-40 shrink-0  overflow-hidden rounded-lg bg-muted">
             <Image
               width={cover.width}
               height={cover.height}
@@ -59,7 +60,7 @@ const BlogCardHorizontal = ({
               alt={title}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
-            <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute  inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <WithAuth>
                 <>
                   <SavedButton blogId={id} isSaved={favorites.length > 0} />
@@ -97,10 +98,10 @@ const BlogCardHorizontal = ({
           </div>
 
           {/* Content - Right Side */}
-          <div className="flex-1 flex flex-col justify-between min-w-0">
+          <div className="flex-1 @max-md:gap-4  flex flex-col justify-between min-w-0">
             {/* Title and Topics */}
             <div className="space-y-2">
-              <Link href={`/blogs/${id}/view`}>
+              <Link className="block" href={`/blogs/${id}/view`}>
                 <h3 className="text-lg font-semibold line-clamp-2 text-card-foreground hover:text-primary transition-colors duration-200">
                   {title}
                 </h3>
@@ -126,7 +127,7 @@ const BlogCardHorizontal = ({
 
               <div className="flex items-center gap-2">
                 <Link
-                  className="relative hover:scale-105 duration-500 hover:-translate-y-2 flex justify-center items-center gap-2 z-20"
+                  className="relative flex justify-center items-center gap-2 z-20"
                   href={`/author/${author.id}`}
                 >
                   <Avatar className="h-8 w-8">
@@ -157,19 +158,19 @@ const BlogCardHorizontal = ({
                   {/* Views */}
                   <div className="flex items-center gap-1 hover:text-card-foreground transition-colors">
                     <Eye size={14} />
-                    <span>{views_count}</span>
+                    <span>{formatCompactNumber(views_count)}</span>
                   </div>
 
                   {/* Likes */}
                   <div className="flex items-center gap-1 hover:text-primary transition-colors cursor-pointer">
                     <Heart size={14} />
-                    <span>{likesCount}</span>
+                    <span>{formatCompactNumber(likesCount)}</span>
                   </div>
 
                   {/* Comments */}
                   <div className="flex items-center gap-1 hover:text-card-foreground transition-colors">
                     <MessageCircle size={14} />
-                    <span>{commentsCount}</span>
+                    <span>{formatCompactNumber(commentsCount)}</span>
                   </div>
                 </div>
 

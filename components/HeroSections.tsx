@@ -46,7 +46,7 @@ const HeroSection = async () => {
             </div>
 
             {/* Main headline */}
-            <h1 className="mb-6 text-balance text-5xl font-work-sans font-bold leading-tight text-foreground sm:text-6xl lg:text-5xl">
+            <h1 className="mb-6 max-sm:text-3xl text-balance text-5xl font-work-sans font-bold leading-tight text-foreground sm:text-6xl lg:text-5xl">
               Dive into <span className="italic">great ideas</span> and
               meaningful stories
             </h1>
