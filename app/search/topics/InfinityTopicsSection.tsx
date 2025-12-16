@@ -52,7 +52,6 @@ const InfinityTopicsSection: FC<InfinityTopicsSectionProps> = ({
 export default WithInfinityScroll(
   memo(InfinityTopicsSection),
   async ({ page, query }) => {
-    console.log(page);
     return await getTopics(`q=${query}&page=${page}&limit=10`);
   }
 );

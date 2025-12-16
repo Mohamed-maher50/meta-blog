@@ -46,11 +46,9 @@ model User {
 model Visitors {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   visitorId String
-  userId    String?
   createdAt DateTime @default(now())
   blogId    String
 
-  @@unique([blogId, userId])
   @@unique([blogId, visitorId])
 }
 

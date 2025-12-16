@@ -31,9 +31,7 @@ const UpdateBlogView = ({ blogId }: { blogId: string }) => {
         await fetch(`${baseUrl}/api/blogs/${blogId}/views`, {
           method: "PATCH",
           body: JSON.stringify({
-            blogId,
             visitor_ids: arrayOfLocalStorageIds,
-            userId: data?.user.userId,
           }),
         });
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

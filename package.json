@@ -13,17 +13,6 @@
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
-  "mcpServers": {
-    "TestSprite": {
-      "command": "npx",
-      "args": [
-        "@testsprite/testsprite-mcp@latest"
-      ],
-      "env": {
-        "API_KEY": "sk-user-jI8B7cwao5ZJFKh-LdnCJLrGMsavkznPFAKE7PsJFwFDzrwWI1ugzmgW6OcyN1enSdPwuTbDt82OriUAPEP37yHchCNWffKh35o26AnwiqJ9Psq0TbAEHH8OjQ5eDqdNO_o"
-      }
-    }
-  },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.85",
     "@ai-sdk/react": "^2.0.114",

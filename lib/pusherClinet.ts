@@ -15,7 +15,7 @@ export const pusherClient = new PusherClient(
     },
   }
 );
-
+// if (process.env.NODE_ENV === "development") pusherClient.disconnect();
 export const pusherServer = new PusherServer({
   appId: process.env.PUSHER_APP_ID!,
   key: process.env.PUSHER_KEY!,

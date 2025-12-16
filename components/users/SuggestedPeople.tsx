@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { GetUsers } from "@/lib/Users";
-import { headers } from "next/headers";
+import { headers as NextHeaders } from "next/headers";
 import { UserInfo } from "@/types";
 import { UserSuggestionCard } from "./userSuggestionCard";
 import { EmptyStateAlert } from "../EmptyStateAlert";
@@ -14,11 +14,11 @@ const SuggestedPeople = async ({
   fetchQuery?: string;
   limit?: number;
 }) => {
-  const requestHeaders = await headers();
-  new Headers(requestHeaders);
+  const headers = new Headers(await NextHeaders());
+
   const getUserResponse = await GetUsers<
     (UserInfo & { isFollowing: boolean })[]
-  >(fetchQuery as string, { headers: requestHeaders });
+  >(fetchQuery as string, { headers });
 
   if (getUserResponse.pagination.totalItems < 1)
     return <EmptyStateAlert searchQuery={query} type="blogs" />;
