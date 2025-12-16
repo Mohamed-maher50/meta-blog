@@ -47,7 +47,7 @@ const Navbar = () => {
     if (!searchInput.current) return;
     const url = new URLSearchParams(searchParams);
     if (url.get("q")) url.set("q", searchInput.current.value);
-    else url.append("q", searchInput.current.value);
+    else url.set("q", searchInput.current.value);
     if (!searchInput.current?.value) url.delete("q");
     debounceRoute(`/search/blogs?${url.toString()}`);
   };
@@ -161,17 +161,16 @@ const Navbar = () => {
                 <Link href={"/auth/signUp"}>sign up</Link>
               </Button>
             </div>
-            {mounted ||
-              (status == "authenticated" && (
-                <Switch
-                  checked={!isDark}
-                  className="md:hidden"
-                  onCheckedChange={(status) => {
-                    setTheme(status ? "light" : "dark");
-                  }}
-                  aria-label={`Toggle ${theme} mode`}
-                />
-              ))}
+            {mounted && status == "unauthenticated" && (
+              <Switch
+                checked={!isDark}
+                className=""
+                onCheckedChange={(status) => {
+                  setTheme(status ? "light" : "dark");
+                }}
+                aria-label={`Toggle ${theme} mode`}
+              />
+            )}
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" className="md:hidden" size="icon">
