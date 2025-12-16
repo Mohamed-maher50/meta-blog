@@ -90,7 +90,6 @@ export const GET = async (req: NextRequest) => {
     const pagination = apiFutures.paginate(numberOfDocuments);
     const blogOmits = { ...apiFutures.Query.omit };
     apiFutures.Query.omit = {};
-
     apiFutures.Query.include = {
       blog: {
         omit: blogOmits,

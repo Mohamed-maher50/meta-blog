@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import debounce from "debounce";
 import { useRouter, useSearchParams } from "next/navigation";
 const Filtration_bar = () => {
@@ -47,6 +47,8 @@ const Filtration_bar = () => {
       <div className="flex gap-2">
         <Select
           // value={sortBy}
+          defaultValue="-createdAt"
+          value={searchParams.get("sort") ?? undefined}
           onValueChange={(value) => {
             const url = new URLSearchParams(searchParams);
             if (url.get("sort")) url.set("sort", value);
@@ -62,8 +64,8 @@ const Filtration_bar = () => {
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="createdAt">Newest First</SelectItem>
-            <SelectItem value="-createdAt">Oldest First</SelectItem>
+            <SelectItem value="-createdAt">Newest First</SelectItem>
+            <SelectItem value="createdAt">Oldest First</SelectItem>
             {/* <SelectItem value="most-read">Most Read</SelectItem> */}
           </SelectContent>
         </Select>

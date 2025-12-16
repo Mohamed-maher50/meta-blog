@@ -25,6 +25,7 @@ const page = async ({
 }) => {
   const sp = await searchParams; // Await the promise for Next.js 15+
   const urlSearchParams = new URLSearchParams(sp as Record<string, string>);
+  if (!urlSearchParams.has("sort")) urlSearchParams.set("sort", "-createdAt");
   const queryString = urlSearchParams.toString(); // Returns 'query=react&page=1
   // const session = await auth();
   // if (!session?.user) return;

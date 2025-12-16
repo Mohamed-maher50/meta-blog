@@ -110,7 +110,6 @@ const Navbar = () => {
                     {mounted && (
                       <Switch
                         checked={!isDark}
-                        className="md:hidden"
                         onCheckedChange={(status) => {
                           setTheme(status ? "light" : "dark");
                         }}

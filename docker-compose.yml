@@ -1,0 +1,8 @@
+services:
+  meta-blog:
+    container_name: meta-blog-co
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
